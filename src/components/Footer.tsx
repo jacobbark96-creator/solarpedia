@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-1">
             <Link to="/" className="flex items-center mb-6">
-              <img src="/logo.png" alt="Solarpedia Logo" className="h-16 w-auto brightness-0 invert" />
+              <img src="/logo.png" alt="Solarpedia Logo" className="h-24 w-auto brightness-0 invert" />
             </Link>
             <p className="text-brand-accent text-sm leading-relaxed mb-6">
               Independent UK solar insights, cost estimates and savings forecasts powered by real energy and regional data.
