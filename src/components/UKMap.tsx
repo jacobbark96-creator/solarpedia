@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, TrendingUp, PoundSterling, ShieldCheck, Info } from 'lucide-react';
+import { Zap, TrendingUp, PoundSterling, ShieldCheck, Info, Database } from 'lucide-react';
+import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { UK_REGIONS_DATA, DATA_SOURCES } from '../data/mockData';
 
-const REGIONS = [
-  { id: 'SCO', name: 'Scotland', path: 'M 145 20 L 165 25 L 180 50 L 195 80 L 185 110 L 160 130 L 130 115 L 110 80 L 120 40 Z' },
-  { id: 'NE', name: 'North East', path: 'M 185 110 L 205 120 L 210 150 L 195 170 L 175 155 L 160 130 Z' },
-  { id: 'NW', name: 'North West', path: 'M 160 130 L 175 155 L 165 190 L 140 200 L 130 170 L 130 145 Z' },
-  { id: 'YOR', name: 'Yorkshire', path: 'M 195 170 L 215 180 L 210 210 L 185 220 L 165 190 L 175 155 Z' },
-  { id: 'WAL', name: 'Wales', path: 'M 130 200 L 145 220 L 140 260 L 115 270 L 105 240 L 115 210 Z' },
-  { id: 'WM', name: 'West Midlands', path: 'M 165 190 L 185 220 L 175 250 L 145 250 L 145 220 L 140 200 Z' },
-  { id: 'EM', name: 'East Midlands', path: 'M 185 220 L 210 210 L 220 240 L 200 260 L 175 250 Z' },
-  { id: 'EE', name: 'East of England', path: 'M 210 210 L 240 220 L 250 260 L 230 280 L 210 270 L 220 240 Z' },
-  { id: 'SW', name: 'South West', path: 'M 115 270 L 140 260 L 155 300 L 140 330 L 80 340 L 90 300 Z' },
-  { id: 'SE', name: 'South East', path: 'M 175 250 L 200 260 L 210 270 L 230 280 L 220 310 L 180 320 L 155 300 L 165 270 Z' },
-  { id: 'LON', name: 'London', path: 'M 200 270 L 215 275 L 210 290 L 195 285 Z' },
-  { id: 'NI', name: 'Northern Ireland', path: 'M 50 120 L 80 125 L 90 150 L 70 170 L 40 160 Z' },
-];
+const NAME_TO_ID: Record<string, string> = {
+  'Scotland': 'SCO',
+  'North East': 'NE',
+  'North West': 'NW',
+  'Yorkshire and The Humber': 'YOR',
+  'Wales': 'WAL',
+  'West Midlands': 'WM',
+  'East Midlands': 'EM',
+  'East of England': 'EE',
+  'South West': 'SW',
+  'South East': 'SE',
+  'London': 'LON',
+  'Northern Ireland': 'NI'
+};
 
 const UKMap: React.FC = () => {
   const [selectedRegion, setSelectedRegion] = useState(UK_REGIONS_DATA['SW']);
@@ -26,31 +27,63 @@ const UKMap: React.FC = () => {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
       {/* Map Side */}
       <div className="lg:col-span-7 bg-white rounded-[3rem] p-8 border border-brand-accent shadow-sm overflow-hidden relative min-h-[600px] flex items-center justify-center">
-        <svg 
-          viewBox="0 0 300 400" 
-          className="w-full h-full max-h-[500px] drop-shadow-2xl"
-          style={{ filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.05))' }}
-        >
-          {REGIONS.map((region) => (
-            <motion.path
-              key={region.id}
-              d={region.path}
-              fill={selectedRegion.postcode === region.id ? '#1A2B44' : hoveredRegion === region.id ? '#E5E7EB' : '#F3F4F6'}
-              stroke="#D1D5DB"
-              strokeWidth="1"
-              initial={false}
-              animate={{
-                fill: selectedRegion.postcode === region.id ? '#1A2B44' : hoveredRegion === region.id ? '#E5E7EB' : '#F3F4F6',
-                scale: hoveredRegion === region.id ? 1.02 : 1,
-              }}
-              whileHover={{ scale: 1.02 }}
-              onMouseEnter={() => setHoveredRegion(region.id)}
-              onMouseLeave={() => setHoveredRegion(null)}
-              onClick={() => setSelectedRegion(UK_REGIONS_DATA[region.id])}
-              className="cursor-pointer transition-colors duration-200"
-            />
-          ))}
-        </svg>
+        <div className="w-full h-full max-h-[600px] relative" style={{ filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.05))' }}>
+          <ComposableMap
+            projection="geoAlbers"
+            projectionConfig={{
+              rotate: [4.4, 0.0],
+              center: [2.5, 54.5],
+              scale: 3200
+            }}
+            className="w-full h-full"
+          >
+            <Geographies geography="/uk-regions.json">
+              {({ geographies }) =>
+                geographies.map((geo) => {
+                  const regionName = geo.properties.areanm;
+                  const regionId = NAME_TO_ID[regionName];
+                  if (!regionId) return null;
+                  
+                  const isSelected = selectedRegion.postcode === regionId;
+                  const isHovered = hoveredRegion === regionId;
+
+                  return (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      onMouseEnter={() => setHoveredRegion(regionId)}
+                      onMouseLeave={() => setHoveredRegion(null)}
+                      onClick={() => setSelectedRegion(UK_REGIONS_DATA[regionId])}
+                      style={{
+                        default: {
+                          fill: isSelected ? '#1A2B44' : '#F3F4F6',
+                          stroke: '#D1D5DB',
+                          strokeWidth: 0.5,
+                          outline: 'none',
+                          transition: 'all 250ms'
+                        },
+                        hover: {
+                          fill: isSelected ? '#1A2B44' : '#E5E7EB',
+                          stroke: '#9CA3AF',
+                          strokeWidth: 1,
+                          outline: 'none',
+                          cursor: 'pointer',
+                          transition: 'all 250ms'
+                        },
+                        pressed: {
+                          fill: '#1A2B44',
+                          stroke: '#1A2B44',
+                          strokeWidth: 1,
+                          outline: 'none'
+                        }
+                      }}
+                    />
+                  );
+                })
+              }
+            </Geographies>
+          </ComposableMap>
+        </div>
 
         <div className="absolute bottom-6 left-8 flex items-center gap-2 text-[10px] font-bold text-brand-muted uppercase tracking-widest">
           <Info className="h-3.5 w-3.5" />
@@ -150,7 +183,5 @@ const UKMap: React.FC = () => {
     </div>
   );
 };
-
-import { Database } from 'lucide-react';
 
 export default UKMap;

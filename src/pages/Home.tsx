@@ -5,8 +5,9 @@ import {
   Database, Search, Newspaper, ChevronRight, Info, Calendar
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { NATIONAL_AVERAGES, GRANTS_NEWS } from '../data/mockData';
+import { NATIONAL_AVERAGES } from '../data/mockData';
 import UKMap from '../components/UKMap';
+import { useLiveNews } from '../hooks/useLiveNews';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
 
@@ -16,6 +17,7 @@ const Home: React.FC = () => {
     'Independent UK solar insights, cost estimates and savings forecasts powered by real energy and regional data.'
   );
   const [energyPrice, setEnergyPrice] = useState(NATIONAL_AVERAGES.energyPrice);
+  const { news: liveNews, loading: newsLoading } = useLiveNews();
 
   return (
     <div className="bg-brand-white">
@@ -167,30 +169,45 @@ const Home: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {GRANTS_NEWS.map((news) => (
-              <Link key={news.id} to={news.link}>
-                <motion.div 
-                  whileHover={{ y: -5 }}
-                  className="bg-brand-white p-6 rounded-[2rem] border border-brand-accent h-full flex flex-col group cursor-pointer"
-                >
+            {newsLoading ? (
+              // Skeleton Loaders
+              [1, 2, 3, 4].map(i => (
+                <div key={i} className="bg-brand-white p-6 rounded-[2rem] border border-brand-accent h-full flex flex-col animate-pulse">
                   <div className="flex justify-between items-start mb-6">
-                    <span className="text-[10px] font-bold uppercase tracking-wider bg-white px-2.5 py-1 rounded-full text-brand-muted border border-brand-accent">
-                      {news.category}
-                    </span>
-                    <span className="text-[10px] font-bold text-brand-muted uppercase">{news.date}</span>
+                    <div className="h-6 w-20 bg-gray-200 rounded-full"></div>
+                    <div className="h-4 w-16 bg-gray-200 rounded"></div>
                   </div>
-                  <h3 className="text-lg font-serif font-bold text-brand-navy mb-3 leading-tight group-hover:text-brand-green transition-colors">
-                    {news.title}
-                  </h3>
-                  <p className="text-sm text-brand-muted leading-relaxed mb-6 flex-grow">
-                    {news.summary}
-                  </p>
-                  <div className="flex items-center gap-2 text-xs font-bold text-brand-navy group-hover:gap-3 transition-all">
-                    Read Update <ChevronRight className="h-4 w-4" />
-                  </div>
-                </motion.div>
-              </Link>
-            ))}
+                  <div className="h-6 w-full bg-gray-200 rounded mb-3"></div>
+                  <div className="h-6 w-3/4 bg-gray-200 rounded mb-6"></div>
+                  <div className="h-16 w-full bg-gray-100 rounded mb-6 flex-grow"></div>
+                </div>
+              ))
+            ) : (
+              liveNews.map((news) => (
+                <a key={news.id} href={news.link} target="_blank" rel="noopener noreferrer">
+                  <motion.div 
+                    whileHover={{ y: -5 }}
+                    className="bg-brand-white p-6 rounded-[2rem] border border-brand-accent h-full flex flex-col group cursor-pointer"
+                  >
+                    <div className="flex justify-between items-start mb-6">
+                      <span className="text-[10px] font-bold uppercase tracking-wider bg-white px-2.5 py-1 rounded-full text-brand-muted border border-brand-accent">
+                        {news.category}
+                      </span>
+                      <span className="text-[10px] font-bold text-brand-muted uppercase">{news.date}</span>
+                    </div>
+                    <h3 className="text-lg font-serif font-bold text-brand-navy mb-3 leading-tight group-hover:text-brand-green transition-colors line-clamp-3">
+                      {news.title}
+                    </h3>
+                    <p className="text-sm text-brand-muted leading-relaxed mb-6 flex-grow line-clamp-3">
+                      {news.summary}
+                    </p>
+                    <div className="flex items-center gap-2 text-xs font-bold text-brand-navy group-hover:gap-3 transition-all">
+                      Read Source Article <ChevronRight className="h-4 w-4" />
+                    </div>
+                  </motion.div>
+                </a>
+              ))
+            )}
           </div>
         </div>
       </section>

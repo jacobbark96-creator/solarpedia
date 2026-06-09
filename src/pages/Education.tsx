@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Search, BookOpen, MessageCircle, FileText, ChevronRight, Newspaper } from 'lucide-react';
-import { GRANTS_NEWS } from '../data/mockData';
+import { useLiveNews } from '../hooks/useLiveNews';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
 
@@ -45,6 +45,9 @@ const Education: React.FC = () => {
     'Solar Education Hub',
     'Expert guidance, data-driven analysis, and unbiased advice to help you navigate the UK solar market.'
   );
+
+  const { news: liveNews, loading: newsLoading } = useLiveNews();
+
   return (
     <div className="bg-brand-white min-h-screen pt-12 pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -133,34 +136,48 @@ const Education: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {GRANTS_NEWS.map((news) => (
-              <motion.div 
-                key={news.id}
-                id={news.link.split('#')[1]}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="bg-white p-10 rounded-[2.5rem] border border-brand-accent shadow-sm hover:shadow-xl transition-all"
-              >
-                <div className="flex justify-between items-start mb-6">
-                  <span className="px-4 py-1.5 rounded-full bg-brand-navy text-white text-[10px] font-bold uppercase tracking-widest">
-                    {news.category}
-                  </span>
-                  <span className="text-xs font-bold text-brand-muted">{news.date}</span>
+            {newsLoading ? (
+              // Skeleton Loaders
+              [1, 2].map(i => (
+                <div key={i} className="bg-white p-10 rounded-[2.5rem] border border-brand-accent shadow-sm animate-pulse">
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="h-6 w-24 bg-gray-200 rounded-full"></div>
+                    <div className="h-4 w-16 bg-gray-200 rounded"></div>
+                  </div>
+                  <div className="h-8 w-3/4 bg-gray-200 rounded mb-4"></div>
+                  <div className="h-6 w-full bg-gray-200 rounded mb-8"></div>
+                  <div className="h-20 w-full bg-gray-100 rounded"></div>
                 </div>
-                <h3 className="text-2xl font-serif font-bold text-brand-navy mb-4">{news.title}</h3>
-                <p className="text-brand-muted leading-relaxed mb-8 text-lg">
-                  {news.summary}
-                </p>
-                <div className="prose prose-sm text-brand-muted">
-                  <p>
-                    This update reflects the latest developments in the UK renewable sector as of {news.date}. 
-                    Our analysts have verified this information against official government policy and market data 
-                    to ensure your solar journey is guided by the most accurate intelligence available.
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+              ))
+            ) : (
+              liveNews.map((news) => (
+                <a key={news.id} href={news.link} target="_blank" rel="noopener noreferrer">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-white p-10 rounded-[2.5rem] border border-brand-accent shadow-sm hover:shadow-xl transition-all h-full flex flex-col"
+                  >
+                    <div className="flex justify-between items-start mb-6">
+                      <span className="px-4 py-1.5 rounded-full bg-brand-navy text-white text-[10px] font-bold uppercase tracking-widest">
+                        {news.category}
+                      </span>
+                      <span className="text-xs font-bold text-brand-muted">{news.date}</span>
+                    </div>
+                    <h3 className="text-2xl font-serif font-bold text-brand-navy mb-4">{news.title}</h3>
+                    <p className="text-brand-muted leading-relaxed mb-8 text-lg flex-grow">
+                      {news.summary}
+                    </p>
+                    <div className="prose prose-sm text-brand-muted">
+                      <p>
+                        This update reflects the latest developments in the UK renewable sector as of {news.date}. 
+                        Read more on the source article to ensure your solar journey is guided by the most accurate intelligence available.
+                      </p>
+                    </div>
+                  </motion.div>
+                </a>
+              ))
+            )}
           </div>
         </div>
 
