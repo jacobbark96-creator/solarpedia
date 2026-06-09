@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Search, BookOpen, MessageCircle, FileText, ChevronRight, Newspaper } from 'lucide-react';
 import { GRANTS_NEWS } from '../data/mockData';
 
@@ -15,20 +16,23 @@ const categories = [
 const articles = [
   {
     title: 'Is Solar Actually Worth it in the UK? (2026 Edition)',
+    slug: 'is-solar-worth-it-uk',
     excerpt: 'An impartial look at the current energy landscape, installation costs, and smart export guarantees.',
     category: 'Analysis',
     readTime: '8 min read',
     image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=800&q=80' // Solar panels on roof
   },
   {
-    title: 'Battery Storage: Do You Really Need It?',
-    excerpt: 'Comparing the ROI of solar-only vs solar + battery systems for typical UK households.',
+    title: 'Solar Myths Explained: Separating Fact from Fiction',
+    slug: 'solar-myths-explained',
+    excerpt: 'We debunk the most common misconceptions about solar panels in the UK climate.',
     category: 'Guide',
-    readTime: '6 min read',
+    readTime: '5 min read',
     image: 'https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?auto=format&fit=crop&w=800&q=80' // High tech battery/energy
   },
   {
     title: 'The Smart Export Guarantee (SEG) Explained',
+    slug: 'seg-explained',
     excerpt: 'How much can you actually earn back from the grid? We compare the best export tariffs available today.',
     category: 'Finance',
     readTime: '10 min read',
@@ -78,10 +82,10 @@ const Education: React.FC = () => {
               <p className="text-brand-accent text-lg mb-8 leading-relaxed">
                 {articles[0].excerpt}
               </p>
-              <button className="inline-flex items-center gap-2 text-white font-bold border-b-2 border-brand-yellow pb-1 hover:text-brand-yellow transition-colors w-fit">
+              <Link to={`/education/article/${articles[0].slug}`} className="inline-flex items-center gap-2 text-white font-bold border-b-2 border-brand-yellow pb-1 hover:text-brand-yellow transition-colors w-fit">
                 Read Full Analysis
                 <ChevronRight className="h-5 w-5" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -108,9 +112,9 @@ const Education: React.FC = () => {
                 <p className="text-brand-muted text-sm leading-relaxed mb-6">
                   {article.excerpt}
                 </p>
-                <button className="text-brand-navy font-bold flex items-center gap-1 hover:gap-2 transition-all">
+                <Link to={`/education/article/${article.slug}`} className="text-brand-navy font-bold flex items-center gap-1 hover:gap-2 transition-all w-fit">
                   Read More <ChevronRight className="h-4 w-4" />
-                </button>
+                </Link>
               </div>
             </motion.div>
           ))}
@@ -161,7 +165,7 @@ const Education: React.FC = () => {
         </div>
 
         {/* Impartiality Section */}
-        <div className="mt-24 bg-brand-navy rounded-[3rem] p-12 text-center text-white relative overflow-hidden">
+        <div id="impartiality" className="mt-24 bg-brand-navy rounded-[3rem] p-12 text-center text-white relative overflow-hidden">
           <div className="absolute inset-0 bg-brand-green/10 blur-[100px]" />
           <div className="relative z-10 max-w-2xl mx-auto">
             <ShieldCheckIcon className="h-16 w-16 text-brand-yellow mx-auto mb-6" />
@@ -170,9 +174,9 @@ const Education: React.FC = () => {
               We never accept payments for editorial rankings or content placement. 
               Our advice is based solely on data, consumer interests, and technical feasibility.
             </p>
-            <button className="bg-white text-brand-navy px-8 py-3 rounded-full font-bold hover:bg-brand-yellow transition-colors">
+            <Link to="/legal/privacy" className="inline-block bg-white text-brand-navy px-8 py-3 rounded-full font-bold hover:bg-brand-yellow transition-colors">
               Read Our Transparency Policy
-            </button>
+            </Link>
           </div>
         </div>
       </div>

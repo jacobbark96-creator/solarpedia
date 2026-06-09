@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Search, MapPin, Star, ShieldCheck, BadgeCheck, Phone, Mail, ExternalLink } from 'lucide-react';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
@@ -110,10 +111,10 @@ const Installers: React.FC = () => {
               </div>
 
               <div className="flex flex-col gap-3 w-full md:w-auto">
-                <button className="bg-brand-navy text-white px-8 py-3 rounded-full font-bold flex items-center justify-center gap-2 hover:shadow-lg transition-all">
+                <Link to="/wizard" className="bg-brand-navy text-white px-8 py-3 rounded-full font-bold flex items-center justify-center gap-2 hover:shadow-lg transition-all">
                   Request Quote
                   <ExternalLink className="h-4 w-4" />
-                </button>
+                </Link>
                 <div className="flex gap-2">
                   <button className="flex-1 p-3 rounded-full border border-brand-accent hover:border-brand-navy transition-all flex justify-center">
                     <Phone className="h-5 w-5 text-brand-navy" />

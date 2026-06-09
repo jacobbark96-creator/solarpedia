@@ -8,6 +8,8 @@ import Results from './pages/Results';
 import Education from './pages/Education';
 import Business from './pages/Business';
 import Installers from './pages/Installers';
+import Article from './pages/Article';
+import Legal from './pages/Legal';
 
 const App: React.FC = () => {
   return (
@@ -20,8 +22,10 @@ const App: React.FC = () => {
             <Route path="/wizard" element={<Wizard />} />
             <Route path="/results" element={<Results />} />
             <Route path="/education" element={<Education />} />
+            <Route path="/education/article/:slug" element={<Article />} />
             <Route path="/business" element={<Business />} />
             <Route path="/installers" element={<Installers />} />
+            <Route path="/legal/:documentId" element={<Legal />} />
           </Routes>
         </main>
         <Footer />

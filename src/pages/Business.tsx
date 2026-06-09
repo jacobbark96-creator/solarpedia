@@ -32,9 +32,9 @@ const Business: React.FC = () => {
                   Get Commercial Estimate
                   <ArrowRight className="h-5 w-5" />
                 </Link>
-                <button className="bg-white/5 border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all">
+                <Link to="/education" className="bg-white/5 border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center">
                   View Case Studies
-                </button>
+                </Link>
               </div>
             </div>
             <div className="relative">
@@ -124,9 +124,9 @@ const Business: React.FC = () => {
                   <span className="font-bold text-brand-yellow">£18,750</span>
                 </div>
               </div>
-              <button className="w-full bg-white text-brand-navy py-4 rounded-full font-bold hover:bg-brand-accent transition-all">
+              <Link to="/wizard" className="w-full bg-white text-brand-navy py-4 rounded-full font-bold hover:bg-brand-accent transition-all flex items-center justify-center">
                 Run Detailed ROI Simulation
-              </button>
+              </Link>
             </div>
           </div>
         </div>

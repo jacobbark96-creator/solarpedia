@@ -33,10 +33,10 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold text-lg mb-6">Resources</h4>
             <ul className="space-y-4 text-brand-accent text-sm">
-              <li><a href="#" className="hover:text-white transition-colors">How we stay impartial</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Data methodology</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Solar myths explained</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Privacy & GDPR</a></li>
+              <li><Link to="/education#impartiality" className="hover:text-white transition-colors">How we stay impartial</Link></li>
+              <li><Link to="/education#data" className="hover:text-white transition-colors">Data methodology</Link></li>
+              <li><Link to="/education/article/solar-myths-explained" className="hover:text-white transition-colors">Solar myths explained</Link></li>
+              <li><Link to="/legal/privacy" className="hover:text-white transition-colors">Privacy & GDPR</Link></li>
             </ul>
           </div>
 
@@ -56,11 +56,11 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-brand-accent">
-          <p>© 2026 Solarpedia UK. All rights reserved. Registered in England & Wales.</p>
+          <p>© {new Date().getFullYear()} Solarpedia UK. All rights reserved. Registered in England & Wales.</p>
           <div className="flex gap-8">
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Cookies</a>
+            <Link to="/legal/terms" className="hover:text-white transition-colors">Terms</Link>
+            <Link to="/legal/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link to="/legal/cookies" className="hover:text-white transition-colors">Cookies</Link>
           </div>
         </div>
       </div>

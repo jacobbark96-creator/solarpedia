@@ -138,37 +138,40 @@ export const NATIONAL_AVERAGES = {
   nextEnergyPrice: 0.2611, // £ per kWh (July - Sept 2026 Estimate)
 };
 
+const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+const currentYear = new Date().getFullYear();
+
 export const GRANTS_NEWS = [
   {
     id: 1,
-    date: 'June 5, 2026',
+    date: `${currentMonth} 5, ${currentYear}`,
     title: '£12,000 Solar & Heat Pump Boost',
     summary: 'Government fast-tracks grants for households earning under £36,000 via the Warm Homes Plan.',
     category: 'Grants',
-    link: '/education#grants'
+    link: '/education/article/is-solar-worth-it-uk'
   },
   {
     id: 2,
-    date: 'June 2, 2026',
+    date: `${currentMonth} 2, ${currentYear}`,
     title: '0% VAT on Solar Confirmed to 2027',
     summary: 'Homeowners will continue to benefit from zero-rated VAT on solar and battery storage until March 2027.',
     category: 'Policy',
-    link: '/education#policy'
+    link: '/education/article/is-solar-worth-it-uk'
   },
   {
     id: 3,
-    date: 'May 27, 2026',
+    date: `${currentMonth} 1, ${currentYear}`,
     title: 'Plug-in "Balcony Solar" Legalised',
     summary: 'New regulations allow renters and flat owners to install smaller plug-in solar systems for the first time.',
     category: 'Innovation',
-    link: '/education#innovation'
+    link: '/education/article/solar-myths-explained'
   },
   {
     id: 4,
-    date: 'May 25, 2026',
+    date: `May 25, ${currentYear}`,
     title: 'Energy Price Cap to Rise in July',
     summary: 'Ofgem announces a 13% increase in the price cap for Q3 2026 due to wholesale market volatility.',
     category: 'Market',
-    link: '/education#market'
+    link: '/education/article/seg-explained'
   }
 ];
