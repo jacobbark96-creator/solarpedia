@@ -74,7 +74,6 @@ const Home: React.FC = () => {
                 {[
                   { label: 'Independent advice', icon: ShieldCheck },
                   { label: 'UK data driven', icon: Database },
-                  { label: 'No obligation', icon: Shield },
                   { label: 'Vetted network', icon: Scale }
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-2.5 text-xs text-brand-muted font-bold uppercase tracking-widest">
@@ -288,7 +287,6 @@ const Home: React.FC = () => {
             </Link>
           </div>
           <div className="mt-10 flex items-center justify-center gap-8 text-xs font-bold text-brand-muted uppercase tracking-widest">
-            <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-brand-green" /> No Obligation</span>
             <span className="flex items-center gap-2"><Database className="h-4 w-4 text-brand-yellow" /> Verified Data</span>
             <span className="flex items-center gap-2"><Shield className="h-4 w-4 text-brand-navy" /> GDPR Compliant</span>
           </div>
