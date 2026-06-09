@@ -44,30 +44,30 @@ const Home: React.FC = () => {
       </div>
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-32 overflow-hidden">
+      <section className="relative pt-16 pb-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-green/10 text-brand-green text-sm font-semibold mb-6">
-                <Shield className="h-4 w-4" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-green/10 text-brand-green text-xs font-semibold mb-6">
+                <Shield className="h-3.5 w-3.5" />
                 <span>100% Independent & Data-Driven</span>
               </div>
-              <h1 className="text-5xl lg:text-6xl font-serif font-bold text-brand-navy leading-tight mb-6">
+              <h1 className="text-4xl lg:text-5xl font-serif font-bold text-brand-navy leading-tight mb-6">
                 Find out if solar is <span className="text-brand-green underline decoration-brand-yellow/30">actually</span> worth it for your property.
               </h1>
-              <p className="text-xl text-brand-muted leading-relaxed mb-10 max-w-xl">
+              <p className="text-lg text-brand-muted leading-relaxed mb-8 max-w-lg">
                 Independent UK solar insights, cost estimates and savings forecasts powered by real energy and regional data. No sales pressure, just facts.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/wizard" className="bg-brand-navy text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                <Link to="/wizard" className="bg-brand-navy text-white px-7 py-3.5 rounded-full font-bold text-base hover:shadow-xl transition-all flex items-center justify-center gap-2">
                   Check Your Potential Savings
-                  <ArrowRight className="h-5 w-5" />
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link to="/education" className="bg-white border-2 border-brand-accent text-brand-navy px-8 py-4 rounded-full font-bold text-lg hover:border-brand-navy transition-all flex items-center justify-center">
+                <Link to="/education" className="bg-white border-2 border-brand-accent text-brand-navy px-7 py-3.5 rounded-full font-bold text-base hover:border-brand-navy transition-all flex items-center justify-center">
                   Explore UK Solar Costs
                 </Link>
               </div>
@@ -155,57 +155,57 @@ const Home: React.FC = () => {
       </section>
 
       {/* Quick Value Bar */}
-      <section className="bg-brand-navy py-12">
+      <section className="bg-brand-navy py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             <div className="text-center md:text-left">
-              <p className="text-brand-accent text-xs font-bold uppercase mb-2 tracking-widest">Avg. Install Cost</p>
-              <p className="text-white text-2xl font-serif font-bold">£{NATIONAL_AVERAGES.installCost.toLocaleString()}</p>
+              <p className="text-brand-accent text-[10px] font-bold uppercase mb-1 tracking-widest">Avg. Install Cost</p>
+              <p className="text-white text-xl font-serif font-bold">£{NATIONAL_AVERAGES.installCost.toLocaleString()}</p>
             </div>
             <div className="text-center md:text-left">
-              <p className="text-brand-accent text-xs font-bold uppercase mb-2 tracking-widest">Avg. Annual Savings</p>
-              <p className="text-white text-2xl font-serif font-bold">£{NATIONAL_AVERAGES.annualSavings.toLocaleString()}</p>
+              <p className="text-brand-accent text-[10px] font-bold uppercase mb-1 tracking-widest">Avg. Annual Savings</p>
+              <p className="text-white text-xl font-serif font-bold">£{NATIONAL_AVERAGES.annualSavings.toLocaleString()}</p>
             </div>
             <div className="text-center md:text-left">
-              <p className="text-brand-accent text-xs font-bold uppercase mb-2 tracking-widest">ROI Speed</p>
-              <p className="text-white text-2xl font-serif font-bold">8.5 Years</p>
+              <p className="text-brand-accent text-[10px] font-bold uppercase mb-1 tracking-widest">ROI Speed</p>
+              <p className="text-white text-xl font-serif font-bold">8.5 Years</p>
             </div>
             <div className="text-center md:text-left">
-              <p className="text-brand-accent text-xs font-bold uppercase mb-2 tracking-widest">CO2 Reduction</p>
-              <p className="text-white text-2xl font-serif font-bold">{NATIONAL_AVERAGES.co2Reduction} Tonnes</p>
+              <p className="text-brand-accent text-[10px] font-bold uppercase mb-1 tracking-widest">CO2 Reduction</p>
+              <p className="text-white text-xl font-serif font-bold">{NATIONAL_AVERAGES.co2Reduction} Tonnes</p>
             </div>
             <div className="text-center md:text-left hidden md:block">
-              <p className="text-brand-accent text-xs font-bold uppercase mb-2 tracking-widest">Current Energy Price</p>
-              <p className="text-white text-2xl font-serif font-bold">{(energyPrice * 100).toFixed(1)}p/kWh</p>
+              <p className="text-brand-accent text-[10px] font-bold uppercase mb-1 tracking-widest">Energy Price</p>
+              <p className="text-white text-xl font-serif font-bold">{(energyPrice * 100).toFixed(1)}p/kWh</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Interactive Map Section */}
-      <section className="py-24 bg-brand-white border-b border-brand-accent">
+      <section className="py-20 bg-brand-white border-b border-brand-accent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-serif font-bold text-brand-navy mb-4">Interactive UK Solar Map</h2>
-            <p className="text-brand-muted max-w-2xl mx-auto">Explore regional solar data, efficiency ratings, and ROI benchmarks by postcode.</p>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-serif font-bold text-brand-navy mb-3">Interactive UK Solar Map</h2>
+            <p className="text-sm text-brand-muted max-w-xl mx-auto">Explore regional solar data, efficiency ratings, and ROI benchmarks by postcode.</p>
           </div>
           <UKMap />
         </div>
       </section>
 
       {/* Trust & Transparency Section */}
-      <section className="py-24 bg-brand-white overflow-hidden">
+      <section className="py-20 bg-brand-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-brand-navy rounded-[3rem] p-12 md:p-20 text-white relative overflow-hidden">
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div className="bg-brand-navy rounded-[2.5rem] p-10 md:p-16 text-white relative overflow-hidden">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
-                <h2 className="text-4xl md:text-5xl font-serif font-bold mb-8 leading-tight">
+                <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 leading-tight">
                   How we stay <span className="text-brand-yellow">100% impartial</span> in a complex market.
                 </h2>
-                <p className="text-brand-accent text-lg mb-12 leading-relaxed">
+                <p className="text-brand-accent text-base mb-10 leading-relaxed opacity-90">
                   Unlike many comparison sites, Solarpedia is not a hidden lead-generation funnel for installers. We exist to provide genuine, data-driven consumer advice.
                 </p>
-                <div className="space-y-8">
+                <div className="space-y-6">
                   {[
                     { icon: ShieldCheck, title: 'We do not install solar', desc: 'We have zero financial interest in whether you choose to install solar or not.' },
                     { icon: Scale, title: 'Unbiased Algorithms', desc: 'Our recommendations are based purely on your property suitability and UK regional data.' },
@@ -216,53 +216,53 @@ const Home: React.FC = () => {
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.1 }}
-                      className="flex gap-6"
+                      className="flex gap-5"
                     >
-                      <div className="h-12 w-12 rounded-2xl bg-white/5 flex items-center justify-center flex-shrink-0">
-                        <item.icon className="h-6 w-6 text-brand-yellow" />
+                      <div className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
+                        <item.icon className="h-5 w-5 text-brand-yellow" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-xl mb-2">{item.title}</h4>
-                        <p className="text-brand-accent text-sm leading-relaxed">{item.desc}</p>
+                        <h4 className="font-bold text-lg mb-1">{item.title}</h4>
+                        <p className="text-brand-accent text-xs leading-relaxed opacity-80">{item.desc}</p>
                       </div>
                     </motion.div>
                   ))}
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   { label: 'Independent', desc: 'No commission-based rankings' },
                   { label: 'Transparent', desc: 'Full methodology disclosed' },
                   { label: 'Qualified', desc: 'Vetted installer network' },
                   { label: 'Data-First', desc: 'Real-world performance data' },
                 ].map((stat) => (
-                  <div key={stat.label} className="bg-white/5 p-8 rounded-3xl border border-white/10 text-center">
-                    <Search className="h-6 w-6 text-brand-yellow mx-auto mb-4" />
-                    <h3 className="font-bold text-lg mb-2">{stat.label}</h3>
-                    <p className="text-xs text-brand-accent leading-relaxed">{stat.desc}</p>
+                  <div key={stat.label} className="bg-white/5 p-6 rounded-2xl border border-white/10 text-center">
+                    <Search className="h-5 w-5 text-brand-yellow mx-auto mb-3" />
+                    <h3 className="font-bold text-base mb-1">{stat.label}</h3>
+                    <p className="text-[10px] text-brand-accent leading-relaxed opacity-70">{stat.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
             
             {/* Background elements */}
-            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[600px] h-[600px] bg-brand-yellow/5 rounded-full blur-[120px]" />
+            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[500px] h-[500px] bg-brand-yellow/5 rounded-full blur-[100px]" />
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 bg-brand-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-serif font-bold text-brand-navy mb-6">Ready to see your property's potential?</h2>
-          <p className="text-brand-muted text-lg mb-12">Join 12,000+ UK property owners who used Solarpedia to make a smarter energy decision this year.</p>
-          <Link to="/wizard" className="inline-flex items-center gap-2 bg-brand-navy text-white px-10 py-5 rounded-full font-bold text-xl hover:shadow-2xl transition-all">
+      <section className="py-20 bg-brand-white">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-serif font-bold text-brand-navy mb-4">Ready to see your property's potential?</h2>
+          <p className="text-brand-muted text-base mb-10">Join 12,000+ UK property owners who used Solarpedia to make a smarter energy decision this year.</p>
+          <Link to="/wizard" className="inline-flex items-center gap-2 bg-brand-navy text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl transition-all">
             Get Your Free Estimate
-            <ArrowRight className="h-6 w-6" />
+            <ArrowRight className="h-5 w-5" />
           </Link>
-          <p className="mt-8 text-sm text-brand-muted font-medium flex items-center justify-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-brand-green" />
+          <p className="mt-6 text-xs text-brand-muted font-medium flex items-center justify-center gap-2">
+            <ShieldCheck className="h-3.5 w-3.5 text-brand-green" />
             No obligation. No pressure. Just data.
           </p>
         </div>
