@@ -1,59 +1,77 @@
 import React, { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import L from 'leaflet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UK_REGIONS_DATA } from '../data/mockData';
-import { Info, TrendingUp, Zap, Clock } from 'lucide-react';
+import { Info, TrendingUp, Zap, Clock, MapPin } from 'lucide-react';
+
+// Fix for default marker icons in Leaflet with React
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+let DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41]
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 const UKMap: React.FC = () => {
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
-  const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
 
   const regions = [
-    { id: 'SW', name: 'South West', path: 'M 60 450 Q 50 480 80 500 L 120 480 Q 130 460 110 440 Z' },
-    { id: 'SE', name: 'South East', path: 'M 160 450 Q 180 440 220 450 L 230 480 Q 200 500 160 490 Z' },
-    { id: 'B', name: 'Midlands', path: 'M 130 320 Q 160 300 190 320 L 200 400 Q 170 430 140 420 Z' },
-    { id: 'M', name: 'North West', path: 'M 120 220 Q 150 200 170 220 L 180 300 Q 150 320 120 310 Z' },
-    { id: 'EH', name: 'Scotland', path: 'M 100 20 Q 150 10 200 50 L 190 180 Q 150 210 100 180 Z' },
-    { id: 'CF', name: 'Wales', path: 'M 80 340 Q 110 330 130 350 L 120 420 Q 90 430 80 410 Z' },
-    { id: 'NI', name: 'N. Ireland', path: 'M 40 180 Q 60 170 80 190 L 70 230 Q 50 240 40 220 Z' },
+    { id: 'SCO', name: 'Scotland', coords: [56.4907, -4.2026] as [number, number] },
+    { id: 'NI', name: 'Northern Ireland', coords: [54.7877, -6.4923] as [number, number] },
+    { id: 'NE', name: 'North East', coords: [54.9783, -1.6178] as [number, number] },
+    { id: 'NW', name: 'North West', coords: [53.4808, -2.2426] as [number, number] },
+    { id: 'YOR', name: 'Yorkshire', coords: [53.9591, -1.0815] as [number, number] },
+    { id: 'WAL', name: 'Wales', coords: [52.1307, -3.7837] as [number, number] },
+    { id: 'WM', name: 'West Midlands', coords: [52.4862, -1.8904] as [number, number] },
+    { id: 'EM', name: 'East Midlands', coords: [52.9548, -1.1581] as [number, number] },
+    { id: 'EE', name: 'East of England', coords: [52.2053, 0.1218] as [number, number] },
+    { id: 'LON', name: 'London', coords: [51.5074, -0.1278] as [number, number] },
+    { id: 'SE', name: 'South East', coords: [51.2777, 0.5297] as [number, number] },
+    { id: 'SW', name: 'South West', coords: [50.7192, -3.5297] as [number, number] },
   ];
 
   const activeData = selectedRegion ? UK_REGIONS_DATA[selectedRegion] : null;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-      <div className="relative bg-brand-white rounded-3xl p-8 border border-brand-accent shadow-inner h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Simplified SVG Map of UK Regions */}
-        <svg viewBox="0 0 300 600" className="h-full w-auto drop-shadow-2xl">
+      <div className="relative bg-brand-white rounded-3xl p-4 border border-brand-accent shadow-inner h-[600px] overflow-hidden">
+        <MapContainer 
+          center={[54.5, -3.5]} 
+          zoom={5.5} 
+          style={{ height: '100%', width: '100%', borderRadius: '1.5rem' }}
+          scrollWheelZoom={false}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          />
           {regions.map((region) => (
-            <motion.path
-              key={region.id}
-              d={region.path}
-              role="button"
-              aria-label={`Select ${region.name}`}
-              fill={selectedRegion === region.id ? '#0A1B3D' : hoveredRegion === region.id ? '#FFD700' : '#E5E7EB'}
-              stroke="#fff"
-              strokeWidth="2"
-              whileHover={{ scale: 1.02 }}
-              onMouseEnter={() => setHoveredRegion(region.id)}
-              onMouseLeave={() => setHoveredRegion(null)}
-              onClick={() => setSelectedRegion(region.id)}
-              className="cursor-pointer transition-colors duration-200"
-            />
+            <Marker 
+              key={region.id} 
+              position={region.coords}
+              eventHandlers={{
+                click: () => setSelectedRegion(region.id),
+              }}
+            >
+              <Popup>
+                <div className="p-2 font-serif font-bold text-brand-navy">
+                  {region.name}
+                </div>
+              </Popup>
+            </Marker>
           ))}
-          
-          {/* Legend/Annotation */}
-          <text x="10" y="580" className="text-[10px] fill-brand-muted font-bold uppercase tracking-widest">
-            Click a region to see local data
-          </text>
-        </svg>
+        </MapContainer>
 
-        {/* Heatmap Toggle (Visual Only) */}
-        <div className="absolute top-6 right-6 flex flex-col gap-2">
-          {['Install Costs', 'ROI Speed', 'Sunlight'].map((layer) => (
-            <button key={layer} className="px-3 py-1.5 rounded-full bg-white border border-brand-accent text-[10px] font-bold uppercase tracking-wider hover:border-brand-navy transition-all">
-              {layer}
-            </button>
-          ))}
+        <div className="absolute bottom-6 left-6 z-[1000] bg-white/90 backdrop-blur px-4 py-2 rounded-full border border-brand-accent shadow-sm">
+          <p className="text-[10px] font-bold text-brand-navy uppercase tracking-widest">
+            Click a marker to see regional data
+          </p>
         </div>
       </div>
 
@@ -114,14 +132,14 @@ const UKMap: React.FC = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="h-full flex flex-col items-center justify-center text-center p-12 border-2 border-dashed border-brand-accent rounded-3xl"
+              className="h-[600px] flex flex-col items-center justify-center text-center p-12 border-2 border-dashed border-brand-accent rounded-3xl"
             >
               <div className="h-16 w-16 bg-brand-accent/20 rounded-full flex items-center justify-center mb-6">
-                <MapPinIcon className="h-8 w-8 text-brand-muted" />
+                <MapPin className="h-8 w-8 text-brand-muted" />
               </div>
-              <h3 className="text-xl font-serif font-bold text-brand-navy mb-2">Select a region to begin</h3>
+              <h3 className="text-xl font-serif font-bold text-brand-navy mb-2">Select a region on the map</h3>
               <p className="text-brand-muted max-w-xs">
-                Hover over the map to explore UK regional data, or click a specific area for detailed solar benchmarks.
+                Explore real UK regional data by clicking the markers on the map. Each marker provides localized solar benchmarks.
               </p>
             </motion.div>
           )}
@@ -130,12 +148,5 @@ const UKMap: React.FC = () => {
     </div>
   );
 };
-
-const MapPinIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-    <circle cx="12" cy="10" r="3" />
-  </svg>
-);
 
 export default UKMap;
