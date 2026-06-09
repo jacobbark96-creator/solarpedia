@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Search, BookOpen, MessageCircle, FileText, ChevronRight } from 'lucide-react';
+import { Search, BookOpen, MessageCircle, FileText, ChevronRight, Newspaper } from 'lucide-react';
+import { GRANTS_NEWS } from '../data/mockData';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
 
@@ -113,15 +114,65 @@ const Education: React.FC = () => {
               </div>
             </motion.div>
           ))}
-          
-          {/* Impartiality Card */}
-          <div className="bg-brand-green/5 border-2 border-dashed border-brand-green/30 rounded-3xl p-8 flex flex-col justify-center items-center text-center">
-            <ShieldCheckIcon className="h-12 w-12 text-brand-green mb-4" />
-            <h3 className="text-xl font-serif font-bold text-brand-navy mb-2">Our Impartiality Promise</h3>
-            <p className="text-sm text-brand-muted leading-relaxed mb-6">
-              We never accept payments for editorial rankings. Our advice is based solely on data and consumer interests.
+        </div>
+
+        {/* Latest Updates & News Section */}
+        <div className="mt-24 pt-24 border-t border-brand-accent">
+          <div className="flex items-center gap-3 mb-12">
+            <div className="h-12 w-12 rounded-2xl bg-brand-navy flex items-center justify-center">
+              <Newspaper className="h-6 w-6 text-brand-yellow" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-serif font-bold text-brand-navy">Latest Market Updates</h2>
+              <p className="text-brand-muted">Real-time solar news, grant changes, and policy updates.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {GRANTS_NEWS.map((news) => (
+              <motion.div 
+                key={news.id}
+                id={news.link.split('#')[1]}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="bg-white p-10 rounded-[2.5rem] border border-brand-accent shadow-sm hover:shadow-xl transition-all"
+              >
+                <div className="flex justify-between items-start mb-6">
+                  <span className="px-4 py-1.5 rounded-full bg-brand-navy text-white text-[10px] font-bold uppercase tracking-widest">
+                    {news.category}
+                  </span>
+                  <span className="text-xs font-bold text-brand-muted">{news.date}</span>
+                </div>
+                <h3 className="text-2xl font-serif font-bold text-brand-navy mb-4">{news.title}</h3>
+                <p className="text-brand-muted leading-relaxed mb-8 text-lg">
+                  {news.summary}
+                </p>
+                <div className="prose prose-sm text-brand-muted">
+                  <p>
+                    This update reflects the latest developments in the UK renewable sector as of {news.date}. 
+                    Our analysts have verified this information against official government policy and market data 
+                    to ensure your solar journey is guided by the most accurate intelligence available.
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Impartiality Section */}
+        <div className="mt-24 bg-brand-navy rounded-[3rem] p-12 text-center text-white relative overflow-hidden">
+          <div className="absolute inset-0 bg-brand-green/10 blur-[100px]" />
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <ShieldCheckIcon className="h-16 w-16 text-brand-yellow mx-auto mb-6" />
+            <h3 className="text-3xl font-serif font-bold mb-4">Our Impartiality Promise</h3>
+            <p className="text-brand-accent text-lg mb-8 opacity-80">
+              We never accept payments for editorial rankings or content placement. 
+              Our advice is based solely on data, consumer interests, and technical feasibility.
             </p>
-            <button className="font-bold text-brand-green underline">Learn how we stay neutral</button>
+            <button className="bg-white text-brand-navy px-8 py-3 rounded-full font-bold hover:bg-brand-yellow transition-colors">
+              Read Our Transparency Policy
+            </button>
           </div>
         </div>
       </div>
