@@ -36,13 +36,40 @@ const Results: React.FC = () => {
   );
   const { data } = useWizardStore();
 
-  // Simple calculation logic for the mock
-  const systemSize = data.propertyType === 'residential' ? 4.2 : 50;
-  const estimatedCost = systemSize * (data.propertyType === 'residential' ? 1500 : 1200);
-  const annualSavings = (data.energyBill * 12) * 0.7; // Assume 70% savings
+  // Advanced calculation logic based on energy usage and property constraints
+  const annualConsumptionKwh = (data.energyBill * 12) / NATIONAL_AVERAGES.energyPrice;
+  
+  // Get regional data or fallback to national average
+  const regionCode = data.postcode?.toUpperCase().slice(0, 3) || 'SW';
+  const regionData = UK_REGIONS_DATA[regionCode] || UK_REGIONS_DATA['SW'];
+  const regionalYield = regionData.avgSunlightHours / 1000; // Efficiency factor
+
+  // Estimate required system size (kWp) to cover usage
+  // UK average solar production is approx 850-1000 kWh per 1 kWp installed
+  const targetSystemSize = annualConsumptionKwh / (900 * regionalYield);
+  
+  // Cap system size by roof area (Assuming 1kWp requires ~4.5sqm of roof space)
+  const maxPossibleSize = data.roofSize / 4.5;
+  const systemSize = Math.min(targetSystemSize, maxPossibleSize);
+
+  // Dynamic cost per kWp (Smaller systems are more expensive per unit)
+  let costPerKwp = data.propertyType === 'residential' ? 1800 : 1300;
+  if (systemSize > 4) costPerKwp -= 200;
+  if (systemSize > 8) costPerKwp -= 100;
+  if (systemSize > 20) costPerKwp -= 200;
+
+  const estimatedCost = systemSize * costPerKwp + (data.hasBattery ? 5000 : 0);
+  
+  // Savings calculation
+  // Assume 40% self-consumption for residential without battery, 75% with battery
+  const selfConsumptionRate = data.hasBattery ? 0.75 : 0.40;
+  const annualGenerationKwh = systemSize * 900 * regionalYield;
+  const annualSavings = (annualGenerationKwh * selfConsumptionRate * NATIONAL_AVERAGES.energyPrice) + 
+                        (annualGenerationKwh * (1 - selfConsumptionRate) * 0.15); // Adding Smart Export Guarantee (SEG) at 15p
+
   const paybackPeriod = estimatedCost / annualSavings;
-  const tenYearSavings = annualSavings * 10 - estimatedCost;
-  const co2Reduction = systemSize * 0.3; // Tonnes per year
+  const tenYearSavings = (annualSavings * 10) - estimatedCost;
+  const co2Reduction = annualGenerationKwh * 0.0002; // Tonnes per year (approx 200g per kWh in UK)
 
   const chartData = Array.from({ length: 11 }, (_, i) => ({
     year: i,
@@ -50,18 +77,18 @@ const Results: React.FC = () => {
   }));
 
   const monthlyProduction = [
-    { name: 'Jan', prod: 150 },
-    { name: 'Feb', prod: 250 },
-    { name: 'Mar', prod: 450 },
-    { name: 'Apr', prod: 600 },
-    { name: 'May', prod: 850 },
-    { name: 'Jun', prod: 950 },
-    { name: 'Jul', prod: 900 },
-    { name: 'Aug', prod: 750 },
-    { name: 'Sep', prod: 550 },
-    { name: 'Oct', prod: 350 },
-    { name: 'Nov', prod: 200 },
-    { name: 'Dec', prod: 120 },
+    { name: 'Jan', prod: Math.round(annualGenerationKwh * 0.03) },
+    { name: 'Feb', prod: Math.round(annualGenerationKwh * 0.05) },
+    { name: 'Mar', prod: Math.round(annualGenerationKwh * 0.08) },
+    { name: 'Apr', prod: Math.round(annualGenerationKwh * 0.11) },
+    { name: 'May', prod: Math.round(annualGenerationKwh * 0.14) },
+    { name: 'Jun', prod: Math.round(annualGenerationKwh * 0.15) },
+    { name: 'Jul', prod: Math.round(annualGenerationKwh * 0.14) },
+    { name: 'Aug', prod: Math.round(annualGenerationKwh * 0.12) },
+    { name: 'Sep', prod: Math.round(annualGenerationKwh * 0.09) },
+    { name: 'Oct', prod: Math.round(annualGenerationKwh * 0.06) },
+    { name: 'Nov', prod: Math.round(annualGenerationKwh * 0.03) },
+    { name: 'Dec', prod: Math.round(annualGenerationKwh * 0.01) },
   ];
 
   return (
@@ -75,7 +102,9 @@ const Results: React.FC = () => {
               <span>Impartial Estimate Generated</span>
             </div>
             <h1 className="text-3xl font-serif font-bold text-brand-navy">Your Solar Forecast</h1>
-            <p className="text-sm text-brand-muted">Based on postcode {data.postcode || 'SW'} and a £{data.energyBill}/mo energy bill.</p>
+            <p className="text-sm text-brand-muted">
+              Estimated <span className="text-brand-navy font-bold">{systemSize.toFixed(1)}kWp system</span> for postcode {data.postcode || 'SW'} based on £{data.energyBill}/mo usage.
+            </p>
           </div>
           <div className="flex gap-3">
             <button className="flex items-center gap-2 px-5 py-2 rounded-full border border-brand-accent hover:border-brand-navy transition-all text-sm font-semibold">
