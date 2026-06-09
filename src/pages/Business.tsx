@@ -39,7 +39,7 @@ const Business: React.FC = () => {
             </div>
             <div className="relative">
               <img 
-                src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=large%20industrial%20warehouse%20roof%20covered%20in%20solar%20panels%20clean%20modern%20architecture%20blue%20sky%20premium%20photography&image_size=landscape_16_9" 
+                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80" 
                 alt="Commercial Solar" 
                 className="rounded-[2.5rem] shadow-2xl"
               />

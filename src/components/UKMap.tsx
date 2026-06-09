@@ -8,12 +8,13 @@ const UKMap: React.FC = () => {
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
 
   const regions = [
-    { id: 'SW', name: 'South West', path: 'M 100 450 L 150 480 L 120 520 L 50 500 Z' }, // Mock paths for simplicity
-    { id: 'SE', name: 'South East', path: 'M 160 450 L 220 440 L 240 480 L 180 500 Z' },
-    { id: 'B', name: 'Midlands', path: 'M 130 350 L 180 340 L 200 420 L 140 430 Z' },
-    { id: 'M', name: 'North West', path: 'M 110 250 L 150 240 L 160 330 L 120 340 Z' },
-    { id: 'EH', name: 'Scotland', path: 'M 100 50 L 180 60 L 170 200 L 90 180 Z' },
-    { id: 'CF', name: 'Wales', path: 'M 80 380 L 120 370 L 110 440 L 70 430 Z' },
+    { id: 'SW', name: 'South West', path: 'M 60 450 Q 50 480 80 500 L 120 480 Q 130 460 110 440 Z' },
+    { id: 'SE', name: 'South East', path: 'M 160 450 Q 180 440 220 450 L 230 480 Q 200 500 160 490 Z' },
+    { id: 'B', name: 'Midlands', path: 'M 130 320 Q 160 300 190 320 L 200 400 Q 170 430 140 420 Z' },
+    { id: 'M', name: 'North West', path: 'M 120 220 Q 150 200 170 220 L 180 300 Q 150 320 120 310 Z' },
+    { id: 'EH', name: 'Scotland', path: 'M 100 20 Q 150 10 200 50 L 190 180 Q 150 210 100 180 Z' },
+    { id: 'CF', name: 'Wales', path: 'M 80 340 Q 110 330 130 350 L 120 420 Q 90 430 80 410 Z' },
+    { id: 'NI', name: 'N. Ireland', path: 'M 40 180 Q 60 170 80 190 L 70 230 Q 50 240 40 220 Z' },
   ];
 
   const activeData = selectedRegion ? UK_REGIONS_DATA[selectedRegion] : null;

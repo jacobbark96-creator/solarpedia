@@ -17,21 +17,21 @@ const articles = [
     excerpt: 'An impartial look at the current energy landscape, installation costs, and smart export guarantees.',
     category: 'Analysis',
     readTime: '8 min read',
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=modern%20uk%20home%20with%20sleek%20black%20solar%20panels%20under%20a%20bright%20sky%20premium%20photography&image_size=landscape_16_9'
+    image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=800&q=80' // Solar panels on roof
   },
   {
     title: 'Battery Storage: Do You Really Need It?',
     excerpt: 'Comparing the ROI of solar-only vs solar + battery systems for typical UK households.',
     category: 'Guide',
     readTime: '6 min read',
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=minimalist%20home%20battery%20storage%20unit%20mounted%20on%20a%20clean%20garage%20wall%20high%20tech%20premium&image_size=landscape_16_9'
+    image: 'https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?auto=format&fit=crop&w=800&q=80' // High tech battery/energy
   },
   {
     title: 'The Smart Export Guarantee (SEG) Explained',
     excerpt: 'How much can you actually earn back from the grid? We compare the best export tariffs available today.',
     category: 'Finance',
     readTime: '10 min read',
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=digital%20energy%20meter%20showing%20savings%20and%20grid%20export%20data%20clean%20interface&image_size=landscape_16_9'
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80' // Charts/Finance
   }
 ];
 

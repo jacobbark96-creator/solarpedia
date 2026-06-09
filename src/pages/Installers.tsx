@@ -12,7 +12,7 @@ const installers = [
     reviews: 128,
     specialism: 'Residential & Battery',
     verified: true,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=professional%20solar%20installer%20team%20uniform%20smiling%20van%20with%20logo%20clean%20modern&image_size=square'
+    image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=400&q=80'
   },
   {
     name: 'NorthStar Solar',
@@ -21,7 +21,7 @@ const installers = [
     reviews: 94,
     specialism: 'Commercial & Industrial',
     verified: true,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=solar%20panel%20installation%20process%20modern%20equipment%20safety%20gear%20professional&image_size=square'
+    image: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&w=400&q=80'
   },
   {
     name: 'GreenFuture UK',
@@ -30,7 +30,7 @@ const installers = [
     reviews: 215,
     specialism: 'Bespoke Residential',
     verified: true,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=modern%20solar%20company%20office%20clean%20branding%20trustworthy%20vibe&image_size=square'
+    image: 'https://images.unsplash.com/photo-1592833159155-c62df1b65634?auto=format&fit=crop&w=400&q=80'
   }
 ];
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useWizardStore } from '../hooks/useWizardStore';
+import { NATIONAL_AVERAGES } from '../data/mockData';
 import { 
   TrendingUp, 
   Zap, 
@@ -197,7 +198,7 @@ const Results: React.FC = () => {
               <div className="space-y-3">
                 {[
                   { title: 'Roof Direction', desc: `Your ${data.roofDirection}-facing roof is ${data.roofDirection === 'south' ? 'ideal' : 'good'} for solar capture.`, impact: 'High' },
-                  { title: 'Electricity Tariffs', desc: 'Current UK average of 28p/kWh used. Smart export tariffs could increase ROI.', impact: 'Medium' },
+                  { title: 'Electricity Tariffs', desc: `Current UK average of ${(NATIONAL_AVERAGES.energyPrice * 100).toFixed(1)}p/kWh used. Smart export tariffs could increase ROI.`, impact: 'Medium' },
                   { title: 'Shading & Obstructions', desc: 'We assume a clear roof. Shading from trees or chimneys can reduce yield by 10-25%.', impact: 'Medium' },
                 ].map((item) => (
                   <div key={item.title} className="flex justify-between items-start p-3 bg-brand-white rounded-xl border border-brand-accent">
