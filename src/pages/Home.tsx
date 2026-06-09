@@ -169,27 +169,28 @@ const Home: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {GRANTS_NEWS.map((news) => (
-              <motion.div 
-                key={news.id}
-                whileHover={{ y: -5 }}
-                className="bg-brand-white p-6 rounded-[2rem] border border-brand-accent flex flex-col group cursor-pointer"
-              >
-                <div className="flex justify-between items-start mb-6">
-                  <span className="text-[10px] font-bold uppercase tracking-wider bg-white px-2.5 py-1 rounded-full text-brand-muted border border-brand-accent">
-                    {news.category}
-                  </span>
-                  <span className="text-[10px] font-bold text-brand-muted uppercase">{news.date}</span>
-                </div>
-                <h3 className="text-lg font-serif font-bold text-brand-navy mb-3 leading-tight group-hover:text-brand-green transition-colors">
-                  {news.title}
-                </h3>
-                <p className="text-sm text-brand-muted leading-relaxed mb-6 flex-grow">
-                  {news.summary}
-                </p>
-                <div className="flex items-center gap-2 text-xs font-bold text-brand-navy group-hover:gap-3 transition-all">
-                  Read Update <ChevronRight className="h-4 w-4" />
-                </div>
-              </motion.div>
+              <Link key={news.id} to={news.link}>
+                <motion.div 
+                  whileHover={{ y: -5 }}
+                  className="bg-brand-white p-6 rounded-[2rem] border border-brand-accent h-full flex flex-col group cursor-pointer"
+                >
+                  <div className="flex justify-between items-start mb-6">
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-white px-2.5 py-1 rounded-full text-brand-muted border border-brand-accent">
+                      {news.category}
+                    </span>
+                    <span className="text-[10px] font-bold text-brand-muted uppercase">{news.date}</span>
+                  </div>
+                  <h3 className="text-lg font-serif font-bold text-brand-navy mb-3 leading-tight group-hover:text-brand-green transition-colors">
+                    {news.title}
+                  </h3>
+                  <p className="text-sm text-brand-muted leading-relaxed mb-6 flex-grow">
+                    {news.summary}
+                  </p>
+                  <div className="flex items-center gap-2 text-xs font-bold text-brand-navy group-hover:gap-3 transition-all">
+                    Read Update <ChevronRight className="h-4 w-4" />
+                  </div>
+                </motion.div>
+              </Link>
             ))}
           </div>
         </div>

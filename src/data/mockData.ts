@@ -139,7 +139,7 @@ export const GRANTS_NEWS = [
     title: '£12,000 Solar & Heat Pump Boost',
     summary: 'Government fast-tracks grants for households earning under £36,000 via the Warm Homes Plan.',
     category: 'Grants',
-    link: '#'
+    link: '/education#grants'
   },
   {
     id: 2,
@@ -147,7 +147,7 @@ export const GRANTS_NEWS = [
     title: '0% VAT on Solar Confirmed to 2027',
     summary: 'Homeowners will continue to benefit from zero-rated VAT on solar and battery storage until March 2027.',
     category: 'Policy',
-    link: '#'
+    link: '/education#policy'
   },
   {
     id: 3,
@@ -155,7 +155,7 @@ export const GRANTS_NEWS = [
     title: 'Plug-in "Balcony Solar" Legalised',
     summary: 'New regulations allow renters and flat owners to install smaller plug-in solar systems for the first time.',
     category: 'Innovation',
-    link: '#'
+    link: '/education#innovation'
   },
   {
     id: 4,
@@ -163,6 +163,6 @@ export const GRANTS_NEWS = [
     title: 'Energy Price Cap to Rise in July',
     summary: 'Ofgem announces a 13% increase in the price cap for Q3 2026 due to wholesale market volatility.',
     category: 'Market',
-    link: '#'
+    link: '/education#market'
   }
 ];
