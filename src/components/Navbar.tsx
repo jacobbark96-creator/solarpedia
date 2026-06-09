@@ -8,10 +8,10 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-brand-white border-b border-brand-accent sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-28 items-center">
+        <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <img src="/logo.png" alt="Solarpedia Logo" className="h-20 w-auto" />
+              <img src="/logo.png" alt="Solarpedia Logo" className="h-10 w-auto" />
             </Link>
           </div>
           

@@ -54,10 +54,6 @@ const Home: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-green/10 text-brand-green text-[10px] font-bold uppercase tracking-wider mb-8">
-                <Shield className="h-3.5 w-3.5" />
-                <span>UK Consumer Protection Standard</span>
-              </div>
               <h1 className="text-5xl lg:text-6xl font-serif font-bold text-brand-navy leading-[1.1] mb-8">
                 Find out if solar is <span className="text-brand-green italic">actually</span> worth it for your property.
               </h1>
