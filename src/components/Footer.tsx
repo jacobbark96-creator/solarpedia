@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sun, ShieldCheck, Mail, Phone } from 'lucide-react';
+import { ShieldCheck, Mail, Phone } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-6">
-              <Sun className="h-6 w-6 text-brand-yellow fill-brand-yellow" />
+              <img src="/logo.png" alt="Solarpedia Logo" className="h-6 w-auto brightness-0 invert" />
               <span className="text-xl font-serif font-bold tracking-tight">Solarpedia</span>
             </Link>
             <p className="text-brand-accent text-sm leading-relaxed mb-6">

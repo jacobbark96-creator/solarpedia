@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sun, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between h-14 items-center">
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2">
-              <Sun className="h-6 w-6 text-brand-yellow fill-brand-yellow" />
+              <img src="/logo.png" alt="Solarpedia Logo" className="h-6 w-auto" />
               <span className="text-xl font-serif font-bold text-brand-navy tracking-tight">Solarpedia</span>
             </Link>
           </div>
