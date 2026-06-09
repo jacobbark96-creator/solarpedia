@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useWizardStore } from '../hooks/useWizardStore';
-import { NATIONAL_AVERAGES } from '../data/mockData';
+import { NATIONAL_AVERAGES, UK_REGIONS_DATA } from '../data/mockData';
 import { 
   TrendingUp, 
   Zap, 
@@ -91,11 +91,15 @@ const Results: React.FC = () => {
     { name: 'Dec', prod: Math.round(annualGenerationKwh * 0.01) },
   ];
 
+  const handleDownload = () => {
+    window.print();
+  };
+
   return (
-    <div className="bg-brand-white min-h-screen pt-10 pb-20">
+    <div className="bg-brand-white min-h-screen pt-10 pb-20 print:bg-white print:pt-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Actions */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10 print:mb-6">
           <div>
             <div className="flex items-center gap-2 text-brand-green font-bold text-xs mb-1.5">
               <ShieldCheck className="h-3.5 w-3.5" />
@@ -106,8 +110,11 @@ const Results: React.FC = () => {
               Estimated <span className="text-brand-navy font-bold">{systemSize.toFixed(1)}kWp system</span> for postcode {data.postcode || 'SW'} based on £{data.energyBill}/mo usage.
             </p>
           </div>
-          <div className="flex gap-3">
-            <button className="flex items-center gap-2 px-5 py-2 rounded-full border border-brand-accent hover:border-brand-navy transition-all text-sm font-semibold">
+          <div className="flex gap-3 print:hidden">
+            <button 
+              onClick={handleDownload}
+              className="flex items-center gap-2 px-5 py-2 rounded-full border border-brand-accent hover:border-brand-navy transition-all text-sm font-semibold"
+            >
               <Download className="h-3.5 w-3.5" />
               Download PDF
             </button>
