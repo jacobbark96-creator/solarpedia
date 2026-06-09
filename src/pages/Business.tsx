@@ -1,0 +1,138 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Building2, TrendingUp, ShieldCheck, Factory, Warehouse, Building, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+import { usePageMetadata } from '../hooks/usePageMetadata';
+
+const Business: React.FC = () => {
+  usePageMetadata(
+    'Commercial Solar Solutions',
+    'Independent ROI analysis for warehouses, factories, and office blocks. Lock in energy costs and meet ESG targets.'
+  );
+  return (
+    <div className="bg-brand-white min-h-screen">
+      {/* Hero */}
+      <section className="bg-brand-navy text-white pt-24 pb-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-yellow text-sm font-semibold mb-6">
+                <Building2 className="h-4 w-4" />
+                <span>Commercial Solar Solutions</span>
+              </div>
+              <h1 className="text-5xl lg:text-6xl font-serif font-bold leading-tight mb-6">
+                Decarbonise your business with <span className="text-brand-yellow">data-driven</span> solar insights.
+              </h1>
+              <p className="text-xl text-brand-accent leading-relaxed mb-10 max-w-xl">
+                Independent ROI analysis for warehouses, factories, and office blocks. Lock in energy costs and meet ESG targets without the sales pitch.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/wizard" className="bg-brand-yellow text-brand-navy px-8 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                  Get Commercial Estimate
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+                <button className="bg-white/5 border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all">
+                  View Case Studies
+                </button>
+              </div>
+            </div>
+            <div className="relative">
+              <img 
+                src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=large%20industrial%20warehouse%20roof%20covered%20in%20solar%20panels%20clean%20modern%20architecture%20blue%20sky%20premium%20photography&image_size=landscape_16_9" 
+                alt="Commercial Solar" 
+                className="rounded-[2.5rem] shadow-2xl"
+              />
+              <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-3xl shadow-xl border border-brand-accent text-brand-navy">
+                <div className="flex items-center gap-4 mb-2">
+                  <div className="h-10 w-10 rounded-full bg-brand-green/10 flex items-center justify-center">
+                    <TrendingUp className="h-6 w-6 text-brand-green" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-brand-muted uppercase">Typical ROI</p>
+                    <p className="text-xl font-serif font-bold">18.5% - 24%</p>
+                  </div>
+                </div>
+                <p className="text-[10px] text-brand-muted">Based on current UK commercial energy prices.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Commercial Types */}
+      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-serif font-bold text-brand-navy mb-4">Tailored for your industry</h2>
+          <p className="text-brand-muted max-w-2xl mx-auto">We use specific usage patterns for different business types to ensure estimate accuracy.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            { icon: Warehouse, name: 'Warehousing', roi: '3.5 - 5 Years', feature: 'Large roof area optimization' },
+            { icon: Factory, name: 'Manufacturing', roi: '4 - 6 Years', feature: 'High daytime usage matching' },
+            { icon: Building, name: 'Office Blocks', roi: '5 - 8 Years', feature: 'ESG compliance reporting' },
+          ].map((type) => (
+            <div key={type.name} className="bg-white p-8 rounded-[2rem] border border-brand-accent shadow-sm hover:shadow-md transition-all">
+              <type.icon className="h-10 w-10 text-brand-navy mb-6" />
+              <h3 className="text-xl font-serif font-bold text-brand-navy mb-2">{type.name}</h3>
+              <div className="flex justify-between items-center mb-4 pb-4 border-b border-brand-accent">
+                <span className="text-sm text-brand-muted">Est. Payback</span>
+                <span className="font-bold text-brand-green">{type.roi}</span>
+              </div>
+              <p className="text-sm text-brand-muted leading-relaxed">{type.feature}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Tax & Benefits */}
+      <section className="bg-brand-white py-24 border-t border-brand-accent">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-[3rem] p-12 border border-brand-accent flex flex-col lg:flex-row gap-16 items-center">
+            <div className="lg:w-1/2">
+              <h2 className="text-4xl font-serif font-bold text-brand-navy mb-8">Financial & Tax Efficiency</h2>
+              <div className="space-y-6">
+                {[
+                  { title: 'Super-deduction Capital Allowance', desc: 'Claim up to 130% capital allowance on solar plant and machinery.' },
+                  { title: 'VAT for Businesses', desc: 'Understanding VAT recovery on installation and maintenance costs.' },
+                  { title: 'Smart Export Guarantee (SEG)', desc: 'Generate revenue by selling excess energy back to the grid.' },
+                ].map((item) => (
+                  <div key={item.title} className="flex gap-4">
+                    <div className="mt-1 h-5 w-5 rounded-full bg-brand-green flex items-center justify-center flex-shrink-0">
+                      <ShieldCheck className="h-3 w-3 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-brand-navy">{item.title}</h4>
+                      <p className="text-sm text-brand-muted">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="lg:w-1/2 bg-brand-navy rounded-3xl p-8 text-white">
+              <h3 className="text-xl font-serif font-bold mb-6">Commercial Savings Calculator</h3>
+              <div className="space-y-4 mb-8">
+                <div className="flex justify-between text-sm">
+                  <span>Annual Energy Bill</span>
+                  <span className="font-bold">£25,000+</span>
+                </div>
+                <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full bg-brand-yellow w-3/4" />
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span>Potential Annual Savings</span>
+                  <span className="font-bold text-brand-yellow">£18,750</span>
+                </div>
+              </div>
+              <button className="w-full bg-white text-brand-navy py-4 rounded-full font-bold hover:bg-brand-accent transition-all">
+                Run Detailed ROI Simulation
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Business;
