@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://solarpedia.co.uk/</loc>
+    <loc>https://solarpedia.co.uk</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -39,5 +39,20 @@
     <loc>https://solarpedia.co.uk/legal/cookies</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://solarpedia.co.uk/education/article/solar-myths-explained</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://solarpedia.co.uk/education/article/is-solar-worth-it-uk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://solarpedia.co.uk/education/article/seg-explained</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
