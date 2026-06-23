@@ -14,10 +14,12 @@ export const useWizardStore = create<WizardStore>((set) => ({
   data: {
     propertyType: 'residential',
     postcode: '',
+    houseNumber: '',
     energyBill: 150,
     usagePattern: 'balanced',
     roofDirection: 'south',
     roofSize: 20,
+    roofSizeSource: 'default',
     hasBattery: false,
     consentShared: false,
   },

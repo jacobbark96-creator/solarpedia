@@ -7,10 +7,10 @@ import { useLiveNews } from '../hooks/useLiveNews';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 
 const categories = [
-  { name: 'Solar Basics', icon: BookOpen, count: 12 },
-  { name: 'Costs & Financing', icon: FileText, count: 8 },
-  { name: 'Myths & Facts', icon: MessageCircle, count: 15 },
-  { name: 'Technical Guides', icon: Search, count: 10 },
+  { name: 'Solar Basics', icon: BookOpen, count: 3 },
+  { name: 'Costs & Financing', icon: FileText, count: 2 },
+  { name: 'Myths & Facts', icon: MessageCircle, count: 1 },
+  { name: 'Technical Guides', icon: Search, count: 2 },
 ];
 
 const articles = [
@@ -37,6 +37,38 @@ const articles = [
     category: 'Finance',
     readTime: '10 min read',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80' // Charts/Finance
+  },
+  {
+    title: 'Solar Panel Installation Cost in the UK (2026)',
+    slug: 'solar-panel-installation-cost-uk',
+    excerpt: 'A practical breakdown of what actually drives install cost, from system size to batteries and roof complexity.',
+    category: 'Costs & Financing',
+    readTime: '7 min read',
+    image: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    title: 'Is Battery Storage Worth It in the UK? (2026)',
+    slug: 'battery-storage-worth-it-uk',
+    excerpt: 'When a battery improves payback, when it does not, and what specs matter before you buy.',
+    category: 'Analysis',
+    readTime: '6 min read',
+    image: 'https://images.unsplash.com/photo-1592833159117-ac790d406391?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    title: 'Commercial Solar for UK Businesses: What Matters Most',
+    slug: 'commercial-solar-for-business-uk',
+    excerpt: 'A buyer-focused guide to commercial solar economics, procurement, and what to compare in an installer proposal.',
+    category: 'Commercial',
+    readTime: '9 min read',
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    title: 'Do You Need Planning Permission for Solar Panels in the UK?',
+    slug: 'planning-permission-for-solar-uk',
+    excerpt: 'What usually falls under permitted development, what can trigger extra checks, and why it pays to confirm early.',
+    category: 'Technical Guides',
+    readTime: '5 min read',
+    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80'
   }
 ];
 

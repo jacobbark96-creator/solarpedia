@@ -11,10 +11,13 @@ import {
   ShieldCheck,
   Zap,
   Battery,
-  Compass
+  Compass,
+  Search,
+  Home
 } from 'lucide-react';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { lookupPropertyRoofEstimate } from '../lib/propertyLookup';
 
 const steps = [
   { id: 1, title: 'Property Type' },
@@ -31,6 +34,8 @@ const Wizard: React.FC = () => {
   );
   const { step, data, setStep, updateData } = useWizardStore();
   const navigate = useNavigate();
+  const [lookupLoading, setLookupLoading] = React.useState(false);
+  const [lookupError, setLookupError] = React.useState('');
 
   const handleNext = () => {
     if (step < steps.length) {
@@ -42,6 +47,32 @@ const Wizard: React.FC = () => {
 
   const handleBack = () => {
     if (step > 1) setStep(step - 1);
+  };
+
+  const handleEstimateRoof = async () => {
+    setLookupError('');
+    setLookupLoading(true);
+
+    try {
+      const result = await lookupPropertyRoofEstimate(data.houseNumber, data.postcode, data.propertyType);
+
+      updateData({
+        postcode: data.postcode.toUpperCase().trim(),
+        roofSize: Math.round(result.estimatedRoofAreaSqm),
+        roofSizeSource: 'estimated',
+        roofSizeConfidence: result.confidence,
+        matchedAddress: result.matchedAddress,
+        propertyLat: result.latitude,
+        propertyLon: result.longitude,
+        footprintArea: Math.round(result.footprintAreaSqm),
+        roofEstimateMethod: result.method,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to estimate roof size right now.';
+      setLookupError(message);
+    } finally {
+      setLookupLoading(false);
+    }
   };
 
   return (
@@ -105,21 +136,79 @@ const Wizard: React.FC = () => {
                 <div className="space-y-6">
                   <div className="text-center">
                     <h2 className="text-2xl font-serif font-bold text-brand-navy mb-1.5">Where is the property located?</h2>
-                    <p className="text-sm text-brand-muted">Solar efficiency varies significantly across the UK.</p>
+                    <p className="text-sm text-brand-muted">Enter the postcode and house number so we can estimate the roof size automatically.</p>
                   </div>
-                  <div className="max-w-xs mx-auto">
-                    <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Postcode Area</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. SW1, EH3, M1"
-                      value={data.postcode}
-                      onChange={(e) => updateData({ postcode: e.target.value.toUpperCase() })}
-                      className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-lg font-bold transition-all"
-                    />
-                    <p className="mt-3 text-[10px] text-brand-muted flex items-center gap-2">
-                      <ShieldCheck className="h-3.5 w-3.5 text-brand-green" />
-                      Your location data is used for irradiance calculations only.
-                    </p>
+                  <div className="space-y-5">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="md:col-span-1">
+                        <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">House Number</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 18"
+                          value={data.houseNumber}
+                          onChange={(e) => updateData({ houseNumber: e.target.value })}
+                          className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-lg font-bold transition-all"
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Postcode</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. SW1A 1AA"
+                          value={data.postcode}
+                          onChange={(e) => updateData({ postcode: e.target.value.toUpperCase() })}
+                          className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-lg font-bold transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button
+                        type="button"
+                        onClick={handleEstimateRoof}
+                        disabled={lookupLoading || !data.houseNumber || !data.postcode}
+                        className="bg-brand-navy text-white px-6 py-3 rounded-full text-sm font-bold flex items-center justify-center gap-2 transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Search className="h-4 w-4" />
+                        {lookupLoading ? 'Estimating roof size...' : 'Estimate Roof Size'}
+                      </button>
+                      <div className="text-[10px] text-brand-muted flex items-center gap-2">
+                        <ShieldCheck className="h-3.5 w-3.5 text-brand-green" />
+                        Uses open address and building footprint data. You can override the result manually.
+                      </div>
+                    </div>
+
+                    {lookupError && (
+                      <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                        {lookupError}
+                      </div>
+                    )}
+
+                    {data.matchedAddress && (
+                      <div className="rounded-xl border border-brand-accent bg-brand-accent/20 p-4 space-y-2">
+                        <div className="flex items-start gap-3">
+                          <Home className="h-4 w-4 text-brand-green mt-0.5" />
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-brand-muted mb-1">Matched property</p>
+                            <p className="text-sm font-semibold text-brand-navy">{data.matchedAddress}</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-brand-muted mb-1">Roof estimate</p>
+                            <p className="font-bold text-brand-navy">{Math.round(data.roofSize)} sqm</p>
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-brand-muted mb-1">Footprint</p>
+                            <p className="font-bold text-brand-navy">{data.footprintArea || '—'} sqm</p>
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-brand-muted mb-1">Confidence</p>
+                            <p className="font-bold capitalize text-brand-navy">{data.roofSizeConfidence || '—'}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -166,6 +255,51 @@ const Wizard: React.FC = () => {
                   <div className="text-center">
                     <h2 className="text-2xl font-serif font-bold text-brand-navy mb-1.5">Roof Suitability</h2>
                     <p className="text-sm text-brand-muted">These details significantly impact solar production.</p>
+                  </div>
+                  <div className="rounded-xl border border-brand-accent bg-brand-accent/20 p-5">
+                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-4">
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-brand-muted mb-1">Usable roof area</p>
+                        <p className="text-2xl font-serif font-bold text-brand-navy">{Math.round(data.roofSize)} sqm</p>
+                      </div>
+                      <div className="text-xs text-brand-muted">
+                        {data.roofSizeSource === 'estimated'
+                          ? `Estimated from building footprint data (${data.roofSizeConfidence || 'medium'} confidence).`
+                          : data.roofSizeSource === 'manual'
+                            ? 'Entered manually.'
+                            : 'Default estimate. Use the location step to auto-fill this.'}
+                      </div>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max={data.propertyType === 'commercial' ? '2000' : '250'}
+                      step="1"
+                      value={data.roofSize}
+                      onChange={(e) =>
+                        updateData({
+                          roofSize: parseInt(e.target.value, 10),
+                          roofSizeSource: 'manual',
+                        })
+                      }
+                      className="w-full h-1.5 bg-brand-accent rounded-lg appearance-none cursor-pointer accent-brand-navy"
+                    />
+                    <div className="mt-3">
+                      <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Manual roof area override (sqm)</label>
+                      <input
+                        type="number"
+                        min="10"
+                        max={data.propertyType === 'commercial' ? '2000' : '250'}
+                        value={data.roofSize}
+                        onChange={(e) =>
+                          updateData({
+                            roofSize: Math.max(10, parseInt(e.target.value || '10', 10)),
+                            roofSizeSource: 'manual',
+                          })
+                        }
+                        className="w-full md:w-48 p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-lg font-bold transition-all"
+                      />
+                    </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-3">
@@ -252,7 +386,7 @@ const Wizard: React.FC = () => {
             </button>
             <button
               onClick={handleNext}
-              disabled={step === 2 && !data.postcode}
+              disabled={step === 2 && (!data.postcode || !data.houseNumber)}
               className={`bg-brand-navy text-white px-7 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {step === steps.length ? 'See Results' : 'Continue'}

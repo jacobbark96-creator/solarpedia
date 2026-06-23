@@ -10,7 +10,6 @@ import {
   Download, 
   Share2,
   Info,
-  ChevronDown,
   ArrowRight,
   ShieldCheck
 } from 'lucide-react';
@@ -43,10 +42,17 @@ const Results: React.FC = () => {
   const regionCode = data.postcode?.toUpperCase().slice(0, 3) || 'SW';
   const regionData = UK_REGIONS_DATA[regionCode] || UK_REGIONS_DATA['SW'];
   const regionalYield = regionData.avgSunlightHours / 1000; // Efficiency factor
+  const roofDirectionFactor =
+    {
+      south: 1,
+      east: 0.9,
+      west: 0.88,
+      north: 0.72,
+    }[data.roofDirection] || 1;
 
   // Estimate required system size (kWp) to cover usage
   // UK average solar production is approx 850-1000 kWh per 1 kWp installed
-  const targetSystemSize = annualConsumptionKwh / (900 * regionalYield);
+  const targetSystemSize = annualConsumptionKwh / (900 * regionalYield * roofDirectionFactor);
   
   // Cap system size by roof area (Assuming 1kWp requires ~4.5sqm of roof space)
   const maxPossibleSize = data.roofSize / 4.5;
@@ -61,15 +67,32 @@ const Results: React.FC = () => {
   const estimatedCost = systemSize * costPerKwp + (data.hasBattery ? 5000 : 0);
   
   // Savings calculation
-  // Assume 40% self-consumption for residential without battery, 75% with battery
-  const selfConsumptionRate = data.hasBattery ? 0.75 : 0.40;
-  const annualGenerationKwh = systemSize * 900 * regionalYield;
+  const annualGenerationKwh = systemSize * 900 * regionalYield * roofDirectionFactor;
+  const baseSelfConsumptionRate =
+    data.propertyType === 'commercial'
+      ? { day: 0.82, balanced: 0.72, evening: 0.55 }[data.usagePattern]
+      : { day: 0.55, balanced: 0.42, evening: 0.3 }[data.usagePattern];
+  const selfConsumptionRate = Math.min(
+    data.hasBattery
+      ? baseSelfConsumptionRate + (data.propertyType === 'commercial' ? 0.12 : 0.2)
+      : baseSelfConsumptionRate,
+    0.92
+  );
+  const exportRate = data.propertyType === 'commercial' ? 0.12 : 0.15;
   const annualSavings = (annualGenerationKwh * selfConsumptionRate * NATIONAL_AVERAGES.energyPrice) + 
-                        (annualGenerationKwh * (1 - selfConsumptionRate) * 0.15); // Adding Smart Export Guarantee (SEG) at 15p
+                        (annualGenerationKwh * (1 - selfConsumptionRate) * exportRate);
 
   const paybackPeriod = estimatedCost / annualSavings;
   const tenYearSavings = (annualSavings * 10) - estimatedCost;
   const co2Reduction = annualGenerationKwh * 0.0002; // Tonnes per year (approx 200g per kWh in UK)
+  const estimateConfidence =
+    data.roofSizeSource === 'estimated' ? data.roofSizeConfidence || 'medium' : data.roofSizeSource === 'manual' ? 'medium' : 'low';
+  const confidenceClass =
+    estimateConfidence === 'high'
+      ? 'bg-brand-green/10 text-brand-green'
+      : estimateConfidence === 'medium'
+        ? 'bg-brand-yellow/15 text-brand-navy'
+        : 'bg-brand-accent text-brand-muted';
 
   const chartData = Array.from({ length: 11 }, (_, i) => ({
     year: i,
@@ -107,8 +130,14 @@ const Results: React.FC = () => {
             </div>
             <h1 className="text-3xl font-serif font-bold text-brand-navy">Your Solar Forecast</h1>
             <p className="text-sm text-brand-muted">
-              Estimated <span className="text-brand-navy font-bold">{systemSize.toFixed(1)}kWp system</span> for postcode {data.postcode || 'SW'} based on £{data.energyBill}/mo usage.
+              Estimated <span className="text-brand-navy font-bold">{systemSize.toFixed(1)}kWp system</span> for {data.matchedAddress || `postcode ${data.postcode || 'SW'}`} based on £{data.energyBill}/mo usage and {Math.round(data.roofSize)} sqm roof area.
             </p>
+            <p className="text-[11px] text-brand-muted mt-1">
+              Roof area source: {data.roofSizeSource === 'estimated' ? `${data.roofEstimateMethod || 'Property data lookup'} (${data.roofSizeConfidence || 'medium'} confidence)` : data.roofSizeSource === 'manual' ? 'Manual override by user' : 'Default estimate'}.
+            </p>
+            <div className={`mt-3 inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${confidenceClass}`}>
+              {estimateConfidence} Confidence Estimate
+            </div>
           </div>
           <div className="flex gap-3 print:hidden">
             <button 
@@ -140,7 +169,12 @@ const Results: React.FC = () => {
               transition={{ delay: i * 0.1 }}
               className="bg-white p-5 rounded-2xl border border-brand-accent shadow-sm"
             >
-              <stat.icon className={`h-5 w-5 ${stat.color} mb-3`} />
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                <span className={`rounded-full px-2 py-1 text-[9px] font-bold uppercase tracking-wider ${confidenceClass}`}>
+                  {estimateConfidence}
+                </span>
+              </div>
               <p className="text-[10px] font-bold text-brand-muted uppercase tracking-wider mb-0.5">{stat.label}</p>
               <p className="text-xl font-serif font-bold text-brand-navy">{stat.value}</p>
             </motion.div>
@@ -233,8 +267,10 @@ const Results: React.FC = () => {
               <h3 className="text-lg font-serif font-bold text-brand-navy mb-4">What affects this estimate?</h3>
               <div className="space-y-3">
                 {[
-                  { title: 'Roof Direction', desc: `Your ${data.roofDirection}-facing roof is ${data.roofDirection === 'south' ? 'ideal' : 'good'} for solar capture.`, impact: 'High' },
-                  { title: 'Electricity Tariffs', desc: `Current UK average of ${(NATIONAL_AVERAGES.energyPrice * 100).toFixed(1)}p/kWh used. Smart export tariffs could increase ROI.`, impact: 'Medium' },
+                  { title: 'Roof Direction', desc: `Your ${data.roofDirection}-facing roof applies a ${Math.round(roofDirectionFactor * 100)}% generation factor in the forecast.`, impact: 'High' },
+                  { title: 'Roof Area', desc: `We used ${Math.round(data.roofSize)} sqm of usable roof area based on a ${data.roofSizeSource === 'estimated' ? 'property footprint estimate' : data.roofSizeSource === 'manual' ? 'manual input' : 'default assumption'}.`, impact: 'High' },
+                  { title: 'Usage Pattern', desc: `Your ${data.usagePattern} usage pattern sets self-consumption at ${Math.round(selfConsumptionRate * 100)}%, which directly changes annual savings.`, impact: 'High' },
+                  { title: 'Electricity Tariffs', desc: `Current UK average of ${(NATIONAL_AVERAGES.energyPrice * 100).toFixed(1)}p/kWh used, with export income modelled at ${(exportRate * 100).toFixed(0)}p/kWh.`, impact: 'Medium' },
                   { title: 'Shading & Obstructions', desc: 'We assume a clear roof. Shading from trees or chimneys can reduce yield by 10-25%.', impact: 'Medium' },
                 ].map((item) => (
                   <div key={item.title} className="flex justify-between items-start p-3 bg-brand-white rounded-xl border border-brand-accent">

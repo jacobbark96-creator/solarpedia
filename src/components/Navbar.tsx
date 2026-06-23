@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between h-28 items-center">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <img src="/logo.png" alt="Solarpedia Logo" className="h-24 w-auto max-h-full" />
+              <img src="/logo.png" alt="Solarpedia Logo" className="h-48 w-auto max-h-none" />
             </Link>
           </div>
           
