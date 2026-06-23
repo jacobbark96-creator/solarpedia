@@ -3,24 +3,27 @@ export type RoofEstimateSource = 'default' | 'manual' | 'estimated';
 
 type PropertyType = 'residential' | 'commercial';
 
-type NominatimResult = {
-  lat: string;
-  lon: string;
-  display_name: string;
-  address?: {
-    house_number?: string;
-    postcode?: string;
+type PostcodesIoResponse = {
+  status: number;
+  result?: {
+    postcode: string;
+    latitude: number;
+    longitude: number;
+    admin_district?: string;
+    region?: string;
   };
 };
 
-type OverpassWay = {
-  type: 'way';
+type OverpassElement = {
+  type: 'way' | 'relation';
   id: number;
+  tags?: Record<string, string>;
+  center?: { lat: number; lon: number };
   geometry?: Array<{ lat: number; lon: number }>;
 };
 
 type OverpassResponse = {
-  elements: OverpassWay[];
+  elements: OverpassElement[];
 };
 
 export type PropertyLookupResult = {
@@ -37,8 +40,30 @@ function normalizePostcode(postcode: string) {
   return postcode.trim().toUpperCase().replace(/\s+/g, ' ');
 }
 
-function escapeOverpassString(value: string) {
-  return value.replace(/"/g, '\\"');
+function compactPostcode(postcode: string) {
+  return normalizePostcode(postcode).replace(/\s+/g, '');
+}
+
+function normalizeHouseNumber(houseNumber: string) {
+  return houseNumber.trim().toUpperCase().replace(/\s+/g, '');
+}
+
+function matchesPostcode(candidate: string | undefined, postcode: string) {
+  if (!candidate) return false;
+  return compactPostcode(candidate) === compactPostcode(postcode);
+}
+
+function matchesHouseNumber(candidate: string | undefined, houseNumber: string) {
+  if (!candidate) return false;
+
+  const normalizedCandidate = normalizeHouseNumber(candidate);
+  const normalizedTarget = normalizeHouseNumber(houseNumber);
+
+  return (
+    normalizedCandidate === normalizedTarget ||
+    normalizedCandidate.startsWith(`${normalizedTarget}-`) ||
+    normalizedCandidate.startsWith(`${normalizedTarget}/`)
+  );
 }
 
 function degToRad(value: number) {
@@ -117,47 +142,34 @@ function estimateUsableRoofAreaSqm(footprintAreaSqm: number, propertyType: Prope
   return footprintAreaSqm * 0.65;
 }
 
-async function lookupAddress(houseNumber: string, postcode: string) {
+async function lookupPostcode(postcode: string) {
   const normalizedPostcode = normalizePostcode(postcode);
-  const query = `${houseNumber.trim()} ${normalizedPostcode}, United Kingdom`;
-  const url = new URL('https://nominatim.openstreetmap.org/search');
-  url.searchParams.set('q', query);
-  url.searchParams.set('format', 'jsonv2');
-  url.searchParams.set('addressdetails', '1');
-  url.searchParams.set('limit', '5');
-  url.searchParams.set('countrycodes', 'gb');
-
-  const response = await fetch(url.toString(), {
+  const response = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(compactPostcode(normalizedPostcode))}`, {
     headers: {
       Accept: 'application/json',
     },
   });
 
   if (!response.ok) {
-    throw new Error('Address lookup failed.');
+    throw new Error('Postcode lookup failed.');
   }
 
-  const candidates = (await response.json()) as NominatimResult[];
-  if (!Array.isArray(candidates) || candidates.length === 0) {
-    throw new Error('No address match found for that postcode and house number.');
+  const payload = (await response.json()) as PostcodesIoResponse;
+  if (!payload.result) {
+    throw new Error('We could not find that postcode.');
   }
 
-  const exactHouse = candidates.find((candidate) => {
-    const candidateHouse = candidate.address?.house_number?.trim();
-    return candidateHouse === houseNumber.trim();
-  });
-
-  return exactHouse || candidates[0];
+  return payload.result;
 }
 
-async function lookupBuilding(lat: number, lon: number, postcode: string) {
+async function lookupBuildings(lat: number, lon: number) {
   const overpassQuery = `
 [out:json][timeout:25];
 (
-  way["building"](around:40,${lat},${lon});
-  way["building"]["addr:postcode"="${escapeOverpassString(normalizePostcode(postcode))}"](around:120,${lat},${lon});
+  way["building"](around:250,${lat},${lon});
+  relation["building"](around:250,${lat},${lon});
 );
-out geom;
+out center tags geom;
   `.trim();
 
   const response = await fetch('https://overpass-api.de/api/interpreter', {
@@ -180,15 +192,39 @@ out geom;
     throw new Error('No nearby building footprint found.');
   }
 
+  return buildings;
+}
+
+function chooseBuilding(
+  buildings: OverpassElement[],
+  lat: number,
+  lon: number,
+  postcode: string,
+  houseNumber: string
+) {
+  const exactAddressMatch = buildings.find((building) => {
+    const tags = building.tags || {};
+    return matchesPostcode(tags['addr:postcode'], postcode) && matchesHouseNumber(tags['addr:housenumber'], houseNumber);
+  });
+
+  if (exactAddressMatch) {
+    return { building: exactAddressMatch, confidence: 'high' as RoofEstimateConfidence };
+  }
+
   const containingBuilding = buildings.find((building) => pointInPolygon({ lat, lon }, building.geometry || []));
   if (containingBuilding) {
-    return { building: containingBuilding, confidence: 'high' as RoofEstimateConfidence };
+    const tags = containingBuilding.tags || {};
+    const hasMatchingPostcode = matchesPostcode(tags['addr:postcode'], postcode);
+    return {
+      building: containingBuilding,
+      confidence: hasMatchingPostcode ? ('medium' as RoofEstimateConfidence) : ('low' as RoofEstimateConfidence),
+    };
   }
 
   const nearest = buildings
     .map((building) => ({
       building,
-      distance: distanceMeters({ lat, lon }, centroid(building.geometry || [])),
+      distance: distanceMeters({ lat, lon }, building.center || centroid(building.geometry || [])),
     }))
     .sort((a, b) => a.distance - b.distance)[0];
 
@@ -207,15 +243,16 @@ export async function lookupPropertyRoofEstimate(
     throw new Error('Enter both house number and postcode.');
   }
 
-  const address = await lookupAddress(houseNumber, postcode);
-  const latitude = Number(address.lat);
-  const longitude = Number(address.lon);
+  const postcodeResult = await lookupPostcode(postcode);
+  const latitude = Number(postcodeResult.latitude);
+  const longitude = Number(postcodeResult.longitude);
 
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-    throw new Error('Address lookup returned invalid coordinates.');
+    throw new Error('Postcode lookup returned invalid coordinates.');
   }
 
-  const { building, confidence } = await lookupBuilding(latitude, longitude, postcode);
+  const buildings = await lookupBuildings(latitude, longitude);
+  const { building, confidence } = chooseBuilding(buildings, latitude, longitude, postcode, houseNumber);
   const footprintAreaSqm = polygonAreaSqm(building.geometry || []);
   const estimatedRoofAreaSqm = estimateUsableRoofAreaSqm(footprintAreaSqm, propertyType);
 
@@ -224,13 +261,12 @@ export async function lookupPropertyRoofEstimate(
   }
 
   return {
-    matchedAddress: address.display_name,
+    matchedAddress: `${houseNumber.trim()} ${normalizePostcode(postcode)}${postcodeResult.admin_district ? `, ${postcodeResult.admin_district}` : ''}`,
     latitude,
     longitude,
     footprintAreaSqm,
     estimatedRoofAreaSqm,
     confidence,
-    method: 'OpenStreetMap address + building footprint estimate',
+    method: 'Postcodes.io postcode lookup + OpenStreetMap building footprint estimate',
   };
 }
-

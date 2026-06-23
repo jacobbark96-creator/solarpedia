@@ -138,11 +138,7 @@ const Installers: React.FC = () => {
 
         <div className="bg-white p-5 rounded-[2rem] border border-brand-accent mb-16">
           <p className="text-sm text-brand-muted leading-relaxed">
-            Source:{' '}
-            <a href={dataset.source} target="_blank" rel="noopener noreferrer" className="text-brand-navy font-bold hover:underline">
-              {dataset.source}
-            </a>
-            . Data refreshed on{' '}
+            Data refreshed on{' '}
             {new Date(dataset.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}. {dataset.disclaimer}
           </p>
         </div>
