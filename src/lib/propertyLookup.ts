@@ -142,6 +142,10 @@ function estimateUsableRoofAreaSqm(footprintAreaSqm: number, propertyType: Prope
   return footprintAreaSqm * 0.65;
 }
 
+function defaultFootprintAreaSqm(propertyType: PropertyType) {
+  return propertyType === 'commercial' ? 450 : 70;
+}
+
 async function lookupPostcode(postcode: string) {
   const normalizedPostcode = normalizePostcode(postcode);
   const response = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(compactPostcode(normalizedPostcode))}`, {
@@ -163,36 +167,40 @@ async function lookupPostcode(postcode: string) {
 }
 
 async function lookupBuildings(lat: number, lon: number) {
-  const overpassQuery = `
+  const radii = [250, 600, 1200];
+
+  for (const radius of radii) {
+    const overpassQuery = `
 [out:json][timeout:25];
 (
-  way["building"](around:250,${lat},${lon});
-  relation["building"](around:250,${lat},${lon});
+  way["building"](around:${radius},${lat},${lon});
+  relation["building"](around:${radius},${lat},${lon});
 );
 out center tags geom;
-  `.trim();
+    `.trim();
 
-  const response = await fetch('https://overpass-api.de/api/interpreter', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain;charset=UTF-8',
-      Accept: 'application/json',
-    },
-    body: overpassQuery,
-  });
+    const response = await fetch('https://overpass-api.de/api/interpreter', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=UTF-8',
+        Accept: 'application/json',
+      },
+      body: overpassQuery,
+    });
 
-  if (!response.ok) {
-    throw new Error('Building footprint lookup failed.');
+    if (!response.ok) {
+      continue;
+    }
+
+    const data = (await response.json()) as OverpassResponse;
+    const buildings = (data.elements || []).filter((element) => Array.isArray(element.geometry) && element.geometry.length >= 3);
+
+    if (buildings.length) {
+      return buildings;
+    }
   }
 
-  const data = (await response.json()) as OverpassResponse;
-  const buildings = (data.elements || []).filter((element) => Array.isArray(element.geometry) && element.geometry.length >= 3);
-
-  if (!buildings.length) {
-    throw new Error('No nearby building footprint found.');
-  }
-
-  return buildings;
+  return [];
 }
 
 function chooseBuilding(
@@ -252,12 +260,34 @@ export async function lookupPropertyRoofEstimate(
   }
 
   const buildings = await lookupBuildings(latitude, longitude);
+  if (!buildings.length) {
+    const footprintAreaSqm = defaultFootprintAreaSqm(propertyType);
+    return {
+      matchedAddress: `${houseNumber.trim()} ${normalizePostcode(postcode)}${postcodeResult.admin_district ? `, ${postcodeResult.admin_district}` : ''}`,
+      latitude,
+      longitude,
+      footprintAreaSqm,
+      estimatedRoofAreaSqm: estimateUsableRoofAreaSqm(footprintAreaSqm, propertyType),
+      confidence: 'low',
+      method: 'Postcodes.io postcode lookup with fallback roof-size heuristic (no nearby building footprint found)',
+    };
+  }
+
   const { building, confidence } = chooseBuilding(buildings, latitude, longitude, postcode, houseNumber);
   const footprintAreaSqm = polygonAreaSqm(building.geometry || []);
   const estimatedRoofAreaSqm = estimateUsableRoofAreaSqm(footprintAreaSqm, propertyType);
 
   if (!footprintAreaSqm || !Number.isFinite(footprintAreaSqm)) {
-    throw new Error('Could not calculate building footprint area.');
+    const fallbackFootprintAreaSqm = defaultFootprintAreaSqm(propertyType);
+    return {
+      matchedAddress: `${houseNumber.trim()} ${normalizePostcode(postcode)}${postcodeResult.admin_district ? `, ${postcodeResult.admin_district}` : ''}`,
+      latitude,
+      longitude,
+      footprintAreaSqm: fallbackFootprintAreaSqm,
+      estimatedRoofAreaSqm: estimateUsableRoofAreaSqm(fallbackFootprintAreaSqm, propertyType),
+      confidence: 'low',
+      method: 'Postcodes.io postcode lookup with fallback roof-size heuristic (invalid building geometry)',
+    };
   }
 
   return {
