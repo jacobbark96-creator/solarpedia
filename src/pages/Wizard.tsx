@@ -25,7 +25,8 @@ const steps = [
   { id: 2, title: 'Location' },
   { id: 3, title: 'Energy Usage' },
   { id: 4, title: 'Roof Details' },
-  { id: 5, title: 'Review' }
+  { id: 5, title: 'Contact' },
+  { id: 6, title: 'Review' }
 ];
 
 const Wizard: React.FC = () => {
@@ -51,6 +52,10 @@ const Wizard: React.FC = () => {
   const navigate = useNavigate();
   const [lookupLoading, setLookupLoading] = React.useState(false);
   const [lookupError, setLookupError] = React.useState('');
+  const isContactStepValid =
+    data.name.trim().length > 1 &&
+    /\S+@\S+\.\S+/.test(data.email.trim()) &&
+    data.phone.trim().length >= 7;
 
   const handleNext = () => {
     if (step < steps.length) {
@@ -356,6 +361,55 @@ const Wizard: React.FC = () => {
               {step === 5 && (
                 <div className="space-y-6">
                   <div className="text-center">
+                    <h2 className="text-2xl font-serif font-bold text-brand-navy mb-1.5">Who should we send the results to?</h2>
+                    <p className="text-sm text-brand-muted">Enter your details before we show your solar forecast.</p>
+                  </div>
+                  <div className="grid grid-cols-1 gap-5">
+                    <div>
+                      <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Full Name</label>
+                      <input
+                        type="text"
+                        placeholder="Your full name"
+                        value={data.name}
+                        onChange={(e) => updateData({ name: e.target.value })}
+                        className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-base font-medium transition-all"
+                        autoComplete="name"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Email Address</label>
+                        <input
+                          type="email"
+                          placeholder="you@example.com"
+                          value={data.email}
+                          onChange={(e) => updateData({ email: e.target.value })}
+                          className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-base font-medium transition-all"
+                          autoComplete="email"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Contact Number</label>
+                        <input
+                          type="tel"
+                          placeholder="07xxx xxx xxx"
+                          value={data.phone}
+                          onChange={(e) => updateData({ phone: e.target.value })}
+                          className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-base font-medium transition-all"
+                          autoComplete="tel"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="rounded-xl border border-brand-accent bg-brand-accent/20 px-4 py-3 text-xs text-brand-muted">
+                    We’ll use these details to personalise your quote journey and pre-fill the installer request form after your results.
+                  </div>
+                </div>
+              )}
+
+              {step === 6 && (
+                <div className="space-y-6">
+                  <div className="text-center">
                     <h2 className="text-2xl font-serif font-bold text-brand-navy mb-1.5">Consent & Accuracy</h2>
                     <p className="text-sm text-brand-muted">Choose your level of insight detail.</p>
                   </div>
@@ -401,7 +455,7 @@ const Wizard: React.FC = () => {
             </button>
             <button
               onClick={handleNext}
-              disabled={step === 2 && (!data.postcode || !data.houseNumber)}
+              disabled={(step === 2 && (!data.postcode || !data.houseNumber)) || (step === 5 && !isContactStepValid)}
               className={`bg-brand-navy text-white px-7 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {step === steps.length ? 'See Results' : 'Continue'}

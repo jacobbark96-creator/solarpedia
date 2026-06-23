@@ -13,6 +13,9 @@ export const useWizardStore = create<WizardStore>((set) => ({
   step: 1,
   data: {
     propertyType: 'residential',
+    name: '',
+    email: '',
+    phone: '',
     postcode: '',
     houseNumber: '',
     energyBill: 150,

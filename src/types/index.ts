@@ -11,6 +11,9 @@ export interface PostcodeData {
 
 export interface WizardState {
   propertyType: 'residential' | 'commercial';
+  name: string;
+  email: string;
+  phone: string;
   postcode: string;
   houseNumber: string;
   energyBill: number;

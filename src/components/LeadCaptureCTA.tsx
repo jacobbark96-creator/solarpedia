@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useWizardStore } from '../hooks/useWizardStore';
 
 type LeadCaptureValues = {
   name: string;
@@ -19,6 +20,7 @@ function encode(data: Record<string, string>) {
 const LeadCaptureCTA: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { data } = useWizardStore();
 
   const hidden = location.pathname === '/thanks';
 
@@ -28,11 +30,11 @@ const LeadCaptureCTA: React.FC = () => {
   }, [location.pathname]);
 
   const [values, setValues] = useState<LeadCaptureValues>({
-    name: '',
-    email: '',
-    phone: '',
-    postcode: '',
-    propertyType: defaultPropertyType,
+    name: data.name || '',
+    email: data.email || '',
+    phone: data.phone || '',
+    postcode: data.postcode || '',
+    propertyType: data.propertyType === 'commercial' ? 'Commercial' : defaultPropertyType,
     botField: '',
   });
   const [submitting, setSubmitting] = useState(false);
