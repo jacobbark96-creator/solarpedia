@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronLeft, Calendar, User, Clock } from 'lucide-react';
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { createArticleSchema, createBreadcrumbSchema } from '../lib/seo';
 
 const currentMonth = new Date().toLocaleString('default', { month: 'long' });
 const currentYear = new Date().getFullYear();
@@ -148,11 +149,38 @@ const ARTICLES_DB: Record<string, any> = {
 const Article: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const article = slug ? ARTICLES_DB[slug] : null;
+  const articlePath = slug ? `/education/article/${slug}` : '/education';
+  const articleDescription = article
+    ? `Read Solarpedia's guide to ${article.title.toLowerCase()} with UK-focused analysis, practical context, and buying guidance.`
+    : 'Read the full analysis and expert breakdown on Solarpedia.';
 
-  usePageMetadata(
-    article?.title || 'Article Not Found',
-    article ? 'Read the full analysis and expert breakdown on Solarpedia.' : ''
-  );
+  usePageMetadata({
+    title: article?.title || 'Article Not Found',
+    description: articleDescription,
+    path: articlePath,
+    keywords: article ? `${article.title}, solar education UK, solar advice UK` : 'solar education UK',
+    noindex: !article,
+    schema: article
+      ? [
+          createArticleSchema({
+            headline: article.title,
+            description: articleDescription,
+            path: articlePath,
+            authorName: article.author,
+            datePublished: article.date,
+            dateModified: article.date,
+          }),
+          createBreadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Education', path: '/education' },
+            { name: article.title, path: articlePath },
+          ]),
+        ]
+      : createBreadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Education', path: '/education' },
+        ]),
+  });
 
   if (!article) {
     return (

@@ -4,12 +4,30 @@ import { Building2, TrendingUp, ShieldCheck, Factory, Warehouse, Building, Arrow
 import { Link } from 'react-router-dom';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { createBreadcrumbSchema, createServiceSchema } from '../lib/seo';
 
 const Business: React.FC = () => {
-  usePageMetadata(
-    'Commercial Solar Solutions',
-    'Independent ROI analysis for warehouses, factories, and office blocks. Lock in energy costs and meet ESG targets.'
-  );
+  usePageMetadata({
+    title: 'Commercial Solar Solutions',
+    description:
+      'Independent ROI analysis for warehouses, factories, and office blocks. Lock in energy costs and meet ESG targets.',
+    path: '/business',
+    keywords:
+      'commercial solar UK, business solar solutions, warehouse solar UK, factory solar panels, office solar ROI',
+    schema: [
+      createServiceSchema({
+        name: 'Commercial Solar Solutions',
+        description:
+          'Independent commercial solar guidance for UK warehouses, factories, offices, and other business premises.',
+        path: '/business',
+        serviceType: 'Commercial solar guidance',
+      }),
+      createBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Business Solar', path: '/business' },
+      ]),
+    ],
+  });
   return (
     <div className="bg-brand-white min-h-screen">
       {/* Hero */}

@@ -18,6 +18,7 @@ import {
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { lookupPropertyRoofEstimate } from '../lib/propertyLookup';
+import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../lib/seo';
 
 const steps = [
   { id: 1, title: 'Property Type' },
@@ -28,10 +29,24 @@ const steps = [
 ];
 
 const Wizard: React.FC = () => {
-  usePageMetadata(
-    'Solar Savings Wizard',
-    'Calculate your potential solar savings with our impartial UK-wide data-driven tool.'
-  );
+  usePageMetadata({
+    title: 'Solar Savings Wizard',
+    description: 'Calculate your potential solar savings with our impartial UK-wide data-driven tool.',
+    path: '/wizard',
+    keywords:
+      'solar savings calculator UK, solar cost calculator UK, solar ROI calculator UK, commercial solar calculator',
+    schema: [
+      createSoftwareApplicationSchema({
+        name: 'Solarpedia Solar Savings Wizard',
+        description: 'Calculate solar savings, payback, and likely system size for UK homes and businesses.',
+        path: '/wizard',
+      }),
+      createBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Solar Savings Wizard', path: '/wizard' },
+      ]),
+    ],
+  });
   const { step, data, setStep, updateData } = useWizardStore();
   const navigate = useNavigate();
   const [lookupLoading, setLookupLoading] = React.useState(false);

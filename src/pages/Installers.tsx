@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Search, MapPin, Star, ShieldCheck, BadgeCheck, Phone, ExternalLink } from 'lucide-react';
 import installerDataset from '../data/certifiedInstallers.json';
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { buildAbsoluteUrl, createBreadcrumbSchema, createCollectionPageSchema } from '../lib/seo';
 
 type InstallerRecord = {
   slug: string;
@@ -35,11 +36,6 @@ const dataset = installerDataset as {
 const Installers: React.FC = () => {
   const [searchTerm, setSearchTerm] = React.useState('');
   const [locationTerm, setLocationTerm] = React.useState('');
-
-  usePageMetadata(
-    'MCS-Certified Solar Installers',
-    'Browse publicly sourced MCS-certified solar installers by city, certification body, technology, and rating.'
-  );
 
   const sortedInstallers = React.useMemo(() => {
     return [...dataset.installers].sort((a, b) => {
@@ -76,8 +72,47 @@ const Installers: React.FC = () => {
   }, [locationTerm, searchTerm, sortedInstallers]);
 
   const visibleInstallers = filteredInstallers.slice(0, 60);
+  const schemaInstallers = sortedInstallers.slice(0, 12);
   const installersWithRatings = dataset.installers.filter((installer) => installer.rating !== null).length;
   const batteryQualified = dataset.installers.filter((installer) => installer.tags.includes('Battery Storage')).length;
+
+  usePageMetadata({
+    title: 'MCS-Certified Solar Installers',
+    description:
+      'Browse publicly sourced MCS-certified solar installers by city, certification body, technology, and rating.',
+    path: '/installers',
+    keywords:
+      'MCS certified solar installers, solar installers UK, local solar installers, battery storage installers',
+    schema: [
+      createCollectionPageSchema({
+        name: 'MCS-Certified Solar Installers',
+        description:
+          'A public directory of MCS-certified solar installers covering UK cities, technologies, and certification bodies.',
+        path: '/installers',
+        about: 'Solar installers in the United Kingdom',
+      }),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Featured solar installers',
+        itemListElement: schemaInstallers.map((installer, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          item: {
+            '@type': 'Organization',
+            name: installer.name,
+            url: installer.website || installer.detailUrl || buildAbsoluteUrl('/installers'),
+            address: installer.address,
+            telephone: installer.phone || undefined,
+          },
+        })),
+      },
+      createBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Installers', path: '/installers' },
+      ]),
+    ],
+  });
 
   return (
     <div className="bg-brand-white min-h-screen pt-12 pb-24">

@@ -10,12 +10,21 @@ import UKMap from '../components/UKMap';
 import { useLiveNews } from '../hooks/useLiveNews';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { createBreadcrumbSchema, createWebsiteSchema } from '../lib/seo';
 
 const Home: React.FC = () => {
-  usePageMetadata(
-    'Find out if solar is actually worth it',
-    'Independent UK solar insights, cost estimates and savings forecasts powered by real energy and regional data.'
-  );
+  usePageMetadata({
+    title: 'Find out if solar is actually worth it',
+    description:
+      'Independent UK solar insights, cost estimates and savings forecasts powered by real energy and regional data.',
+    path: '/',
+    keywords:
+      'is solar worth it UK, solar savings calculator UK, solar cost calculator UK, solar installers UK',
+    schema: [
+      createWebsiteSchema(),
+      createBreadcrumbSchema([{ name: 'Home', path: '/' }]),
+    ],
+  });
   const [energyPrice, setEnergyPrice] = useState(NATIONAL_AVERAGES.energyPrice);
   const { news: liveNews, loading: newsLoading } = useLiveNews();
 

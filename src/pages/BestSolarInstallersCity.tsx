@@ -2,6 +2,11 @@ import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import cities from '../data/ukCities.json';
+import {
+  createBreadcrumbSchema,
+  createServiceSchema,
+  getInstallerCitySeo,
+} from '../lib/seo';
 
 type City = { name: string; slug: string };
 
@@ -11,13 +16,35 @@ const BestSolarInstallersCity: React.FC = () => {
   const city = useMemo(() => {
     return (cities as City[]).find((c) => c.slug === citySlug) || null;
   }, [citySlug]);
+  const seo = city ? getInstallerCitySeo(city) : null;
 
-  usePageMetadata(
-    city ? `Best Solar Installers ${city.name} | Compare Local Companies` : 'Best Solar Installers | Solarpedia',
-    city
-      ? `Find the best solar installers in ${city.name}. Compare local companies, ask the right questions, and request up to 3 free quotes.`
-      : 'Find the best solar installers near you and request up to 3 free quotes.'
-  );
+  usePageMetadata({
+    title: seo?.title || 'Best Solar Installers',
+    description:
+      seo?.description || 'Find the best solar installers near you and request up to 3 free quotes.',
+    path: seo?.path || '/best-solar-installers',
+    keywords: seo?.keywords || 'best solar installers UK',
+    noindex: !city,
+    schema: city
+      ? [
+          createServiceSchema({
+            name: seo.title,
+            description: seo.description,
+            path: seo.path,
+            serviceType: 'Solar installer comparison',
+            areaServed: city.name,
+          }),
+          createBreadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Best Solar Installers', path: '/best-solar-installers' },
+            { name: city.name, path: seo.path },
+          ]),
+        ]
+      : createBreadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Best Solar Installers', path: '/best-solar-installers' },
+        ]),
+  });
 
   if (!city) {
     return (
@@ -46,10 +73,10 @@ const BestSolarInstallersCity: React.FC = () => {
             Best solar installers {city.name}
           </p>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-5">
-            Best solar installers in {city.name}
+            {seo?.h1}
           </h1>
           <p className="text-lg text-brand-muted leading-relaxed">
-            Use this checklist to compare companies, then request quotes routed to your postcode.
+            {seo?.intro}
           </p>
         </div>
 
@@ -130,4 +157,3 @@ const BestSolarInstallersCity: React.FC = () => {
 };
 
 export default BestSolarInstallersCity;
-

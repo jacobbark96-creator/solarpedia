@@ -2,6 +2,11 @@ import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import cities from '../data/ukCities.json';
+import {
+  createBreadcrumbSchema,
+  createServiceSchema,
+  getSolarQuotesCitySeo,
+} from '../lib/seo';
 
 type City = { name: string; slug: string };
 
@@ -11,13 +16,35 @@ const SolarPanelQuotesCity: React.FC = () => {
   const city = useMemo(() => {
     return (cities as City[]).find((c) => c.slug === citySlug) || null;
   }, [citySlug]);
+  const seo = city ? getSolarQuotesCitySeo(city) : null;
 
-  usePageMetadata(
-    city ? `Solar Panel Quotes ${city.name} | Get 3 Free Quotes` : 'Solar Panel Quotes | Solarpedia',
-    city
-      ? `Get 3 free solar panel installation quotes in ${city.name}. Compare vetted local installers and availability in your area.`
-      : 'Get 3 free solar panel installation quotes from vetted local installers.'
-  );
+  usePageMetadata({
+    title: seo?.title || 'Solar Panel Quotes',
+    description:
+      seo?.description || 'Get free solar panel installation quotes from local installers in your area.',
+    path: seo?.path || '/solar-panel-quotes',
+    keywords: seo?.keywords || 'solar panel quotes UK',
+    noindex: !city,
+    schema: city
+      ? [
+          createServiceSchema({
+            name: seo.title,
+            description: seo.description,
+            path: seo.path,
+            serviceType: 'Solar panel quote comparison',
+            areaServed: city.name,
+          }),
+          createBreadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Solar Panel Quotes', path: '/solar-panel-quotes' },
+            { name: city.name, path: seo.path },
+          ]),
+        ]
+      : createBreadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Solar Panel Quotes', path: '/solar-panel-quotes' },
+        ]),
+  });
 
   if (!city) {
     return (
@@ -46,10 +73,10 @@ const SolarPanelQuotesCity: React.FC = () => {
             Solar panel quotes {city.name}
           </p>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-5">
-            Get 3 free solar quotes in {city.name}
+            {seo?.h1}
           </h1>
           <p className="text-lg text-brand-muted leading-relaxed">
-            Compare local installers, check availability, and get quotes tailored to your postcode and property type.
+            {seo?.intro}
           </p>
         </div>
 
@@ -134,4 +161,3 @@ const SolarPanelQuotesCity: React.FC = () => {
 };
 
 export default SolarPanelQuotesCity;
-

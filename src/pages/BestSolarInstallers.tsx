@@ -2,14 +2,42 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import cities from '../data/ukCities.json';
+import {
+  createBreadcrumbSchema,
+  createCollectionPageSchema,
+  createServiceSchema,
+  getInstallerHubSeo,
+} from '../lib/seo';
 
 type City = { name: string; slug: string };
 
 const BestSolarInstallers: React.FC = () => {
-  usePageMetadata(
-    'Best Solar Installers by City',
-    'Find the best solar installers in your city. Compare local companies and request up to 3 free quotes.'
-  );
+  const seo = getInstallerHubSeo();
+
+  usePageMetadata({
+    title: seo.title,
+    description: seo.description,
+    path: seo.path,
+    keywords: seo.keywords,
+    schema: [
+      createCollectionPageSchema({
+        name: seo.title,
+        description: seo.description,
+        path: seo.path,
+        about: 'Best solar installer pages by UK city',
+      }),
+      createServiceSchema({
+        name: seo.title,
+        description: seo.description,
+        path: seo.path,
+        serviceType: 'Solar installer comparison',
+      }),
+      createBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Best Solar Installers', path: seo.path },
+      ]),
+    ],
+  });
 
   return (
     <div className="bg-brand-white py-20">
@@ -19,10 +47,10 @@ const BestSolarInstallers: React.FC = () => {
             Commercial intent pages
           </p>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-5">
-            Best solar installers near you
+            {seo.h1}
           </h1>
           <p className="text-lg text-brand-muted leading-relaxed">
-            Browse city pages to compare local installers and request quotes in your area.
+            {seo.intro}
           </p>
         </div>
 

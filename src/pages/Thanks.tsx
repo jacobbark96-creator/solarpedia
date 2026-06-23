@@ -1,9 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { createBreadcrumbSchema } from '../lib/seo';
 
 const Thanks: React.FC = () => {
-  usePageMetadata('Thanks', 'We’ve received your details. We’ll be in touch with your solar quotes shortly.');
+  usePageMetadata({
+    title: 'Thanks',
+    description: 'We’ve received your details. We’ll be in touch with your solar quotes shortly.',
+    path: '/thanks',
+    noindex: true,
+    robots: 'noindex, nofollow',
+    schema: createBreadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Thanks', path: '/thanks' },
+    ]),
+  });
 
   return (
     <div className="bg-brand-white py-20">

@@ -27,12 +27,9 @@ import {
 } from 'recharts';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { buildAbsoluteUrl, createBreadcrumbSchema } from '../lib/seo';
 
 const Results: React.FC = () => {
-  usePageMetadata(
-    'Your Solar Forecast',
-    'View your personalized solar savings estimate, ROI projection, and system recommendations.'
-  );
   const { data } = useWizardStore();
 
   // Advanced calculation logic based on energy usage and property constraints
@@ -113,6 +110,28 @@ const Results: React.FC = () => {
     { name: 'Nov', prod: Math.round(annualGenerationKwh * 0.03) },
     { name: 'Dec', prod: Math.round(annualGenerationKwh * 0.01) },
   ];
+
+  usePageMetadata({
+    title: 'Your Solar Forecast',
+    description: 'View your personalised solar savings estimate, ROI projection, and system recommendations.',
+    path: '/results',
+    noindex: true,
+    robots: 'noindex, nofollow',
+    schema: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Solar Forecast Results',
+        description: 'A personalised solar estimate generated from the Solarpedia savings calculator.',
+        url: buildAbsoluteUrl('/results'),
+      },
+      createBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Solar Savings Wizard', path: '/wizard' },
+        { name: 'Solar Forecast', path: '/results' },
+      ]),
+    ],
+  });
 
   const handleDownload = () => {
     window.print();

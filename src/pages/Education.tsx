@@ -5,6 +5,7 @@ import { Search, BookOpen, MessageCircle, FileText, ChevronRight, Newspaper } fr
 import { useLiveNews } from '../hooks/useLiveNews';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { buildAbsoluteUrl, createBreadcrumbSchema, createCollectionPageSchema } from '../lib/seo';
 
 const categories = [
   { name: 'Solar Basics', icon: BookOpen, count: 3 },
@@ -73,10 +74,38 @@ const articles = [
 ];
 
 const Education: React.FC = () => {
-  usePageMetadata(
-    'Solar Education Hub',
-    'Expert guidance, data-driven analysis, and unbiased advice to help you navigate the UK solar market.'
-  );
+  usePageMetadata({
+    title: 'Solar Education Hub',
+    description:
+      'Expert guidance, data-driven analysis, and unbiased advice to help you navigate the UK solar market.',
+    path: '/education',
+    keywords:
+      'solar education UK, solar guides UK, solar panel costs UK, battery storage UK, commercial solar UK',
+    schema: [
+      createCollectionPageSchema({
+        name: 'Solar Education Hub',
+        description:
+          'A collection of UK solar guides, explainers, and commercial intent content from Solarpedia.',
+        path: '/education',
+        about: 'Solar energy in the United Kingdom',
+      }),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Solar education articles',
+        itemListElement: articles.map((article, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: article.title,
+          url: buildAbsoluteUrl(`/education/article/${article.slug}`),
+        })),
+      },
+      createBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Education', path: '/education' },
+      ]),
+    ],
+  });
 
   const { news: liveNews, loading: newsLoading } = useLiveNews();
 

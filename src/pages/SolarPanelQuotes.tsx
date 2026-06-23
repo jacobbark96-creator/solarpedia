@@ -2,14 +2,42 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import cities from '../data/ukCities.json';
+import {
+  createBreadcrumbSchema,
+  createCollectionPageSchema,
+  createServiceSchema,
+  getSolarQuotesHubSeo,
+} from '../lib/seo';
 
 type City = { name: string; slug: string };
 
 const SolarPanelQuotes: React.FC = () => {
-  usePageMetadata(
-    'Solar Panel Quotes by City',
-    'Get 3 free solar panel quotes from vetted local installers. Choose your city to compare prices and availability near you.'
-  );
+  const seo = getSolarQuotesHubSeo();
+
+  usePageMetadata({
+    title: seo.title,
+    description: seo.description,
+    path: seo.path,
+    keywords: seo.keywords,
+    schema: [
+      createCollectionPageSchema({
+        name: seo.title,
+        description: seo.description,
+        path: seo.path,
+        about: 'Solar panel quote comparison pages by UK city',
+      }),
+      createServiceSchema({
+        name: seo.title,
+        description: seo.description,
+        path: seo.path,
+        serviceType: 'Solar quote comparison',
+      }),
+      createBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Solar Panel Quotes', path: seo.path },
+      ]),
+    ],
+  });
 
   return (
     <div className="bg-brand-white py-20">
@@ -19,10 +47,10 @@ const SolarPanelQuotes: React.FC = () => {
             Commercial intent pages
           </p>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-5">
-            Solar panel quotes in your city
+            {seo.h1}
           </h1>
           <p className="text-lg text-brand-muted leading-relaxed">
-            Select your city to get matched with installer partners and receive up to 3 free quotes.
+            {seo.intro}
           </p>
         </div>
 

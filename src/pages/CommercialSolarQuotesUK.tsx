@@ -1,26 +1,46 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import {
+  createBreadcrumbSchema,
+  createServiceSchema,
+  getCommercialQuotesSeo,
+} from '../lib/seo';
 
 const CommercialSolarQuotesUK: React.FC = () => {
-  usePageMetadata(
-    'Commercial Solar Quotes UK | Get 3 Free Quotes',
-    'Get 3 free commercial solar quotes across the UK. Compare vetted installers for warehouses, offices, schools, farms and retail sites.'
-  );
+  const seo = getCommercialQuotesSeo();
+
+  usePageMetadata({
+    title: seo.title,
+    description: seo.description,
+    path: seo.path,
+    keywords: seo.keywords,
+    schema: [
+      createServiceSchema({
+        name: seo.title,
+        description: seo.description,
+        path: seo.path,
+        serviceType: 'Commercial solar quote comparison',
+      }),
+      createBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Commercial Solar Quotes UK', path: seo.path },
+      ]),
+    ],
+  });
 
   return (
     <div className="bg-brand-white py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-12">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-3">
-            Commercial solar quotes UK
+            {seo.h1}
           </p>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-5">
             Get 3 free commercial solar quotes
           </h1>
           <p className="text-lg text-brand-muted leading-relaxed">
-            For warehouses, offices, schools, farms, retail and industrial sites. Share your postcode and we’ll route your enquiry to
-            installers that cover your area and property type.
+            {seo.intro}
           </p>
         </div>
 
@@ -105,4 +125,3 @@ const CommercialSolarQuotesUK: React.FC = () => {
 };
 
 export default CommercialSolarQuotesUK;
-
