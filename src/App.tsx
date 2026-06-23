@@ -10,6 +10,13 @@ import Business from './pages/Business';
 import Installers from './pages/Installers';
 import Article from './pages/Article';
 import Legal from './pages/Legal';
+import Thanks from './pages/Thanks';
+import LeadCaptureCTA from './components/LeadCaptureCTA';
+import SolarPanelQuotes from './pages/SolarPanelQuotes';
+import SolarPanelQuotesCity from './pages/SolarPanelQuotesCity';
+import BestSolarInstallers from './pages/BestSolarInstallers';
+import BestSolarInstallersCity from './pages/BestSolarInstallersCity';
+import CommercialSolarQuotesUK from './pages/CommercialSolarQuotesUK';
 
 const App: React.FC = () => {
   return (
@@ -26,7 +33,14 @@ const App: React.FC = () => {
             <Route path="/business" element={<Business />} />
             <Route path="/installers" element={<Installers />} />
             <Route path="/legal/:documentId" element={<Legal />} />
+            <Route path="/thanks" element={<Thanks />} />
+            <Route path="/solar-panel-quotes" element={<SolarPanelQuotes />} />
+            <Route path="/solar-panel-quotes/:citySlug" element={<SolarPanelQuotesCity />} />
+            <Route path="/best-solar-installers" element={<BestSolarInstallers />} />
+            <Route path="/best-solar-installers/:citySlug" element={<BestSolarInstallersCity />} />
+            <Route path="/commercial-solar-quotes-uk" element={<CommercialSolarQuotesUK />} />
           </Routes>
+          <LeadCaptureCTA />
         </main>
         <Footer />
       </div>

@@ -15,6 +15,9 @@ const staticRoutes = [
   '/education',
   '/business',
   '/installers',
+  '/solar-panel-quotes',
+  '/best-solar-installers',
+  '/commercial-solar-quotes-uk',
   '/legal/privacy',
   '/legal/terms',
   '/legal/cookies'
@@ -23,6 +26,7 @@ const staticRoutes = [
 // Extract article slugs dynamically from Article.tsx
 const articleFilePath = path.resolve(__dirname, '../src/pages/Article.tsx');
 let articleSlugs = [];
+let citySlugs = [];
 
 try {
   if (fs.existsSync(articleFilePath)) {
@@ -40,12 +44,35 @@ try {
   console.warn("Could not read articles for sitemap generation:", e.message);
 }
 
+try {
+  const citiesFilePath = path.resolve(__dirname, '../src/data/ukCities.json');
+  if (fs.existsSync(citiesFilePath)) {
+    const content = fs.readFileSync(citiesFilePath, 'utf-8');
+    const cities = JSON.parse(content);
+    if (Array.isArray(cities)) {
+      citySlugs = cities.map((c) => c.slug).filter(Boolean);
+    }
+  }
+} catch (e) {
+  console.warn("Could not read cities for sitemap generation:", e.message);
+}
+
+const cityRoutes = citySlugs.flatMap((slug) => [
+  `/solar-panel-quotes/${slug}`,
+  `/best-solar-installers/${slug}`
+]);
+
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticRoutes.map(route => `  <url>
     <loc>${BASE_URL}${route === '/' ? '' : route}</loc>
-    <changefreq>${route === '/' || route === '/education' ? 'daily' : route.startsWith('/legal') ? 'yearly' : 'monthly'}</changefreq>
-    <priority>${route === '/' ? '1.0' : route === '/wizard' ? '0.9' : route.startsWith('/legal') ? '0.3' : '0.8'}</priority>
+    <changefreq>${route === '/' || route === '/education' ? 'daily' : route.startsWith('/legal') ? 'yearly' : route === '/commercial-solar-quotes-uk' || route === '/solar-panel-quotes' || route === '/best-solar-installers' ? 'weekly' : 'monthly'}</changefreq>
+    <priority>${route === '/' ? '1.0' : route === '/wizard' ? '0.9' : route === '/commercial-solar-quotes-uk' || route === '/solar-panel-quotes' || route === '/best-solar-installers' ? '0.9' : route.startsWith('/legal') ? '0.3' : '0.8'}</priority>
+  </url>`).join('\n')}
+${cityRoutes.map(route => `  <url>
+    <loc>${BASE_URL}${route}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>`).join('\n')}
 ${articleSlugs.map(slug => `  <url>
     <loc>${BASE_URL}/education/article/${slug}</loc>
@@ -58,4 +85,4 @@ ${articleSlugs.map(slug => `  <url>
 const outputPath = path.resolve(__dirname, '../public/sitemap.xml');
 fs.writeFileSync(outputPath, sitemap);
 
-console.log(`✅ Sitemap generated successfully with ${staticRoutes.length + articleSlugs.length} URLs (including ${articleSlugs.length} articles).`);
+console.log(`✅ Sitemap generated successfully with ${staticRoutes.length + cityRoutes.length + articleSlugs.length} URLs (including ${cityRoutes.length} city pages and ${articleSlugs.length} articles).`);

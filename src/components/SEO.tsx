@@ -31,8 +31,8 @@ const SEO: React.FC<SEOProps> = ({ title, description, canonical, ogType = 'webs
           "@context": "https://schema.org",
           "@type": "Organization",
           "name": "Solarpedia UK",
-          "url": "https://solarpedia.org.uk",
-          "logo": "https://solarpedia.org.uk/logo.png",
+          "url": "https://solarpedia.co.uk",
+          "logo": "https://solarpedia.co.uk/logo.png",
           "description": "Independent UK solar insights, cost estimates and savings forecasts.",
           "sameAs": [
             "https://twitter.com/solarpediauk",

@@ -23,8 +23,10 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold text-lg mb-6">Explore</h4>
             <ul className="space-y-4 text-brand-accent text-sm">
+              <li><Link to="/solar-panel-quotes" className="hover:text-white transition-colors">Get Solar Quotes</Link></li>
               <li><Link to="/education" className="hover:text-white transition-colors">Education Hub</Link></li>
               <li><Link to="/business" className="hover:text-white transition-colors">Solar for Business</Link></li>
+              <li><Link to="/commercial-solar-quotes-uk" className="hover:text-white transition-colors">Commercial Quotes UK</Link></li>
               <li><Link to="/installers" className="hover:text-white transition-colors">Vetted Installers</Link></li>
               <li><Link to="/wizard" className="hover:text-white transition-colors">Savings Wizard</Link></li>
             </ul>
@@ -45,7 +47,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-4 text-brand-accent text-sm">
               <li className="flex items-center gap-3">
                 <Mail className="h-4 w-4" />
-                <span>hello@solarpedia.org.uk</span>
+                <span>hello@solarpedia.co.uk</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-4 w-4" />

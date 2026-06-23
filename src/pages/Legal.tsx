@@ -54,7 +54,7 @@ const Legal: React.FC = () => {
             </p>
 
             <p className="mt-12 text-sm">
-              For full legal inquiries, please contact our data protection officer at <a href="mailto:legal@solarpedia.org.uk" className="text-brand-green font-bold hover:underline">legal@solarpedia.org.uk</a>.
+              For full legal inquiries, please contact our data protection officer at <a href="mailto:legal@solarpedia.co.uk" className="text-brand-green font-bold hover:underline">legal@solarpedia.co.uk</a>.
             </p>
           </div>
         </div>

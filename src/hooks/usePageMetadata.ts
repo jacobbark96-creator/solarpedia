@@ -40,6 +40,14 @@ export const usePageMetadata = (title: string, description: string, image: strin
       document.head.appendChild(ogImage);
     }
     ogImage.setAttribute('content', image);
+
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) {
+      ogUrl = document.createElement('meta');
+      ogUrl.setAttribute('property', 'og:url');
+      document.head.appendChild(ogUrl);
+    }
+    ogUrl.setAttribute('content', window.location.href);
     
     // Add canonical URL
     let canonical = document.querySelector('link[rel="canonical"]');
