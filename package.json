@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "import-installers": "node scripts/import-installers.js",
     "prebuild": "node scripts/generate-sitemap.js",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
