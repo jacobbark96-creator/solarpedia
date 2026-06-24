@@ -77,7 +77,7 @@ const Footer: React.FC = () => {
             <img
               src="/kairo-studio-logo.png"
               alt="Kairo Studio"
-              className="h-8 w-auto brightness-0 invert opacity-90"
+              className="h-12 w-auto brightness-0 invert opacity-90"
             />
           </div>
         </div>
