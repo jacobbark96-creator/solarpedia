@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import { ShieldCheck, Mail, Phone } from 'lucide-react';
 
 const Footer: React.FC = () => {
+  const handleFooterClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer className="bg-brand-navy text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,22 +27,23 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold text-lg mb-6">Explore</h4>
             <ul className="space-y-4 text-brand-accent text-sm">
-              <li><Link to="/solar-panel-quotes" className="hover:text-white transition-colors">Get Solar Quotes</Link></li>
-              <li><Link to="/education" className="hover:text-white transition-colors">Education Hub</Link></li>
-              <li><Link to="/business" className="hover:text-white transition-colors">Solar for Business</Link></li>
-              <li><Link to="/commercial-solar-quotes-uk" className="hover:text-white transition-colors">Commercial Quotes UK</Link></li>
-              <li><Link to="/installers" className="hover:text-white transition-colors">Vetted Installers</Link></li>
-              <li><Link to="/wizard" className="hover:text-white transition-colors">Savings Wizard</Link></li>
+              <li><Link to="/solar-panel-quotes" onClick={handleFooterClick} className="hover:text-white transition-colors">Get Solar Quotes</Link></li>
+              <li><Link to="/best-solar-installers" onClick={handleFooterClick} className="hover:text-white transition-colors">Best Solar Installers</Link></li>
+              <li><Link to="/education" onClick={handleFooterClick} className="hover:text-white transition-colors">Education Hub</Link></li>
+              <li><Link to="/business" onClick={handleFooterClick} className="hover:text-white transition-colors">Solar for Business</Link></li>
+              <li><Link to="/commercial-solar-quotes-uk" onClick={handleFooterClick} className="hover:text-white transition-colors">Commercial Quotes UK</Link></li>
+              <li><Link to="/installers" onClick={handleFooterClick} className="hover:text-white transition-colors">Vetted Installers</Link></li>
+              <li><Link to="/wizard" onClick={handleFooterClick} className="hover:text-white transition-colors">Savings Wizard</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold text-lg mb-6">Resources</h4>
             <ul className="space-y-4 text-brand-accent text-sm">
-              <li><Link to="/education#impartiality" className="hover:text-white transition-colors">How we stay impartial</Link></li>
-              <li><Link to="/education#data" className="hover:text-white transition-colors">Data methodology</Link></li>
-              <li><Link to="/education/article/solar-myths-explained" className="hover:text-white transition-colors">Solar myths explained</Link></li>
-              <li><Link to="/legal/privacy" className="hover:text-white transition-colors">Privacy & GDPR</Link></li>
+              <li><Link to="/education#impartiality" onClick={handleFooterClick} className="hover:text-white transition-colors">How we stay impartial</Link></li>
+              <li><Link to="/education" onClick={handleFooterClick} className="hover:text-white transition-colors">Data methodology</Link></li>
+              <li><Link to="/education/article/solar-myths-explained" onClick={handleFooterClick} className="hover:text-white transition-colors">Solar myths explained</Link></li>
+              <li><Link to="/legal/privacy" onClick={handleFooterClick} className="hover:text-white transition-colors">Privacy & GDPR</Link></li>
             </ul>
           </div>
 
@@ -57,12 +62,28 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
+        <div className="mb-8 rounded-[2rem] border border-white/10 bg-white/5 px-6 py-5">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-accent mb-2">Proudly built by</p>
+          <div className="flex items-center gap-4">
+            <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3">
+              <img
+                src="/kairo-studio-logo.png"
+                alt="Kairo Studio"
+                className="h-12 w-auto brightness-0 invert"
+              />
+            </div>
+            <p className="text-sm text-brand-accent">
+              Design and build partner for Solarpedia.
+            </p>
+          </div>
+        </div>
+
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-brand-accent">
           <p>© {new Date().getFullYear()} Solarpedia UK. All rights reserved. Registered in England & Wales.</p>
           <div className="flex gap-8">
-            <Link to="/legal/terms" className="hover:text-white transition-colors">Terms</Link>
-            <Link to="/legal/privacy" className="hover:text-white transition-colors">Privacy</Link>
-            <Link to="/legal/cookies" className="hover:text-white transition-colors">Cookies</Link>
+            <Link to="/legal/terms" onClick={handleFooterClick} className="hover:text-white transition-colors">Terms</Link>
+            <Link to="/legal/privacy" onClick={handleFooterClick} className="hover:text-white transition-colors">Privacy</Link>
+            <Link to="/legal/cookies" onClick={handleFooterClick} className="hover:text-white transition-colors">Cookies</Link>
           </div>
         </div>
       </div>

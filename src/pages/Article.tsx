@@ -153,6 +153,56 @@ const Article: React.FC = () => {
   const articleDescription = article
     ? `Read Solarpedia's guide to ${article.title.toLowerCase()} with UK-focused analysis, practical context, and buying guidance.`
     : 'Read the full analysis and expert breakdown on Solarpedia.';
+  const relatedArticles = Object.entries(ARTICLES_DB)
+    .filter(([entrySlug, entry]) => entrySlug !== slug && entry.category === article?.category)
+    .slice(0, 3)
+    .map(([entrySlug, entry]) => ({
+      slug: entrySlug,
+      title: entry.title,
+      category: entry.category,
+    }));
+  const nextStepsBySlug: Record<string, { title: string; description: string; link: string; cta: string }[]> = {
+    'solar-myths-explained': [
+      { title: 'Check your savings', description: 'Turn solar theory into a real property-level estimate using the savings wizard.', link: '/wizard', cta: 'Run the wizard' },
+      { title: 'Compare solar quotes', description: 'Move from myth-busting into buyer intent with city quote pages.', link: '/solar-panel-quotes', cta: 'Browse quote pages' },
+      { title: 'Find installers', description: 'Compare MCS-certified installers before you request proposals.', link: '/installers', cta: 'Browse installers' },
+    ],
+    'is-solar-worth-it-uk': [
+      { title: 'Get a tailored estimate', description: 'Use your postcode, roof details, and usage pattern to assess likely savings.', link: '/wizard', cta: 'Check your savings' },
+      { title: 'Get solar panel quotes', description: 'Compare local quote pages and installer availability by city.', link: '/solar-panel-quotes', cta: 'Compare quotes' },
+      { title: 'Read installation costs', description: 'Go deeper on price drivers before comparing proposals.', link: '/education/article/solar-panel-installation-cost-uk', cta: 'Read cost guide' },
+    ],
+    'seg-explained': [
+      { title: 'Review installation costs', description: 'Understand how export income fits into full installation economics.', link: '/education/article/solar-panel-installation-cost-uk', cta: 'Read cost guide' },
+      { title: 'Find local installers', description: 'Use the installer directory to shortlist MCS-certified providers.', link: '/installers', cta: 'View installers' },
+      { title: 'Check your likely savings', description: 'Estimate self-consumption and export assumptions for your own property.', link: '/wizard', cta: 'Run the wizard' },
+    ],
+    'solar-panel-installation-cost-uk': [
+      { title: 'Compare solar quotes', description: 'Use city quote pages to move from rough budget expectations to live quote collection.', link: '/solar-panel-quotes', cta: 'Compare quotes' },
+      { title: 'Find the best installers', description: 'Review installer pages before choosing who should quote your property.', link: '/best-solar-installers', cta: 'Compare installers' },
+      { title: 'Check your likely payback', description: 'Use your own bill, roof size, and usage pattern to model annual savings.', link: '/wizard', cta: 'Check payback' },
+    ],
+    'battery-storage-worth-it-uk': [
+      { title: 'Check your savings with a battery', description: 'Model the effect battery storage has on self-consumption and payback.', link: '/wizard', cta: 'Model battery savings' },
+      { title: 'Read SEG guidance', description: 'Understand how export tariffs interact with battery strategy.', link: '/education/article/seg-explained', cta: 'Read SEG guide' },
+      { title: 'Get quotes from installers', description: 'Compare proposals that include both panels and battery storage.', link: '/solar-panel-quotes', cta: 'Get quotes' },
+    ],
+    'commercial-solar-for-business-uk': [
+      { title: 'Get commercial solar quotes', description: 'Move directly into a business-focused quote flow for UK sites.', link: '/commercial-solar-quotes-uk', cta: 'Get commercial quotes' },
+      { title: 'Explore business solar', description: 'Read the commercial overview page covering ROI, sectors, and buying factors.', link: '/business', cta: 'Explore business solar' },
+      { title: 'Browse installers', description: 'Shortlist MCS-certified providers before requesting commercial proposals.', link: '/installers', cta: 'Browse installers' },
+    ],
+    'planning-permission-for-solar-uk': [
+      { title: 'Find local installers', description: 'Speak to installers who can advise on surveys, compliance, and design constraints.', link: '/installers', cta: 'View installers' },
+      { title: 'Compare city quote pages', description: 'Move into the quote journey once you understand likely restrictions.', link: '/solar-panel-quotes', cta: 'Compare quotes' },
+      { title: 'Read business solar guidance', description: 'Commercial sites often face added landlord, structural, and planning complexity.', link: '/business', cta: 'Read business solar guidance' },
+    ],
+  };
+  const nextSteps = nextStepsBySlug[slug || ''] || [
+    { title: 'Check your solar savings', description: 'Use the wizard to move from research into a tailored property estimate.', link: '/wizard', cta: 'Run the wizard' },
+    { title: 'Compare solar quotes', description: 'Browse city quote pages and move closer to live installer proposals.', link: '/solar-panel-quotes', cta: 'Compare quotes' },
+    { title: 'Browse installers', description: 'Review MCS-certified installers and shortlist providers to contact.', link: '/installers', cta: 'Browse installers' },
+  ];
 
   usePageMetadata({
     title: article?.title || 'Article Not Found',
@@ -228,6 +278,65 @@ const Article: React.FC = () => {
             className="prose prose-brand max-w-none text-brand-muted prose-headings:text-brand-navy prose-headings:font-serif prose-h2:text-2xl prose-h2:font-bold prose-h2:mt-12 prose-h2:mb-5 prose-p:leading-8 prose-p:my-7 prose-ul:my-7 prose-li:my-2"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
+
+          <div className="mt-12 rounded-[2rem] border border-brand-accent bg-brand-accent/20 p-8">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-3">Next steps</p>
+            <h2 className="text-3xl font-serif font-bold text-brand-navy mb-6">Move from research to action</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {nextSteps.map((item) => (
+                <div key={item.title} className="rounded-[1.5rem] border border-brand-accent bg-white p-5">
+                  <h3 className="text-xl font-serif font-bold text-brand-navy mb-3">{item.title}</h3>
+                  <p className="text-sm text-brand-muted leading-relaxed mb-4">{item.description}</p>
+                  <Link to={item.link} className="text-sm font-bold text-brand-navy hover:text-brand-green transition-colors">
+                    {item.cta}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {relatedArticles.length > 0 && (
+            <div className="mt-10">
+              <h2 className="text-3xl font-serif font-bold text-brand-navy mb-6">Related reading</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {relatedArticles.map((related) => (
+                  <Link
+                    key={related.slug}
+                    to={`/education/article/${related.slug}`}
+                    className="rounded-[1.5rem] border border-brand-accent bg-white p-5 hover:border-brand-navy transition-colors"
+                  >
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-2">{related.category}</p>
+                    <h3 className="text-lg font-serif font-bold text-brand-navy">{related.title}</h3>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-10 rounded-[2rem] border border-brand-accent bg-white p-8">
+            <h2 className="text-3xl font-serif font-bold text-brand-navy mb-6">Common questions</h2>
+            <div className="space-y-5">
+              {[
+                {
+                  question: `How should I use this ${article.category.toLowerCase()} guide?`,
+                  answer: 'Use it as a decision-support page, then move into the savings wizard, quote pages, or installer directory depending on how close you are to buying.',
+                },
+                {
+                  question: 'Should I compare quotes before speaking to installers?',
+                  answer: 'Yes. Shortlisting installers, understanding likely costs, and knowing your roof and usage assumptions will usually lead to stronger and more comparable proposals.',
+                },
+                {
+                  question: 'What is the next best step after reading this article?',
+                  answer: 'If you are still researching, continue through the education hub. If you are moving toward purchase, use the wizard or city quote pages so you can compare real options.',
+                },
+              ].map((faq) => (
+                <div key={faq.question}>
+                  <h3 className="text-xl font-serif font-bold text-brand-navy mb-2">{faq.question}</h3>
+                  <p className="text-brand-muted leading-relaxed">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </article>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { NATIONAL_AVERAGES } from '../data/mockData';
 import UKMap from '../components/UKMap';
 import { useLiveNews } from '../hooks/useLiveNews';
+import cities from '../data/ukCities.json';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { createBreadcrumbSchema, createWebsiteSchema } from '../lib/seo';
@@ -27,6 +28,7 @@ const Home: React.FC = () => {
   });
   const [energyPrice, setEnergyPrice] = useState(NATIONAL_AVERAGES.energyPrice);
   const { news: liveNews, loading: newsLoading } = useLiveNews();
+  const topCityPages = (cities as { name: string; slug: string }[]).slice(0, 6);
 
   return (
     <div className="bg-brand-white">
@@ -232,6 +234,114 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* SEO Hub Section */}
+      <section className="py-24 bg-white border-y border-brand-accent">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mb-14">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-3">
+              Popular solar searches
+            </p>
+            <h2 className="text-4xl font-serif font-bold text-brand-navy mb-5">
+              Explore solar quotes, installers, and business solar in one place
+            </h2>
+            <p className="text-lg text-brand-muted leading-relaxed">
+              Solarpedia is built to answer both research-stage and buyer-stage searches. Whether you want to understand solar costs, compare installers, or request commercial solar quotes, start from the hub that matches your intent.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+            {[
+              {
+                title: 'Solar panel quotes by city',
+                desc: 'Compare local quote pages, postcode-led routing, and installer availability in the UK cities we cover.',
+                link: '/solar-panel-quotes',
+                cta: 'Browse quote pages',
+              },
+              {
+                title: 'Best solar installers by city',
+                desc: 'Use city installer pages and directory content to compare providers, credentials, and next-step actions.',
+                link: '/best-solar-installers',
+                cta: 'Compare installers',
+              },
+              {
+                title: 'Commercial solar quotes UK',
+                desc: 'Find commercial solar guidance for warehouses, offices, schools, farms, retail sites, and industrial premises.',
+                link: '/commercial-solar-quotes-uk',
+                cta: 'View commercial quotes',
+              },
+            ].map((item) => (
+              <div key={item.title} className="bg-brand-white rounded-[2rem] border border-brand-accent p-8">
+                <h3 className="text-2xl font-serif font-bold text-brand-navy mb-4">{item.title}</h3>
+                <p className="text-brand-muted leading-relaxed mb-6">{item.desc}</p>
+                <Link to={item.link} className="inline-flex items-center gap-2 text-brand-navy font-bold hover:text-brand-green transition-colors">
+                  {item.cta}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-brand-accent/20 rounded-[2rem] p-8">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              <div>
+                <h3 className="text-2xl font-serif font-bold text-brand-navy mb-3">Top city quote searches</h3>
+                <p className="text-brand-muted">These city pages help users looking for local solar panel quotes and installer comparisons.</p>
+              </div>
+              <Link to="/solar-panel-quotes" className="text-brand-navy font-bold hover:text-brand-green transition-colors">
+                View all city quote pages
+              </Link>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {topCityPages.map((city) => (
+                <Link
+                  key={city.slug}
+                  to={`/solar-panel-quotes/${city.slug}`}
+                  className="rounded-full border border-brand-accent bg-white px-4 py-2 text-sm font-semibold text-brand-navy hover:border-brand-navy transition-colors"
+                >
+                  Solar panel quotes {city.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 bg-brand-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-serif font-bold text-brand-navy mb-4">Frequently asked solar questions</h2>
+            <p className="text-lg text-brand-muted">
+              These are some of the most common questions people ask before comparing quotes or speaking to installers.
+            </p>
+          </div>
+          <div className="space-y-5">
+            {[
+              {
+                question: 'Is solar worth it in the UK?',
+                answer:
+                  'For many homes and businesses, yes. The answer depends on roof area, direction, daytime electricity use, battery plans, and local installation costs.',
+              },
+              {
+                question: 'How much do solar panels cost in the UK?',
+                answer:
+                  'Costs vary by system size, roof complexity, battery storage, scaffolding, and electrical upgrades. That is why city quote pages and the savings wizard are useful starting points.',
+              },
+              {
+                question: 'How do I compare solar installers properly?',
+                answer:
+                  'Check MCS certification, survey quality, workmanship warranties, projected generation, battery specification, monitoring, and aftercare support rather than comparing only the headline price.',
+              },
+            ].map((item) => (
+              <div key={item.question} className="rounded-[2rem] border border-brand-accent bg-white p-8">
+                <h3 className="text-2xl font-serif font-bold text-brand-navy mb-3">{item.question}</h3>
+                <p className="text-brand-muted leading-relaxed">{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Trust & Transparency Section */}
       <section className="py-24 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -296,6 +406,45 @@ const Home: React.FC = () => {
                 {/* Decorative blob */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-brand-yellow/10 rounded-full blur-[120px] -z-0" />
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Methodology Section */}
+      <section id="data" className="py-24 bg-white border-t border-brand-accent">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-[3rem] border border-brand-accent bg-brand-accent/20 p-10 md:p-14">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-3">Data methodology</p>
+            <h2 className="text-4xl font-serif font-bold text-brand-navy mb-6">How Solarpedia builds its solar estimates</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  title: 'Energy assumptions',
+                  desc: 'We model savings using current UK electricity pricing benchmarks, tariff assumptions, and estimated self-consumption behaviour.',
+                },
+                {
+                  title: 'Property inputs',
+                  desc: 'Postcode, roof area, orientation, usage pattern, and battery preference all shape the estimate you see on the results page.',
+                },
+                {
+                  title: 'Commercial intent routing',
+                  desc: 'Quote and installer pages are organised to help users move from research into city-level and commercial quote journeys quickly.',
+                },
+              ].map((item) => (
+                <div key={item.title} className="rounded-[2rem] border border-brand-accent bg-white p-6">
+                  <h3 className="text-xl font-serif font-bold text-brand-navy mb-3">{item.title}</h3>
+                  <p className="text-brand-muted leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <Link to="/education" className="bg-brand-navy text-white px-8 py-4 rounded-full font-bold text-base hover:shadow-xl transition-all text-center">
+                Explore solar guides
+              </Link>
+              <Link to="/wizard" className="bg-white border border-brand-accent text-brand-navy px-8 py-4 rounded-full font-bold text-base hover:border-brand-navy transition-all text-center">
+                Run the savings wizard
+              </Link>
             </div>
           </div>
         </div>

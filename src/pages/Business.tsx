@@ -50,8 +50,8 @@ const Business: React.FC = () => {
                   Get Commercial Estimate
                   <ArrowRight className="h-5 w-5" />
                 </Link>
-                <Link to="/education" className="bg-white/5 border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center">
-                  View Case Studies
+                <Link to="/commercial-solar-quotes-uk" className="bg-white/5 border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center">
+                  Get Commercial Quotes
                 </Link>
               </div>
             </div>
@@ -78,6 +78,42 @@ const Business: React.FC = () => {
         </div>
       </section>
 
+      <section className="py-16 border-b border-brand-accent bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              {
+                title: 'Commercial Solar Quotes UK',
+                desc: 'Move from research to supplier outreach with postcode-routed commercial quote pages.',
+                link: '/commercial-solar-quotes-uk',
+                cta: 'View quote page',
+              },
+              {
+                title: 'Commercial Solar Article',
+                desc: 'Read what matters most for UK business solar procurement, forecasting, and operational fit.',
+                link: '/education/article/commercial-solar-for-business-uk',
+                cta: 'Read the guide',
+              },
+              {
+                title: 'Installer Discovery',
+                desc: 'Search the installer directory and shortlist MCS-certified providers before requesting proposals.',
+                link: '/installers',
+                cta: 'Browse installers',
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-[2rem] border border-brand-accent bg-brand-white p-6">
+                <h2 className="text-2xl font-serif font-bold text-brand-navy mb-3">{item.title}</h2>
+                <p className="text-brand-muted leading-relaxed mb-5">{item.desc}</p>
+                <Link to={item.link} className="inline-flex items-center gap-2 text-brand-navy font-bold hover:text-brand-green transition-colors">
+                  {item.cta}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Commercial Types */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
@@ -100,6 +136,50 @@ const Business: React.FC = () => {
               <p className="text-sm text-brand-muted leading-relaxed">{type.feature}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="py-24 bg-brand-white border-t border-brand-accent">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mb-12">
+            <h2 className="text-4xl font-serif font-bold text-brand-navy mb-4">What commercial buyers need to evaluate</h2>
+            <p className="text-brand-muted text-lg leading-relaxed">
+              Business buyers usually care about more than generation alone. Procurement readiness, export constraints, site access, and installation phasing all influence whether a commercial solar project gets approved quickly.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                title: 'Load profile',
+                desc: 'Daytime demand is one of the biggest drivers of value because it determines how much solar power you can use on site.',
+              },
+              {
+                title: 'Roof condition',
+                desc: 'Age, structure, waterproofing, and access can change project design, cost, and programme risk.',
+              },
+              {
+                title: 'Export limits',
+                desc: 'DNO constraints and metering arrangements can materially affect final system size and commercial returns.',
+              },
+              {
+                title: 'Procurement route',
+                desc: 'CAPEX, finance, or PPA structures each create different approval pathways and risk considerations.',
+              },
+              {
+                title: 'Operational disruption',
+                desc: 'Installers should explain crane access, working hours, electrical shutdown windows, and health-and-safety sequencing.',
+              },
+              {
+                title: 'Aftercare and monitoring',
+                desc: 'Commercial systems need reporting, fault visibility, and maintenance expectations agreed up front.',
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-[2rem] border border-brand-accent bg-white p-6">
+                <h3 className="text-xl font-serif font-bold text-brand-navy mb-3">{item.title}</h3>
+                <p className="text-brand-muted leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

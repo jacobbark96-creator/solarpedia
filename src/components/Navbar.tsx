@@ -4,6 +4,10 @@ import { Menu, X } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const handleNavClick = () => {
+    setIsOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <nav className="bg-brand-white border-b border-brand-accent sticky top-0 z-50">
@@ -16,9 +20,12 @@ const Navbar: React.FC = () => {
           </div>
           
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="/education" className="text-brand-navy hover:text-brand-green text-sm font-medium transition-colors">Education</Link>
-            <Link to="/business" className="text-brand-navy hover:text-brand-green text-sm font-medium transition-colors">Business</Link>
-            <Link to="/installers" className="text-brand-navy hover:text-brand-green text-sm font-medium transition-colors">Installers</Link>
+            <Link to="/solar-panel-quotes" onClick={handleNavClick} className="text-brand-navy hover:text-brand-green text-sm font-medium transition-colors">Quotes</Link>
+            <Link to="/best-solar-installers" onClick={handleNavClick} className="text-brand-navy hover:text-brand-green text-sm font-medium transition-colors">Best Installers</Link>
+            <Link to="/education" onClick={handleNavClick} className="text-brand-navy hover:text-brand-green text-sm font-medium transition-colors">Education</Link>
+            <Link to="/business" onClick={handleNavClick} className="text-brand-navy hover:text-brand-green text-sm font-medium transition-colors">Business</Link>
+            <Link to="/commercial-solar-quotes-uk" onClick={handleNavClick} className="text-brand-navy hover:text-brand-green text-sm font-medium transition-colors">Commercial</Link>
+            <Link to="/installers" onClick={handleNavClick} className="text-brand-navy hover:text-brand-green text-sm font-medium transition-colors">Installers</Link>
             <Link to="/wizard" className="bg-brand-navy text-white px-5 py-1.5 rounded-full text-sm font-semibold hover:bg-opacity-90 transition-all shadow-sm">
               Check Savings
             </Link>
@@ -35,10 +42,13 @@ const Navbar: React.FC = () => {
       {/* Mobile menu */}
       {isOpen && (
         <div className="md:hidden bg-brand-white border-b border-brand-accent py-4 px-4 space-y-4 shadow-lg">
-          <Link to="/education" className="block text-brand-navy font-medium" onClick={() => setIsOpen(false)}>Education</Link>
-          <Link to="/business" className="block text-brand-navy font-medium" onClick={() => setIsOpen(false)}>Business</Link>
-          <Link to="/installers" className="block text-brand-navy font-medium" onClick={() => setIsOpen(false)}>Installers</Link>
-          <Link to="/wizard" className="block bg-brand-navy text-white px-6 py-2 rounded-full text-center font-semibold" onClick={() => setIsOpen(false)}>
+          <Link to="/solar-panel-quotes" className="block text-brand-navy font-medium" onClick={handleNavClick}>Solar Quotes</Link>
+          <Link to="/best-solar-installers" className="block text-brand-navy font-medium" onClick={handleNavClick}>Best Installers</Link>
+          <Link to="/education" className="block text-brand-navy font-medium" onClick={handleNavClick}>Education</Link>
+          <Link to="/business" className="block text-brand-navy font-medium" onClick={handleNavClick}>Business</Link>
+          <Link to="/commercial-solar-quotes-uk" className="block text-brand-navy font-medium" onClick={handleNavClick}>Commercial Quotes</Link>
+          <Link to="/installers" className="block text-brand-navy font-medium" onClick={handleNavClick}>Installers</Link>
+          <Link to="/wizard" className="block bg-brand-navy text-white px-6 py-2 rounded-full text-center font-semibold" onClick={handleNavClick}>
             Check Savings
           </Link>
         </div>
