@@ -62,28 +62,23 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mb-8 rounded-[2rem] border border-white/10 bg-white/5 px-6 py-5">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-accent mb-2">Proudly built by</p>
-          <div className="flex items-center gap-4">
-            <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3">
-              <img
-                src="/kairo-studio-logo.png"
-                alt="Kairo Studio"
-                className="h-12 w-auto brightness-0 invert"
-              />
+        <div className="border-t border-white/10 pt-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between text-sm text-brand-accent">
+          <div className="flex flex-col gap-4 lg:max-w-2xl">
+            <p>© {new Date().getFullYear()} Solarpedia UK. All rights reserved. Registered in England & Wales.</p>
+            <div className="flex flex-wrap gap-x-8 gap-y-3">
+              <Link to="/legal/terms" onClick={handleFooterClick} className="hover:text-white transition-colors">Terms</Link>
+              <Link to="/legal/privacy" onClick={handleFooterClick} className="hover:text-white transition-colors">Privacy</Link>
+              <Link to="/legal/cookies" onClick={handleFooterClick} className="hover:text-white transition-colors">Cookies</Link>
             </div>
-            <p className="text-sm text-brand-accent">
-              Design and build partner for Solarpedia.
-            </p>
           </div>
-        </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-brand-accent">
-          <p>© {new Date().getFullYear()} Solarpedia UK. All rights reserved. Registered in England & Wales.</p>
-          <div className="flex gap-8">
-            <Link to="/legal/terms" onClick={handleFooterClick} className="hover:text-white transition-colors">Terms</Link>
-            <Link to="/legal/privacy" onClick={handleFooterClick} className="hover:text-white transition-colors">Privacy</Link>
-            <Link to="/legal/cookies" onClick={handleFooterClick} className="hover:text-white transition-colors">Cookies</Link>
+          <div className="flex items-center gap-3 lg:justify-end">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-accent/80">Proudly built by</span>
+            <img
+              src="/kairo-studio-logo.png"
+              alt="Kairo Studio"
+              className="h-8 w-auto brightness-0 invert opacity-90"
+            />
           </div>
         </div>
       </div>
