@@ -74,11 +74,19 @@ const Footer: React.FC = () => {
 
           <div className="flex items-center gap-3 lg:justify-end">
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-accent/80">Proudly built by</span>
-            <img
-              src="/kairo-studio-logo.png"
-              alt="Kairo Studio"
-              className="h-12 w-auto brightness-0 invert opacity-90"
-            />
+            <a
+              href="https://kairostudio.co.uk"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Kairo Studio"
+              className="transition-opacity hover:opacity-100"
+            >
+              <img
+                src="/kairo-studio-logo.png"
+                alt="Kairo Studio"
+                className="h-[62px] w-auto brightness-0 invert opacity-90"
+              />
+            </a>
           </div>
         </div>
       </div>
