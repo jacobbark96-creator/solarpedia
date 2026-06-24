@@ -218,26 +218,26 @@ export function getSolarQuotesCitySeo(city: City) {
 
 export function getInstallerHubSeo() {
   return {
-    title: 'Best Solar Installers by City',
+    title: 'Local Solar Installers by City',
     description:
-      'Find the best solar installers by UK city, compare MCS-certified providers, and request quotes from companies covering your area.',
+      'Find local solar installers by UK city, compare MCS-certified providers, and request quotes from companies covering your area.',
     path: '/best-solar-installers',
-    h1: 'Best solar installers by UK city',
+    h1: 'Local solar installers by UK city',
     intro:
       'Browse UK city pages to compare local solar installers, shortlist MCS-certified companies, and move into quote collection faster.',
     keywords:
-      'best solar installers UK, best solar installers by city, compare solar installers, local solar installers',
+      'local solar installers UK, local solar installers by city, compare solar installers, solar companies near me',
   };
 }
 
 export function getInstallerCitySeo(city: City) {
   return {
-    title: `Best Solar Installers ${city.name} | Compare Local Companies`,
-    description: `Find the best solar installers in ${city.name}. Compare local companies, review MCS-certified options, and request quotes matched to your postcode.`,
+    title: `Local Solar Installers ${city.name} | Compare Local Companies`,
+    description: `Find local solar installers in ${city.name}. Compare local companies, review MCS-certified options, and request quotes matched to your postcode.`,
     path: `/best-solar-installers/${city.slug}`,
-    h1: `Best solar installers in ${city.name}`,
+    h1: `Local solar installers in ${city.name}`,
     intro: `Use this ${city.name} solar installer guide to compare local companies, check credentials, and move into quote requests with stronger shortlist criteria.`,
-    keywords: `best solar installers ${city.name}, solar installers ${city.name}, local solar companies ${city.name}`,
+    keywords: `local solar installers ${city.name}, solar installers ${city.name}, local solar companies ${city.name}`,
   };
 }
 

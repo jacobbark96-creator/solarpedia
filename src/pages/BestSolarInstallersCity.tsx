@@ -52,11 +52,11 @@ const BestSolarInstallersCity: React.FC = () => {
   } : null;
 
   usePageMetadata({
-    title: seo?.title || 'Best Solar Installers',
+    title: seo?.title || 'Local Solar Installers',
     description:
-      seo?.description || 'Find the best solar installers near you and request up to 3 free quotes.',
+      seo?.description || 'Find local solar installers near you and request up to 3 free quotes.',
     path: seo?.path || '/best-solar-installers',
-    keywords: seo?.keywords || 'best solar installers UK',
+    keywords: seo?.keywords || 'local solar installers UK',
     noindex: !city,
     schema: city
       ? [
@@ -69,13 +69,13 @@ const BestSolarInstallersCity: React.FC = () => {
           }),
           createBreadcrumbSchema([
             { name: 'Home', path: '/' },
-            { name: 'Best Solar Installers', path: '/best-solar-installers' },
+            { name: 'Local Solar Installers', path: '/best-solar-installers' },
             { name: city.name, path: seo.path },
           ]),
         ]
       : createBreadcrumbSchema([
           { name: 'Home', path: '/' },
-          { name: 'Best Solar Installers', path: '/best-solar-installers' },
+          { name: 'Local Solar Installers', path: '/best-solar-installers' },
         ]),
   });
 
@@ -103,7 +103,7 @@ const BestSolarInstallersCity: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-12">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-3">
-            Best solar installers {city.name}
+            Local solar installers {city.name}
           </p>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-5">
             {seo?.h1}
@@ -202,7 +202,7 @@ const BestSolarInstallersCity: React.FC = () => {
                       to={`/best-solar-installers/${c.slug}`}
                       className="block bg-brand-white border border-brand-accent rounded-2xl px-4 py-3 hover:border-brand-navy transition-colors"
                     >
-                      <div className="text-sm font-bold text-brand-navy">Best installers {c.name}</div>
+                      <div className="text-sm font-bold text-brand-navy">Local installers {c.name}</div>
                     </Link>
                   ))}
               </div>

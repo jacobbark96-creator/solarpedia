@@ -154,7 +154,7 @@ const SolarPanelQuotesCity: React.FC = () => {
                   to={`/best-solar-installers/${city.slug}`}
                   className="bg-white border border-brand-accent text-brand-navy px-8 py-4 rounded-full font-bold text-base hover:border-brand-navy transition-all text-center"
                 >
-                  Best installers {city.name}
+                  Local installers {city.name}
                 </Link>
               </div>
             </div>

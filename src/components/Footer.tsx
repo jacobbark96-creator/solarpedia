@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
             <h4 className="font-bold text-lg mb-6">Explore</h4>
             <ul className="space-y-4 text-brand-accent text-sm">
               <li><Link to="/solar-panel-quotes" onClick={handleFooterClick} className="hover:text-white transition-colors">Get Solar Quotes</Link></li>
-              <li><Link to="/best-solar-installers" onClick={handleFooterClick} className="hover:text-white transition-colors">Best Solar Installers</Link></li>
+              <li><Link to="/best-solar-installers" onClick={handleFooterClick} className="hover:text-white transition-colors">Local Solar Installers</Link></li>
               <li><Link to="/education" onClick={handleFooterClick} className="hover:text-white transition-colors">Education Hub</Link></li>
               <li><Link to="/business" onClick={handleFooterClick} className="hover:text-white transition-colors">Solar for Business</Link></li>
               <li><Link to="/commercial-solar-quotes-uk" onClick={handleFooterClick} className="hover:text-white transition-colors">Commercial Quotes UK</Link></li>

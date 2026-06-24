@@ -179,7 +179,7 @@ const Article: React.FC = () => {
     ],
     'solar-panel-installation-cost-uk': [
       { title: 'Compare solar quotes', description: 'Use city quote pages to move from rough budget expectations to live quote collection.', link: '/solar-panel-quotes', cta: 'Compare quotes' },
-      { title: 'Find the best installers', description: 'Review installer pages before choosing who should quote your property.', link: '/best-solar-installers', cta: 'Compare installers' },
+      { title: 'Find local installers', description: 'Review installer pages before choosing who should quote your property.', link: '/best-solar-installers', cta: 'Compare installers' },
       { title: 'Check your likely payback', description: 'Use your own bill, roof size, and usage pattern to model annual savings.', link: '/wizard', cta: 'Check payback' },
     ],
     'battery-storage-worth-it-uk': [

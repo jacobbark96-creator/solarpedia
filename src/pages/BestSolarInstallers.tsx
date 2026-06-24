@@ -34,7 +34,7 @@ const BestSolarInstallers: React.FC = () => {
       }),
       createBreadcrumbSchema([
         { name: 'Home', path: '/' },
-        { name: 'Best Solar Installers', path: seo.path },
+        { name: 'Local Solar Installers', path: seo.path },
       ]),
     ],
   });
@@ -62,7 +62,7 @@ const BestSolarInstallers: React.FC = () => {
               className="bg-white border border-brand-accent rounded-[2rem] p-6 hover:border-brand-navy hover:-translate-y-0.5 transition-all"
             >
               <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-2">
-                Best solar installers
+                Local solar installers
               </div>
               <div className="text-xl font-serif font-bold text-brand-navy">{city.name}</div>
             </Link>

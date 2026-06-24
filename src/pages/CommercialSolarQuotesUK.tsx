@@ -107,7 +107,7 @@ const CommercialSolarQuotesUK: React.FC = () => {
                   to="/best-solar-installers"
                   className="block bg-brand-white border border-brand-accent rounded-2xl px-4 py-3 hover:border-brand-navy transition-colors"
                 >
-                  <div className="text-sm font-bold text-brand-navy">Best solar installers by city</div>
+                  <div className="text-sm font-bold text-brand-navy">Local solar installers by city</div>
                 </Link>
                 <Link
                   to="/installers"

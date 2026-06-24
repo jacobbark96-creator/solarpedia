@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  ArrowRight, TrendingUp, Shield, MapPin, Zap, ShieldCheck, Scale, 
-  Database, Search, Newspaper, ChevronRight, Info, Calendar
+  ArrowRight, TrendingUp, Shield, Zap, ShieldCheck, Scale,
+  Database, Newspaper, ChevronRight, Info, Calendar
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { NATIONAL_AVERAGES } from '../data/mockData';
@@ -26,7 +26,6 @@ const Home: React.FC = () => {
       createBreadcrumbSchema([{ name: 'Home', path: '/' }]),
     ],
   });
-  const [energyPrice, setEnergyPrice] = useState(NATIONAL_AVERAGES.energyPrice);
   const { news: liveNews, loading: newsLoading } = useLiveNews();
   const topCityPages = (cities as { name: string; slug: string }[]).slice(0, 6);
 
@@ -258,7 +257,7 @@ const Home: React.FC = () => {
                 cta: 'Browse quote pages',
               },
               {
-                title: 'Best solar installers by city',
+                title: 'Local solar installers by city',
                 desc: 'Use city installer pages and directory content to compare providers, credentials, and next-step actions.',
                 link: '/best-solar-installers',
                 cta: 'Compare installers',
@@ -391,7 +390,7 @@ const Home: React.FC = () => {
                     { label: 'Transparent', desc: 'Open data policy' },
                     { label: 'Vetted', desc: 'Strict MCS audit' },
                     { label: 'Consumer-First', desc: 'Which? inspired UX' },
-                  ].map((stat, i) => (
+                  ].map((stat) => (
                     <motion.div 
                       key={stat.label} 
                       whileHover={{ scale: 1.05 }}
