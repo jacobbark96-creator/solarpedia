@@ -1,7 +1,7 @@
 export const currentMonth = new Date().toLocaleString('default', { month: 'long' });
 export const currentYear = new Date().getFullYear();
 
-export type ArticleData = {
+export interface ArticleData {
   title: string;
   category: string;
   date: string;
@@ -9,7 +9,14 @@ export type ArticleData = {
   readTime: string;
   aiSummary: string;
   content: string;
-};
+  widget?: 'BatteryROI' | 'SystemSize' | 'RoofSuitability' | 'EVCharging' | 'ExportTariff';
+  nextSteps?: Array<{
+    title: string;
+    description: string;
+    link: string;
+    cta: string;
+  }>;
+}
 
 export const ARTICLES_DB: Record<string, ArticleData> = {
   'solar-myths-explained': {
@@ -37,6 +44,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     author: 'Solarpedia Analysis Team',
     readTime: '8 min read',
     aiSummary: 'Yes, for most unshaded South, East, or West-facing roofs. High energy prices (around 24.67p/kWh) and export tariffs (up to 15p/kWh) make it viable. Pairing with a battery can increase self-consumption from 40% to 75%.',
+    widget: 'RoofSuitability',
     content: `
       <p>The short answer is: for most homeowners with an unshaded South, East, or West-facing roof, yes.</p>
       
@@ -61,6 +69,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     author: 'Solarpedia Analysis Team',
     readTime: '10 min read',
     aiSummary: 'The SEG requires large energy suppliers to pay you for exported solar energy. Rates vary from 1p to 15p/kWh, so shopping around is essential. You need an MCS-certified installation and a smart meter to qualify.',
+    widget: 'ExportTariff',
     content: `
       <h2>What is the SEG?</h2>
       <p>The Smart Export Guarantee (SEG) is a government-backed initiative that requires large energy suppliers to pay you for the renewable electricity you export to the National Grid.</p>
@@ -78,7 +87,8 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     date: `${currentMonth} ${currentYear}`,
     author: 'Solarpedia Analysis Team',
     readTime: '7 min read',
-    aiSummary: 'Costs are driven by usable roof space, energy offset goals, battery inclusion, inverter specs, and scaffolding. A simple two-storey roof is cheapest per kWp. Always compare full quotes (including warranties and monitoring) rather than just the headline price.',
+    aiSummary: `System size and battery storage are the biggest drivers of UK solar costs. A standard 4kWp system typically costs £5,500 - £7,000, while adding a 5kWh battery pushes the price to £8,500 - £10,000. Scaffolding, bird protection, and inverter upgrades also affect the final quote. Always compare the expected generation and warranty terms, not just the headline price.`,
+    widget: 'SystemSize',
     content: `
       <p>Solar pricing in the UK varies more than many homeowners expect. The headline figure you see online is rarely the amount you will actually pay once system size, scaffolding, inverter choice, and battery storage are factored in.</p>
 
@@ -110,6 +120,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     author: 'Solarpedia Analysis Team',
     readTime: '6 min read',
     aiSummary: 'Batteries are best for homes with high evening electricity demand, allowing you to store daytime solar. They improve self-consumption and work well with time-of-use tariffs or EVs. They are less compelling if you are home using energy during the day.',
+    widget: 'BatteryROI',
     content: `
       <p>Battery storage is one of the fastest-growing add-ons in UK solar, but it is not automatically the right answer for every property. The value of a battery depends on when you use electricity, how much solar you export, and what tariff you are on.</p>
 
@@ -179,6 +190,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     author: 'Solarpedia Analysis Team',
     readTime: '8 min read',
     aiSummary: 'The ideal solar battery size depends on your evening electricity usage and solar array size. For a typical UK home with a 4kWp array, a 5kWh battery is standard. Avoid oversizing, as it extends the payback period unnecessarily.',
+    widget: 'BatteryROI',
     content: `
       <p>Sizing a solar battery correctly is the most important decision you will make when adding storage to your system. Buy one that is too small, and you will still rely heavily on expensive grid electricity during the evening peak. Buy one that is too large, and you will never fully utilize it, ruining your return on investment.</p>
       
@@ -303,6 +315,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     author: 'Solarpedia Analysis Team',
     readTime: '9 min read',
     aiSummary: 'Octopus Energy dominates the UK export market. Outgoing Octopus offers a flat 12p/kWh, while Octopus Flux offers peak rates of ~30p/kWh between 4pm-7pm. You must have an MCS-certified installation and a smart meter to access these rates.',
+    widget: 'ExportTariff',
     content: `
       <p>Generating your own electricity is great, but getting paid handsomely for the excess energy you send back to the grid transforms the economics of a solar installation. The Smart Export Guarantee (SEG) mandates that large suppliers pay you for exports, but the rates vary wildly from a token 1p to over 30p per kWh.</p>
 

@@ -5,6 +5,21 @@ import { usePageMetadata } from '../hooks/usePageMetadata';
 import { createArticleSchema, createBreadcrumbSchema, createFAQSchema } from '../lib/seo';
 import { ARTICLES_DB, nextStepsBySlug } from '../data/articles';
 
+// Import Widgets
+import BatteryROIWidget from '../components/widgets/BatteryROIWidget';
+import SystemSizeWidget from '../components/widgets/SystemSizeWidget';
+import RoofSuitabilityWidget from '../components/widgets/RoofSuitabilityWidget';
+import EVChargingWidget from '../components/widgets/EVChargingWidget';
+import ExportTariffWidget from '../components/widgets/ExportTariffWidget';
+
+const WidgetMap: Record<string, React.FC> = {
+  BatteryROI: BatteryROIWidget,
+  SystemSize: SystemSizeWidget,
+  RoofSuitability: RoofSuitabilityWidget,
+  EVCharging: EVChargingWidget,
+  ExportTariff: ExportTariffWidget,
+};
+
 const Article: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const article = slug ? ARTICLES_DB[slug] : null;
@@ -80,6 +95,15 @@ const Article: React.FC = () => {
     );
   }
 
+  // Handle widget injection
+  const WidgetComponent = article.widget ? WidgetMap[article.widget] : null;
+  const contentParts = article.content.split(/(<h2.*?>)/i);
+  
+  // If there's an h2, contentParts will be [beforeH2, h2Tag, afterH2, ...]
+  // We inject the widget right before the first h2.
+  const contentBeforeWidget = contentParts[0];
+  const contentAfterWidget = contentParts.length > 1 ? contentParts.slice(1).join('') : '';
+
   return (
     <div className="bg-brand-white min-h-screen pt-12 pb-24">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -133,7 +157,17 @@ const Article: React.FC = () => {
                 <p className="text-brand-muted leading-relaxed m-0">{article.aiSummary}</p>
               </div>
             )}
-            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+            <div dangerouslySetInnerHTML={{ __html: contentBeforeWidget }} />
+            
+            {WidgetComponent && (
+              <div className="my-12 not-prose">
+                <WidgetComponent />
+              </div>
+            )}
+
+            {contentAfterWidget && (
+              <div dangerouslySetInnerHTML={{ __html: contentAfterWidget }} />
+            )}
           </div>
 
           <div className="mt-12 rounded-[2rem] border border-brand-accent bg-brand-accent/20 p-8">
