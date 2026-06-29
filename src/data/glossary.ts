@@ -5,6 +5,18 @@ export type GlossaryTerm = {
 
 export const glossaryData: GlossaryTerm[] = [
   {
+    "term": "AC Coupled Battery",
+    "definition": "A battery system that connects to the alternating current (AC) side of your home wiring, requiring its own separate inverter. Often used when retrofitting batteries to existing solar arrays."
+  },
+  {
+    "term": "Agrivoltaics",
+    "definition": "The co-development of land for both solar photovoltaic power and agriculture, such as raising crops or grazing sheep beneath raised solar panels."
+  },
+  {
+    "term": "Albedo",
+    "definition": "The measure of how much sunlight is reflected by a surface. High albedo surfaces (like snow or white roofs) reflect more light, which can boost the output of bifacial solar panels."
+  },
+  {
     "term": "Alternating Current (AC)",
     "definition": "The standard type of electricity used in homes and supplied by the National Grid. Solar panels generate Direct Current (DC), which an inverter converts into AC."
   },
@@ -33,8 +45,24 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "All the components of a solar PV system other than the panels themselves. This includes the inverter, mounting hardware, wiring, switches, and batteries."
   },
   {
+    "term": "Base Load",
+    "definition": "The minimum level of electricity demand required continuously over a 24-hour period to keep essential appliances running (e.g., fridge, router, standby devices)."
+  },
+  {
     "term": "Battery Energy Storage System (BESS)",
     "definition": "The formal industry term for a home or commercial battery setup used to store excess solar energy."
+  },
+  {
+    "term": "Bifacial Panels",
+    "definition": "Solar panels designed with solar cells on both the front and back, allowing them to capture direct sunlight from above and reflected sunlight from below. Mostly used in ground-mounted or commercial setups."
+  },
+  {
+    "term": "Blackout Protection (EPS)",
+    "definition": "An Emergency Power Supply (EPS) feature that allows a solar battery system to continue powering essential circuits in the house during a grid power cut."
+  },
+  {
+    "term": "Brownout",
+    "definition": "A temporary drop in electrical voltage from the grid, which can cause lights to dim. Advanced solar inverters can protect home appliances from brownouts."
   },
   {
     "term": "Building Integrated Photovoltaics (BIPV)",
@@ -49,12 +77,36 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "The ratio of the actual energy produced by a solar system over a year compared to its maximum possible output if it operated at 100% capacity 24/7."
   },
   {
+    "term": "Cell",
+    "definition": "The basic building block of a solar panel. Most residential solar panels consist of 54, 60, or 72 individual solar cells wired together."
+  },
+  {
     "term": "Charge Controller",
     "definition": "A device used in off-grid or battery systems that regulates the voltage and current coming from the solar panels to prevent the battery from overcharging."
   },
   {
     "term": "Clipping",
     "definition": "When a solar array generates more DC power than the inverter can convert into AC power. The inverter \"clips\" the excess, capping the output at its maximum rating."
+  },
+  {
+    "term": "Conduit",
+    "definition": "The protective tubing (usually PVC or metal) used to safely route electrical wiring from the solar panels on the roof down to the inverter."
+  },
+  {
+    "term": "Current",
+    "definition": "The flow of electrical charge through a conductor, measured in Amperes (Amps)."
+  },
+  {
+    "term": "Curtailment",
+    "definition": "When a solar inverter is forced to reduce its power output below what the panels are capable of generating, usually due to grid voltage limits or export caps set by the DNO."
+  },
+  {
+    "term": "Cycle Life",
+    "definition": "The number of complete charge and discharge cycles a battery can perform before its capacity degrades to a specified percentage (usually 80% or 70% of its original capacity)."
+  },
+  {
+    "term": "DC Coupled Battery",
+    "definition": "A battery system that connects directly to the direct current (DC) side of your solar panels, sharing a single hybrid inverter. Generally more efficient than AC coupled systems."
   },
   {
     "term": "Degradation",
@@ -69,12 +121,28 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "Electricity that flows in one continuous direction. Solar panels and batteries operate on DC, which must be converted to AC for household use."
   },
   {
+    "term": "Disconnect Switch (Isolator)",
+    "definition": "A safety switch used to manually cut off the flow of electricity between the solar panels, the inverter, or the grid. Required by UK electrical regulations."
+  },
+  {
     "term": "DNO (Distribution Network Operator)",
     "definition": "The company that owns and operates the power lines and infrastructure connecting your home to the National Grid. You or your installer must notify them (via G98 or G99 applications) when installing solar."
   },
   {
+    "term": "Dynamic Pricing",
+    "definition": "Electricity tariffs where the price changes frequently (sometimes every 30 minutes) based on wholesale energy costs. Ideal for homes with smart batteries."
+  },
+  {
     "term": "Efficiency",
     "definition": "The percentage of sunlight hitting a solar panel that is converted into usable electricity. Modern panels typically have an efficiency of 20% to 23%."
+  },
+  {
+    "term": "Energy Density",
+    "definition": "The amount of energy stored in a given system or region of space per unit volume. NMC batteries have higher energy density than LFP, making them smaller and lighter."
+  },
+  {
+    "term": "Export Limitation",
+    "definition": "A system setup that actively monitors home energy use and restricts the amount of solar power sent to the grid to comply with strict DNO limits."
   },
   {
     "term": "Export Tariff",
@@ -101,6 +169,10 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "A specific meter installed alongside a solar system to measure the exact amount of electricity the panels produce."
   },
   {
+    "term": "Grid Edge",
+    "definition": "The point where the local electricity distribution network connects to a consumer’s property (e.g., the smart meter)."
+  },
+  {
     "term": "Grid-Tied System",
     "definition": "A solar setup that is connected to the National Grid, allowing you to draw power when the sun isn't shining and export power when you generate a surplus."
   },
@@ -113,6 +185,10 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "A manufacturing technique where standard solar cells are cut in half. This reduces electrical resistance, improves efficiency, and makes the panel perform better in partial shade."
   },
   {
+    "term": "Hertz (Hz)",
+    "definition": "The unit of frequency. In the UK, the standard AC electrical grid operates at a frequency of 50 Hz."
+  },
+  {
     "term": "Hybrid Inverter",
     "definition": "An inverter that can simultaneously manage inputs from solar panels and inputs/outputs from a battery storage system. It acts as the central brain for a modern solar-plus-storage setup."
   },
@@ -121,12 +197,28 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "A measure of solar radiation energy received on a given surface area in a given time. Often expressed in kWh/m²/day."
   },
   {
+    "term": "Interconnection",
+    "definition": "The physical and legal process of connecting a home solar PV system to the National Grid."
+  },
+  {
     "term": "Inverter",
     "definition": "The core component that converts the Direct Current (DC) electricity generated by solar panels into Alternating Current (AC) electricity used by home appliances."
   },
   {
+    "term": "Inverter Efficiency",
+    "definition": "The ratio of usable AC output power to DC input power. High-quality string inverters typically operate at 97% to 98% efficiency."
+  },
+  {
     "term": "Irradiance",
     "definition": "The instantaneous power of solar radiation per unit area, usually measured in Watts per square meter (W/m²)."
+  },
+  {
+    "term": "Islanding",
+    "definition": "A dangerous condition where a grid-tied solar system continues to supply power to the local grid during a wider power outage."
+  },
+  {
+    "term": "Junction Box",
+    "definition": "An enclosure attached to the back of a solar panel that houses the electrical connections and bypass diodes."
   },
   {
     "term": "Kilowatt (kW)",
@@ -149,8 +241,16 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "The safest and longest-lasting lithium-ion battery chemistry currently used in home solar storage, offering thousands of cycles with minimal degradation."
   },
   {
+    "term": "Lifecycle Assessment (LCA)",
+    "definition": "The evaluation of the environmental impacts associated with all stages of a solar panel’s life, from raw material extraction through materials processing, manufacture, distribution, use, and recycling."
+  },
+  {
     "term": "Load",
     "definition": "The electrical demand placed on a system by appliances, lights, and other devices."
+  },
+  {
+    "term": "Maximum Power Point (MPP)",
+    "definition": "The exact point on a solar panel's voltage-current curve where it produces the absolute maximum electrical power."
   },
   {
     "term": "Microgeneration Certification Scheme (MCS)",
@@ -169,6 +269,10 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "Technology built into inverters and charge controllers that constantly adjusts the voltage and current to extract the absolute maximum power from the solar panels in changing weather."
   },
   {
+    "term": "N-Type Silicon",
+    "definition": "A newer, more advanced type of silicon wafer manufacturing that treats the silicon with phosphorus. N-type panels degrade slower and perform better in high heat than older P-type panels."
+  },
+  {
     "term": "Net Metering",
     "definition": "A billing mechanism used in some countries where exported solar power spins the electricity meter backward. The UK does not use net metering; instead, we use the Smart Export Guarantee (SEG)."
   },
@@ -177,12 +281,28 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "A lithium-ion battery chemistry common in electric vehicles due to its high energy density, but increasingly being replaced by LFP in stationary home batteries due to lifespan and safety factors."
   },
   {
+    "term": "Nominal Capacity",
+    "definition": "The total theoretical energy capacity of a battery. The \"usable capacity\" is usually lower to protect the battery from degrading."
+  },
+  {
     "term": "Off-Grid System",
     "definition": "A solar setup completely disconnected from the National Grid, requiring significant battery storage to provide power 24/7."
   },
   {
+    "term": "Optimizer",
+    "definition": "A small device attached to individual solar panels that performs MPPT at the panel level, mitigating the effects of shade without converting the DC power to AC on the roof."
+  },
+  {
+    "term": "Orientation",
+    "definition": "The compass direction that the solar panels face (Azimuth)."
+  },
+  {
     "term": "Oversizing (Inverter)",
     "definition": "Installing a solar array with a higher kWp rating than the inverter's maximum AC output. This is a common and safe practice that maximizes energy yield during lower-light winter months."
+  },
+  {
+    "term": "P-Type Silicon",
+    "definition": "The traditional method of manufacturing silicon wafers by treating them with boron. They are cheaper to produce but degrade slightly faster than N-type panels."
   },
   {
     "term": "Passivated Emitter and Rear Cell (PERC)",
@@ -193,16 +313,40 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "The amount of time it takes for the savings and export income generated by a solar system to equal the initial cost of installation. In the UK, this is typically 7 to 10 years."
   },
   {
+    "term": "Peak Demand",
+    "definition": "The time of day when electricity consumption on the National Grid is at its highest, typically between 4pm and 7pm in the UK."
+  },
+  {
+    "term": "Phantom Load",
+    "definition": "The electricity consumed by appliances and electronics while they are switched off or in standby mode."
+  },
+  {
     "term": "Photovoltaic (PV)",
     "definition": "The technology and physical process of converting light (photons) directly into electricity (voltage)."
+  },
+  {
+    "term": "Photovoltaic Effect",
+    "definition": "The physical and chemical phenomenon where light (photons) strikes a semiconductor material (like silicon) and knocks electrons loose, creating an electrical current."
+  },
+  {
+    "term": "Pitch",
+    "definition": "The angle or steepness of a roof. In the UK, a pitch between 30° and 40° is considered optimal for solar generation."
   },
   {
     "term": "Polycrystalline",
     "definition": "Solar panels made from multiple silicon fragments melted together. They have a blue, speckled appearance and are cheaper but less efficient than monocrystalline panels. Rarely used in new UK domestic installs today."
   },
   {
+    "term": "Power Conditioner",
+    "definition": "A device intended to improve the quality of the power that is delivered to electrical load equipment."
+  },
+  {
     "term": "Power Purchase Agreement (PPA)",
     "definition": "A financial arrangement usually seen in commercial solar, where a third party installs and owns the panels on a roof, and the building owner buys the generated electricity at a reduced, locked-in rate."
+  },
+  {
+    "term": "Radiant Energy",
+    "definition": "Energy transmitted in wave motion, especially electromagnetic wave motion (like sunlight)."
   },
   {
     "term": "Retrofit Battery",
@@ -213,6 +357,10 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "A percentage that measures the financial gain of a solar system relative to its initial cost over its lifetime."
   },
   {
+    "term": "Self-Consumption",
+    "definition": "The percentage of the solar energy generated by your system that is actually used inside your home, rather than being exported to the grid."
+  },
+  {
     "term": "Shading",
     "definition": "When shadows from trees, chimneys, or neighboring buildings fall on solar panels, significantly reducing their power output."
   },
@@ -221,12 +369,28 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "The current UK scheme requiring large energy suppliers to pay homeowners for the solar electricity they export to the grid."
   },
   {
+    "term": "Smart Grid",
+    "definition": "An electricity supply network that uses digital communications technology to detect and react to local changes in usage."
+  },
+  {
     "term": "Smart Meter",
     "definition": "A modern digital electricity meter that automatically sends half-hourly usage and export readings to your energy supplier. Required to access SEG tariffs."
   },
   {
+    "term": "Solar Fraction",
+    "definition": "The percentage of a building’s total energy demand that is supplied by solar power."
+  },
+  {
+    "term": "Solar Window",
+    "definition": "The period of the day when the sun is unshaded and high enough in the sky to produce significant solar power."
+  },
+  {
     "term": "Standard Test Conditions (STC)",
     "definition": "The laboratory conditions under which solar panels are tested and rated (1000 W/m² irradiance, 25°C cell temperature). Real-world performance is usually lower."
+  },
+  {
+    "term": "State of Charge (SoC)",
+    "definition": "The current level of charge in a battery, expressed as a percentage of its total capacity (e.g., your phone battery is at 80% SoC)."
   },
   {
     "term": "String",
@@ -235,6 +399,14 @@ export const glossaryData: GlossaryTerm[] = [
   {
     "term": "String Inverter",
     "definition": "A central inverter that manages the DC power from one or more \"strings\" of solar panels. It is the most common and cost-effective inverter setup."
+  },
+  {
+    "term": "Surge Capacity",
+    "definition": "The maximum amount of short-term power an inverter or battery can provide to start up heavy appliances (like a heat pump or air conditioner) that require a sudden spike in electricity."
+  },
+  {
+    "term": "Temperature Coefficient",
+    "definition": "A rating that shows how much a solar panel's efficiency drops for every 1°C increase in temperature above 25°C. Lower is better, as panels lose efficiency when they get hot."
   },
   {
     "term": "Thermal Runaway",
@@ -253,16 +425,36 @@ export const glossaryData: GlossaryTerm[] = [
     "definition": "An electricity tariff where the price of energy changes depending on the time of day (e.g., Octopus Flux or Intelligent Go). Crucial for maximizing battery storage ROI."
   },
   {
+    "term": "Tracking Array",
+    "definition": "A solar panel mounting system that physically moves throughout the day to follow the sun’s path, maximizing generation. Very rare in UK domestic settings."
+  },
+  {
+    "term": "Utility-Scale Solar",
+    "definition": "Massive solar farms that generate electricity directly for the National Grid, rather than for a specific building or home."
+  },
+  {
     "term": "Volt (V)",
     "definition": "The standard unit of electrical potential or pressure. If electricity is water in a pipe, voltage is the water pressure."
+  },
+  {
+    "term": "Voltage (V)",
+    "definition": "The measure of electrical potential difference between two points. It is the \"pressure\" that pushes electrons through a wire."
   },
   {
     "term": "Watt (W)",
     "definition": "The standard unit of electrical power, calculated by multiplying Volts by Amps."
   },
   {
+    "term": "Watt-hour (Wh)",
+    "definition": "A unit of energy equivalent to one Watt of power expended for one hour."
+  },
+  {
     "term": "Yield",
     "definition": "The total amount of electrical energy (kWh) generated by a solar PV system over a specific period, usually a year."
+  },
+  {
+    "term": "Yield Curve",
+    "definition": "A graph showing the energy production of a solar system over a specific period, usually rising in the morning, peaking at midday, and falling in the evening."
   },
   {
     "term": "Zero Export",
