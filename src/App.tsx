@@ -22,6 +22,9 @@ import CommercialSolarQuotesUK from './pages/CommercialSolarQuotesUK';
 import Tools from './pages/Tools';
 import ExportTariffCompare from './pages/tools/ExportTariffCompare';
 import EVChargingCalculator from './pages/tools/EVChargingCalculator';
+import BatteryROICalculator from './pages/tools/BatteryROICalculator';
+import SystemSizeEstimator from './pages/tools/SystemSizeEstimator';
+import RoofSuitabilityChecker from './pages/tools/RoofSuitabilityChecker';
 
 const App: React.FC = () => {
   return (
@@ -40,6 +43,9 @@ const App: React.FC = () => {
             <Route path="/tools" element={<Tools />} />
             <Route path="/tools/export-tariffs" element={<ExportTariffCompare />} />
             <Route path="/tools/ev-charging" element={<EVChargingCalculator />} />
+            <Route path="/tools/battery-roi" element={<BatteryROICalculator />} />
+            <Route path="/tools/system-size" element={<SystemSizeEstimator />} />
+            <Route path="/tools/roof-suitability" element={<RoofSuitabilityChecker />} />
             <Route path="/business" element={<Business />} />
             <Route path="/installers" element={<Installers />} />
             <Route path="/legal/:documentId" element={<Legal />} />

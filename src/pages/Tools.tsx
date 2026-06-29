@@ -37,15 +37,15 @@ const toolsList = [
     title: 'Roof Suitability Checker',
     description: 'Instantly check your roof azimuth, pitch, and estimated square meterage using satellite data.',
     icon: Home,
-    link: '#',
-    ready: false,
+    link: '/tools/roof-suitability',
+    ready: true,
   },
   {
     title: 'System Size Estimator',
     description: 'Work backwards from your target energy offset to find the exact kWp system you need to install.',
     icon: TrendingUp,
-    link: '#',
-    ready: false,
+    link: '/tools/system-size',
+    ready: true,
   },
 ];
 

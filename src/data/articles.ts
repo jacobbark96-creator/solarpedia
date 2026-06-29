@@ -430,27 +430,27 @@ export const nextStepsBySlug: Record<string, { title: string; description: strin
     'solar-myths-explained': [
       { title: 'Check your savings', description: 'Turn solar theory into a real property-level estimate using the savings wizard.', link: '/wizard', cta: 'Run the wizard' },
       { title: 'Compare solar quotes', description: 'Move from myth-busting into buyer intent with city quote pages.', link: '/solar-panel-quotes', cta: 'Browse quote pages' },
-      { title: 'Find installers', description: 'Compare MCS-certified installers before you request proposals.', link: '/installers', cta: 'Browse installers' },
+      { title: 'Check roof suitability', description: 'See how direction and pitch affect efficiency.', link: '/tools/roof-suitability', cta: 'Check Roof' },
     ],
     'is-solar-worth-it-uk': [
+      { title: 'Check roof suitability', description: 'See how direction and pitch affect efficiency.', link: '/tools/roof-suitability', cta: 'Check Roof' },
       { title: 'Get a tailored estimate', description: 'Use your postcode, roof details, and usage pattern to assess likely savings.', link: '/wizard', cta: 'Check your savings' },
       { title: 'Get solar panel quotes', description: 'Compare local quote pages and installer availability by city.', link: '/solar-panel-quotes', cta: 'Compare quotes' },
-      { title: 'Read installation costs', description: 'Go deeper on price drivers before comparing proposals.', link: '/education/article/solar-panel-installation-cost-uk', cta: 'Read cost guide' },
     ],
     'seg-explained': [
+      { title: 'Compare Export Tariffs', description: 'See how much you could earn with Octopus Flux vs standard SEG.', link: '/tools/export-tariffs', cta: 'Compare Tariffs' },
       { title: 'Review installation costs', description: 'Understand how export income fits into full installation economics.', link: '/education/article/solar-panel-installation-cost-uk', cta: 'Read cost guide' },
-      { title: 'Find local installers', description: 'Use the installer directory to shortlist MCS-certified providers.', link: '/installers', cta: 'View installers' },
       { title: 'Check your likely savings', description: 'Estimate self-consumption and export assumptions for your own property.', link: '/wizard', cta: 'Run the wizard' },
     ],
     'solar-panel-installation-cost-uk': [
+      { title: 'System Size Estimator', description: 'Work backwards from your energy bill to find out exactly how many kWp you need.', link: '/tools/system-size', cta: 'Estimate Size' },
       { title: 'Compare solar quotes', description: 'Use city quote pages to move from rough budget expectations to live quote collection.', link: '/solar-panel-quotes', cta: 'Compare quotes' },
-      { title: 'Find local installers', description: 'Review installer pages before choosing who should quote your property.', link: '/best-solar-installers', cta: 'Compare installers' },
       { title: 'Check your likely payback', description: 'Use your own bill, roof size, and usage pattern to model annual savings.', link: '/wizard', cta: 'Check payback' },
     ],
     'battery-storage-worth-it-uk': [
-      { title: 'Check your savings with a battery', description: 'Model the effect battery storage has on self-consumption and payback.', link: '/wizard', cta: 'Model battery savings' },
-      { title: 'Read SEG guidance', description: 'Understand how export tariffs interact with battery strategy.', link: '/education/article/seg-explained', cta: 'Read SEG guide' },
-      { title: 'Get quotes from installers', description: 'Compare proposals that include both panels and battery storage.', link: '/solar-panel-quotes', cta: 'Get quotes' },
+      { title: 'Battery ROI Calculator', description: 'See how adding a 5kWh or 10kWh battery changes your self-consumption and payback period.', link: '/tools/battery-roi', cta: 'Calculate ROI' },
+      { title: 'Compare Export Tariffs', description: 'See how much you could earn with Octopus Flux vs standard SEG.', link: '/tools/export-tariffs', cta: 'Compare Tariffs' },
+      { title: 'Get solar and battery quotes', description: 'Request quotes that include modular or hybrid battery setups.', link: '/solar-panel-quotes', cta: 'Get quotes' },
     ],
     'commercial-solar-for-business-uk': [
       { title: 'Get commercial solar quotes', description: 'Move directly into a business-focused quote flow for UK sites.', link: '/commercial-solar-quotes-uk', cta: 'Get commercial quotes' },
@@ -463,9 +463,9 @@ export const nextStepsBySlug: Record<string, { title: string; description: strin
       { title: 'Read business solar guidance', description: 'Commercial sites often face added landlord, structural, and planning complexity.', link: '/business', cta: 'Read business solar guidance' },
     ],
     'solar-battery-sizing-guide': [
-      { title: 'Size your battery system', description: 'Use our wizard to test different battery capacities against your usage.', link: '/wizard', cta: 'Run the wizard' },
-      { title: 'Compare battery quotes', description: 'Get live quotes for solar and storage systems in your city.', link: '/solar-panel-quotes', cta: 'Compare quotes' },
-      { title: 'Find storage installers', description: 'Review MCS-certified installers who specialize in battery retrofits.', link: '/installers', cta: 'Browse installers' },
+      { title: 'Battery ROI Calculator', description: 'See how adding a 5kWh or 10kWh battery changes your self-consumption and payback period.', link: '/tools/battery-roi', cta: 'Calculate ROI' },
+      { title: 'Check your savings', description: 'Run the full financial model for a solar + battery system.', link: '/wizard', cta: 'Run the wizard' },
+      { title: 'Compare quotes', description: 'Get accurate battery sizing recommendations from local installers.', link: '/solar-panel-quotes', cta: 'Get quotes' },
     ],
     'lfp-vs-nmc-solar-batteries': [
       { title: 'Get battery quotes', description: 'Request quotes and ask installers specifically about their LFP options.', link: '/solar-panel-quotes', cta: 'Compare quotes' },
