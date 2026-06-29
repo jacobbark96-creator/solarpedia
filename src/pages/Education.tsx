@@ -1,74 +1,102 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Search, BookOpen, MessageCircle, FileText, ChevronRight, Newspaper } from 'lucide-react';
+import { Search, BookOpen, MessageCircle, FileText, ChevronRight, Newspaper, Battery, Sun, Zap } from 'lucide-react';
 import { useLiveNews } from '../hooks/useLiveNews';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { buildAbsoluteUrl, createBreadcrumbSchema, createCollectionPageSchema } from '../lib/seo';
+import { ARTICLES_DB } from '../data/articles';
 
 const categories = [
-  { name: 'Solar Basics', icon: BookOpen, count: 3 },
+  { name: 'Solar Panels', icon: Sun, count: 2 },
+  { name: 'Solar Batteries', icon: Battery, count: 2 },
+  { name: 'Export Tariffs', icon: Zap, count: 2 },
   { name: 'Costs & Financing', icon: FileText, count: 2 },
+  { name: 'Analysis', icon: Search, count: 2 },
   { name: 'Myths & Facts', icon: MessageCircle, count: 1 },
-  { name: 'Technical Guides', icon: Search, count: 2 },
+  { name: 'Technical Guides', icon: BookOpen, count: 1 },
 ];
 
 const articles = [
   {
-    title: 'Is Solar Actually Worth it in the UK? (2026 Edition)',
+    title: ARTICLES_DB['is-solar-worth-it-uk'].title,
     slug: 'is-solar-worth-it-uk',
     excerpt: 'An impartial look at the current energy landscape, installation costs, and smart export guarantees.',
     category: 'Analysis',
-    readTime: '8 min read',
+    readTime: ARTICLES_DB['is-solar-worth-it-uk'].readTime,
     image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=800&q=80' // Solar panels on roof
   },
   {
-    title: 'Solar Myths Explained: Separating Fact from Fiction',
+    title: ARTICLES_DB['solar-myths-explained'].title,
     slug: 'solar-myths-explained',
     excerpt: 'We debunk the most common misconceptions about solar panels in the UK climate.',
-    category: 'Guide',
-    readTime: '5 min read',
+    category: 'Myths & Facts',
+    readTime: ARTICLES_DB['solar-myths-explained'].readTime,
     image: 'https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?auto=format&fit=crop&w=800&q=80' // High tech battery/energy
   },
   {
-    title: 'The Smart Export Guarantee (SEG) Explained',
-    slug: 'seg-explained',
-    excerpt: 'How much can you actually earn back from the grid? We compare the best export tariffs available today.',
-    category: 'Finance',
-    readTime: '10 min read',
+    title: ARTICLES_DB['best-export-tariffs-uk'].title,
+    slug: 'best-export-tariffs-uk',
+    excerpt: 'Octopus Energy dominates the UK export market in 2026. Compare the best export tariffs available today.',
+    category: 'Export Tariffs',
+    readTime: ARTICLES_DB['best-export-tariffs-uk'].readTime,
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80' // Charts/Finance
   },
   {
-    title: 'Solar Panel Installation Cost in the UK (2026)',
+    title: ARTICLES_DB['solar-panel-installation-cost-uk'].title,
     slug: 'solar-panel-installation-cost-uk',
     excerpt: 'A practical breakdown of what actually drives install cost, from system size to batteries and roof complexity.',
     category: 'Costs & Financing',
-    readTime: '7 min read',
+    readTime: ARTICLES_DB['solar-panel-installation-cost-uk'].readTime,
     image: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&w=800&q=80'
   },
   {
-    title: 'Is Battery Storage Worth It in the UK? (2026)',
-    slug: 'battery-storage-worth-it-uk',
-    excerpt: 'When a battery improves payback, when it does not, and what specs matter before you buy.',
-    category: 'Analysis',
-    readTime: '6 min read',
+    title: ARTICLES_DB['lfp-vs-nmc-solar-batteries'].title,
+    slug: 'lfp-vs-nmc-solar-batteries',
+    excerpt: 'LFP is the dominant and recommended home battery chemistry. It offers 6,000+ cycles and 15-20 years of life.',
+    category: 'Solar Batteries',
+    readTime: ARTICLES_DB['lfp-vs-nmc-solar-batteries'].readTime,
     image: 'https://images.unsplash.com/photo-1592833159117-ac790d406391?auto=format&fit=crop&w=800&q=80'
   },
   {
-    title: 'Commercial Solar for UK Businesses: What Matters Most',
+    title: ARTICLES_DB['solar-battery-sizing-guide'].title,
+    slug: 'solar-battery-sizing-guide',
+    excerpt: 'The ideal solar battery size depends on your evening electricity usage and solar array size.',
+    category: 'Solar Batteries',
+    readTime: ARTICLES_DB['solar-battery-sizing-guide'].readTime,
+    image: 'https://images.unsplash.com/photo-1620800632597-9e0d16568eb2?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    title: ARTICLES_DB['solar-panel-bird-proofing'].title,
+    slug: 'solar-panel-bird-proofing',
+    excerpt: 'Bird proofing prevents pigeons from nesting under solar panels, which can cause cable damage and noise.',
+    category: 'Solar Panels',
+    readTime: ARTICLES_DB['solar-panel-bird-proofing'].readTime,
+    image: 'https://images.unsplash.com/photo-1592833159057-6dd15bd0b852?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    title: ARTICLES_DB['solar-panel-cleaning-maintenance'].title,
+    slug: 'solar-panel-cleaning-maintenance',
+    excerpt: 'In the UK, natural rainfall cleans most residential solar panels effectively. Learn when manual cleaning is needed.',
+    category: 'Solar Panels',
+    readTime: ARTICLES_DB['solar-panel-cleaning-maintenance'].readTime,
+    image: 'https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    title: ARTICLES_DB['commercial-solar-for-business-uk'].title,
     slug: 'commercial-solar-for-business-uk',
     excerpt: 'A buyer-focused guide to commercial solar economics, procurement, and what to compare in an installer proposal.',
     category: 'Commercial',
-    readTime: '9 min read',
+    readTime: ARTICLES_DB['commercial-solar-for-business-uk'].readTime,
     image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=800&q=80'
   },
   {
-    title: 'Do You Need Planning Permission for Solar Panels in the UK?',
+    title: ARTICLES_DB['planning-permission-for-solar-uk'].title,
     slug: 'planning-permission-for-solar-uk',
     excerpt: 'What usually falls under permitted development, what can trigger extra checks, and why it pays to confirm early.',
     category: 'Technical Guides',
-    readTime: '5 min read',
+    readTime: ARTICLES_DB['planning-permission-for-solar-uk'].readTime,
     image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80'
   }
 ];
