@@ -167,11 +167,14 @@ async function lookupPostcode(postcode: string) {
 }
 
 async function lookupBuildings(lat: number, lon: number) {
-  const radii = [250, 600, 1200];
+  // Drastically reduced radius to 100m. If a building is further than 100m away,
+  // it is almost certainly not the user's property, and we should just fall back to the heuristic
+  // instantly rather than downloading massive amounts of map data.
+  const radii = [100];
 
   for (const radius of radii) {
     const overpassQuery = `
-[out:json][timeout:25];
+[out:json][timeout:3];
 (
   way["building"](around:${radius},${lat},${lon});
   relation["building"](around:${radius},${lat},${lon});
@@ -179,24 +182,37 @@ async function lookupBuildings(lat: number, lon: number) {
 out center tags geom;
     `.trim();
 
-    const response = await fetch('https://overpass-api.de/api/interpreter', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain;charset=UTF-8',
-        Accept: 'application/json',
-      },
-      body: overpassQuery,
-    });
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500); // 3.5s strict timeout
 
-    if (!response.ok) {
-      continue;
-    }
+      const response = await fetch('https://lz4.overpass-api.de/api/interpreter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=UTF-8',
+          Accept: 'application/json',
+        },
+        body: overpassQuery,
+        signal: controller.signal,
+      });
 
-    const data = (await response.json()) as OverpassResponse;
-    const buildings = (data.elements || []).filter((element) => Array.isArray(element.geometry) && element.geometry.length >= 3);
+      clearTimeout(timeoutId);
 
-    if (buildings.length) {
-      return buildings;
+      if (!response.ok) {
+        continue;
+      }
+
+      const data = (await response.json()) as OverpassResponse;
+      const buildings = (data.elements || []).filter((element) => Array.isArray(element.geometry) && element.geometry.length >= 3);
+
+      if (buildings.length) {
+        return buildings;
+      }
+    } catch (err) {
+      // If the request aborts/times out, we just catch it and return empty
+      // so it falls back to the instant heuristic instead of hanging the UI.
+      console.warn('Overpass API timeout or error, falling back to heuristic.');
+      return [];
     }
   }
 
