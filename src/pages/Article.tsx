@@ -83,9 +83,20 @@ const Article: React.FC = () => {
   return (
     <div className="bg-brand-white min-h-screen pt-12 pb-24">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link to="/education" className="inline-flex items-center gap-2 text-brand-muted hover:text-brand-navy transition-colors mb-10 font-medium text-sm">
+        <div className="flex items-center gap-2 text-sm text-brand-muted mb-8 overflow-x-auto whitespace-nowrap pb-2">
+          <Link to="/" className="hover:text-brand-navy transition-colors">Home</Link>
+          <ChevronRight className="h-4 w-4 flex-shrink-0" />
+          <Link to="/education" className="hover:text-brand-navy transition-colors">Education Hub</Link>
+          <ChevronRight className="h-4 w-4 flex-shrink-0" />
+          <span className="text-brand-navy font-medium truncate">{article.category}</span>
+        </div>
+
+        <Link 
+          to="/education" 
+          className="inline-flex items-center gap-2 text-sm font-bold text-brand-navy hover:text-brand-green transition-colors mb-6 bg-white border border-brand-accent px-4 py-2 rounded-full shadow-sm"
+        >
           <ChevronLeft className="h-4 w-4" />
-          Back to Education Hub
+          Back to {article.category} guides
         </Link>
 
         <article className="bg-white rounded-[2rem] p-10 md:p-16 border border-brand-accent shadow-sm">
@@ -93,7 +104,7 @@ const Article: React.FC = () => {
             <span className="px-3 py-1 bg-brand-green/10 text-brand-green font-bold text-[10px] uppercase tracking-widest rounded-full mb-6 inline-block">
               {article.category}
             </span>
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy leading-tight mb-8">
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-6 leading-tight">
               {article.title}
             </h1>
             

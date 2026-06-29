@@ -19,6 +19,9 @@ import SolarPanelQuotesCity from './pages/SolarPanelQuotesCity';
 import BestSolarInstallers from './pages/BestSolarInstallers';
 import BestSolarInstallersCity from './pages/BestSolarInstallersCity';
 import CommercialSolarQuotesUK from './pages/CommercialSolarQuotesUK';
+import Tools from './pages/Tools';
+import ExportTariffCompare from './pages/tools/ExportTariffCompare';
+import EVChargingCalculator from './pages/tools/EVChargingCalculator';
 
 const App: React.FC = () => {
   return (
@@ -34,6 +37,9 @@ const App: React.FC = () => {
             <Route path="/education" element={<Education />} />
             <Route path="/education/article/:slug" element={<Article />} />
             <Route path="/glossary" element={<Glossary />} />
+            <Route path="/tools" element={<Tools />} />
+            <Route path="/tools/export-tariffs" element={<ExportTariffCompare />} />
+            <Route path="/tools/ev-charging" element={<EVChargingCalculator />} />
             <Route path="/business" element={<Business />} />
             <Route path="/installers" element={<Installers />} />
             <Route path="/legal/:documentId" element={<Legal />} />

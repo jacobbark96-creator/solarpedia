@@ -30,6 +30,7 @@ const Footer: React.FC = () => {
               <li><Link to="/solar-panel-quotes" onClick={handleFooterClick} className="hover:text-white transition-colors">Get Solar Quotes</Link></li>
               <li><Link to="/best-solar-installers" onClick={handleFooterClick} className="hover:text-white transition-colors">Local Solar Installers</Link></li>
               <li><Link to="/education" onClick={handleFooterClick} className="hover:text-white transition-colors">Education Hub</Link></li>
+              <li><Link to="/tools" onClick={handleFooterClick} className="hover:text-white transition-colors">Calculators & Tools</Link></li>
               <li><Link to="/business" onClick={handleFooterClick} className="hover:text-white transition-colors">Solar for Business</Link></li>
               <li><Link to="/commercial-solar-quotes-uk" onClick={handleFooterClick} className="hover:text-white transition-colors">Commercial Quotes UK</Link></li>
               <li><Link to="/installers" onClick={handleFooterClick} className="hover:text-white transition-colors">Vetted Installers</Link></li>
