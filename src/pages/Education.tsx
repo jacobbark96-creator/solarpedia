@@ -16,7 +16,7 @@ const categories = [
   { name: 'Analysis', icon: Search, count: 2 },
   { name: 'Myths & Facts', icon: MessageCircle, count: 1 },
   { name: 'Technical Guides', icon: BookOpen, count: 1 },
-  { name: 'Glossary', icon: BookOpen, count: 66, link: '/glossary' },
+  { name: 'Glossary', icon: BookOpen, count: 114, link: '/glossary' },
 ];
 
 const articles = [
