@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, Calendar, User, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, User, Clock } from 'lucide-react';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { createArticleSchema, createBreadcrumbSchema, createFAQSchema } from '../lib/seo';
 
