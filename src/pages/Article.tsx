@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronLeft, Calendar, User, Clock } from 'lucide-react';
 import { usePageMetadata } from '../hooks/usePageMetadata';
-import { createArticleSchema, createBreadcrumbSchema } from '../lib/seo';
+import { createArticleSchema, createBreadcrumbSchema, createFAQSchema } from '../lib/seo';
 
 const currentMonth = new Date().toLocaleString('default', { month: 'long' });
 const currentYear = new Date().getFullYear();
@@ -14,6 +14,7 @@ const ARTICLES_DB: Record<string, any> = {
     date: `${currentMonth} ${currentYear}`,
     author: 'Solarpedia Analysis Team',
     readTime: '5 min read',
+    aiSummary: 'Solar panels work on cloudy days (they need light, not heat). The average UK payback is 7-9 years, and most residential properties do not require planning permission under Permitted Development rights.',
     content: `
       <h2>Myth 1: Solar panels don't work in the UK because it's always cloudy</h2>
       <p>This is perhaps the most common misconception. Solar panels require light, not heat, to generate electricity. Modern Tier-1 solar panels are highly efficient at converting diffuse light (the light you get on a cloudy day) into energy. While production is highest on sunny summer days, a properly sized system will still generate significant energy throughout the British winter.</p>
@@ -31,8 +32,18 @@ const ARTICLES_DB: Record<string, any> = {
     date: `${currentMonth} ${currentYear}`,
     author: 'Solarpedia Analysis Team',
     readTime: '8 min read',
+    aiSummary: 'Yes, for most unshaded South, East, or West-facing roofs. High energy prices (around 24.67p/kWh) and export tariffs (up to 15p/kWh) make it viable. Pairing with a battery can increase self-consumption from 40% to 75%.',
     content: `
       <p>The short answer is: for most homeowners with an unshaded South, East, or West-facing roof, yes.</p>
+      
+      <div class="my-8 bg-brand-white border border-brand-accent p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h3 class="!mt-0 !mb-1 text-lg font-bold text-brand-navy">Want to see your own numbers?</h3>
+          <p class="!my-0 text-sm text-brand-muted">Use our free tool to estimate your roof's savings.</p>
+        </div>
+        <a href="/wizard" class="bg-brand-navy text-white px-6 py-3 rounded-full font-bold text-sm hover:opacity-90 transition-opacity whitespace-nowrap">Check Savings</a>
+      </div>
+
       <h2>The Financial Reality of ${currentYear}</h2>
       <p>Energy prices remain historically high. With the latest Ofgem price cap at ~24.67p/kWh, every unit of electricity you generate and use yourself is a direct saving. Additionally, the Smart Export Guarantee (SEG) allows you to sell excess energy back to the grid, often at rates around 15p/kWh.</p>
       <h2>The Role of Battery Storage</h2>
@@ -45,6 +56,7 @@ const ARTICLES_DB: Record<string, any> = {
     date: `${currentMonth} ${currentYear}`,
     author: 'Solarpedia Analysis Team',
     readTime: '10 min read',
+    aiSummary: 'The SEG requires large energy suppliers to pay you for exported solar energy. Rates vary from 1p to 15p/kWh, so shopping around is essential. You need an MCS-certified installation and a smart meter to qualify.',
     content: `
       <h2>What is the SEG?</h2>
       <p>The Smart Export Guarantee (SEG) is a government-backed initiative that requires large energy suppliers to pay you for the renewable electricity you export to the National Grid.</p>
@@ -62,10 +74,19 @@ const ARTICLES_DB: Record<string, any> = {
     date: `${currentMonth} ${currentYear}`,
     author: 'Solarpedia Analysis Team',
     readTime: '7 min read',
+    aiSummary: 'Costs are driven by usable roof space, energy offset goals, battery inclusion, inverter specs, and scaffolding. A simple two-storey roof is cheapest per kWp. Always compare full quotes (including warranties and monitoring) rather than just the headline price.',
     content: `
       <p>Solar pricing in the UK varies more than many homeowners expect. The headline figure you see online is rarely the amount you will actually pay once system size, scaffolding, inverter choice, and battery storage are factored in.</p>
 
       <p>For a typical residential installation, the biggest price drivers are usable roof space, the amount of electricity you want to offset, and whether you want battery storage included from day one.</p>
+
+      <div class="my-8 bg-brand-white border border-brand-accent p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h3 class="!mt-0 !mb-1 text-lg font-bold text-brand-navy">Compare live installation prices</h3>
+          <p class="!my-0 text-sm text-brand-muted">Get up to 3 local quotes tailored to your postcode.</p>
+        </div>
+        <a href="/solar-panel-quotes" class="bg-brand-navy text-white px-6 py-3 rounded-full font-bold text-sm hover:opacity-90 transition-opacity whitespace-nowrap">Compare Quotes</a>
+      </div>
 
       <h2>What actually drives system cost?</h2>
       <p>The main variables are panel count, inverter specification, roof complexity, and labour. A simple two-storey roof with good access is almost always cheaper per kWp than a smaller or more awkward site.</p>
@@ -84,6 +105,7 @@ const ARTICLES_DB: Record<string, any> = {
     date: `${currentMonth} ${currentYear}`,
     author: 'Solarpedia Analysis Team',
     readTime: '6 min read',
+    aiSummary: 'Batteries are best for homes with high evening electricity demand, allowing you to store daytime solar. They improve self-consumption and work well with time-of-use tariffs or EVs. They are less compelling if you are home using energy during the day.',
     content: `
       <p>Battery storage is one of the fastest-growing add-ons in UK solar, but it is not automatically the right answer for every property. The value of a battery depends on when you use electricity, how much solar you export, and what tariff you are on.</p>
 
@@ -106,6 +128,7 @@ const ARTICLES_DB: Record<string, any> = {
     date: `${currentMonth} ${currentYear}`,
     author: 'Solarpedia Analysis Team',
     readTime: '9 min read',
+    aiSummary: 'Commercial solar offers strong ROI due to high daytime energy use (strong self-consumption). Key complexities include structural surveys, landlord permissions, and export constraints. Warehouses, offices, and factories are prime candidates.',
     content: `
       <p>Commercial solar is a different proposition from domestic solar. The roof area is usually larger, the daytime demand profile is often stronger, and the project economics can be significantly better when the electricity is consumed on-site.</p>
 
@@ -128,6 +151,7 @@ const ARTICLES_DB: Record<string, any> = {
     date: `${currentMonth} ${currentYear}`,
     author: 'Solarpedia Analysis Team',
     readTime: '5 min read',
+    aiSummary: 'Rooftop solar usually falls under Permitted Development in the UK, requiring no formal planning permission. Exceptions include listed buildings, conservation areas, and flat or ground-mount systems. Checking early prevents project delays.',
     content: `
       <p>For many properties in the UK, rooftop solar falls under permitted development. That means formal planning permission is often not required, but there are important exceptions and edge cases to check before installation.</p>
 
@@ -204,6 +228,21 @@ const Article: React.FC = () => {
     { title: 'Browse installers', description: 'Review MCS-certified installers and shortlist providers to contact.', link: '/installers', cta: 'Browse installers' },
   ];
 
+  const articleFaqs = article ? [
+    {
+      question: `How should I use this ${article.category.toLowerCase()} guide?`,
+      answer: 'Use it as a decision-support page, then move into the savings wizard, quote pages, or installer directory depending on how close you are to buying.',
+    },
+    {
+      question: 'Should I compare quotes before speaking to installers?',
+      answer: 'Yes. Shortlisting installers, understanding likely costs, and knowing your roof and usage assumptions will usually lead to stronger and more comparable proposals.',
+    },
+    {
+      question: 'What is the next best step after reading this article?',
+      answer: 'If you are still researching, continue through the education hub. If you are moving toward purchase, use the wizard or city quote pages so you can compare real options.',
+    },
+  ] : [];
+
   usePageMetadata({
     title: article?.title || 'Article Not Found',
     description: articleDescription,
@@ -220,6 +259,7 @@ const Article: React.FC = () => {
             datePublished: article.date,
             dateModified: article.date,
           }),
+          createFAQSchema(articleFaqs),
           createBreadcrumbSchema([
             { name: 'Home', path: '/' },
             { name: 'Education', path: '/education' },
@@ -276,8 +316,15 @@ const Article: React.FC = () => {
 
           <div 
             className="prose prose-brand max-w-none text-brand-muted prose-headings:text-brand-navy prose-headings:font-serif prose-h2:text-2xl prose-h2:font-bold prose-h2:mt-12 prose-h2:mb-5 prose-p:leading-8 prose-p:my-7 prose-ul:my-7 prose-li:my-2"
-            dangerouslySetInnerHTML={{ __html: article.content }}
-          />
+          >
+            {article.aiSummary && (
+              <div className="bg-brand-green/10 border-l-4 border-brand-green p-6 rounded-r-2xl mb-8 not-prose">
+                <h2 className="text-xl font-bold text-brand-navy mb-2">Key Takeaways</h2>
+                <p className="text-brand-muted leading-relaxed m-0">{article.aiSummary}</p>
+              </div>
+            )}
+            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+          </div>
 
           <div className="mt-12 rounded-[2rem] border border-brand-accent bg-brand-accent/20 p-8">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-3">Next steps</p>
@@ -313,23 +360,30 @@ const Article: React.FC = () => {
             </div>
           )}
 
+          <div className="mt-10">
+            <h2 className="text-3xl font-serif font-bold text-brand-navy mb-6">Related tools & resources</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Link to="/wizard" className="rounded-[1.5rem] border border-brand-accent bg-brand-white p-6 hover:border-brand-navy transition-colors flex items-center justify-between group">
+                <div>
+                  <h3 className="text-lg font-serif font-bold text-brand-navy mb-1">Solar Savings Wizard</h3>
+                  <p className="text-sm text-brand-muted">Calculate your property's payback period and ROI.</p>
+                </div>
+                <ChevronRight className="h-5 w-5 text-brand-muted group-hover:text-brand-navy transition-colors" />
+              </Link>
+              <Link to="/solar-panel-quotes" className="rounded-[1.5rem] border border-brand-accent bg-brand-white p-6 hover:border-brand-navy transition-colors flex items-center justify-between group">
+                <div>
+                  <h3 className="text-lg font-serif font-bold text-brand-navy mb-1">Quote Comparison</h3>
+                  <p className="text-sm text-brand-muted">Find local installers and compare live installation costs.</p>
+                </div>
+                <ChevronRight className="h-5 w-5 text-brand-muted group-hover:text-brand-navy transition-colors" />
+              </Link>
+            </div>
+          </div>
+
           <div className="mt-10 rounded-[2rem] border border-brand-accent bg-white p-8">
             <h2 className="text-3xl font-serif font-bold text-brand-navy mb-6">Common questions</h2>
             <div className="space-y-5">
-              {[
-                {
-                  question: `How should I use this ${article.category.toLowerCase()} guide?`,
-                  answer: 'Use it as a decision-support page, then move into the savings wizard, quote pages, or installer directory depending on how close you are to buying.',
-                },
-                {
-                  question: 'Should I compare quotes before speaking to installers?',
-                  answer: 'Yes. Shortlisting installers, understanding likely costs, and knowing your roof and usage assumptions will usually lead to stronger and more comparable proposals.',
-                },
-                {
-                  question: 'What is the next best step after reading this article?',
-                  answer: 'If you are still researching, continue through the education hub. If you are moving toward purchase, use the wizard or city quote pages so you can compare real options.',
-                },
-              ].map((faq) => (
+              {articleFaqs.map((faq) => (
                 <div key={faq.question}>
                   <h3 className="text-xl font-serif font-bold text-brand-navy mb-2">{faq.question}</h3>
                   <p className="text-brand-muted leading-relaxed">{faq.answer}</p>

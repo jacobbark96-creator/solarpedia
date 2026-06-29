@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { ShieldCheck } from 'lucide-react';
 import { useWizardStore } from '../hooks/useWizardStore';
 
 type LeadCaptureValues = {
@@ -104,18 +105,19 @@ const LeadCaptureCTA: React.FC = () => {
             >
               <input type="hidden" name="form-name" value={FORM_NAME} />
               <div className="hidden">
-                <label>
+                <label htmlFor="bot-field">
                   Don’t fill this out:
-                  <input name="bot-field" value={values.botField} onChange={onChange('botField')} />
+                  <input id="bot-field" name="bot-field" value={values.botField} onChange={onChange('botField')} />
                 </label>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
+                  <label htmlFor="lead-name" className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
                     Name
                   </label>
                   <input
+                    id="lead-name"
                     required
                     name="name"
                     value={values.name}
@@ -127,10 +129,11 @@ const LeadCaptureCTA: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
+                  <label htmlFor="lead-email" className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
                     Email
                   </label>
                   <input
+                    id="lead-email"
                     required
                     name="email"
                     type="email"
@@ -143,10 +146,11 @@ const LeadCaptureCTA: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
+                  <label htmlFor="lead-phone" className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
                     Phone
                   </label>
                   <input
+                    id="lead-phone"
                     required
                     name="phone"
                     value={values.phone}
@@ -158,10 +162,11 @@ const LeadCaptureCTA: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
+                  <label htmlFor="lead-postcode" className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
                     Postcode
                   </label>
                   <input
+                    id="lead-postcode"
                     required
                     name="postcode"
                     value={values.postcode}
@@ -173,10 +178,11 @@ const LeadCaptureCTA: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
+                  <label htmlFor="lead-property-type" className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
                     Property Type
                   </label>
                   <select
+                    id="lead-property-type"
                     required
                     name="propertyType"
                     value={values.propertyType}
@@ -199,7 +205,13 @@ const LeadCaptureCTA: React.FC = () => {
                 {submitting ? 'Submitting…' : 'Get 3 Free Quotes'}
               </button>
 
-              <p className="mt-4 text-[11px] text-white/60 leading-relaxed">
+              <div className="mt-4 flex items-center justify-center gap-4 text-[10px] font-bold uppercase tracking-wider text-white/70">
+                <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> 100% Free</span>
+                <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> No Obligation</span>
+                <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Secure</span>
+              </div>
+
+              <p className="mt-4 text-[11px] text-white/60 leading-relaxed text-center">
                 By submitting, you agree we can contact you and share your details with local installer partners.
               </p>
             </form>

@@ -14,8 +14,8 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-28 items-center">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center">
-              <img src="/logo.png" alt="Solarpedia Logo" className="h-48 w-auto max-h-none" />
+            <Link to="/" className="flex items-center" aria-label="Solarpedia Home">
+              <img src="/logo.png" alt="Solarpedia Logo" width="192" height="48" className="h-48 w-auto max-h-none" />
             </Link>
           </div>
           
@@ -30,7 +30,12 @@ const Navbar: React.FC = () => {
           </div>
 
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-brand-navy">
+            <button 
+              onClick={() => setIsOpen(!isOpen)} 
+              className="text-brand-navy"
+              aria-label="Toggle menu"
+              aria-expanded={isOpen}
+            >
               {isOpen ? <X /> : <Menu />}
             </button>
           </div>

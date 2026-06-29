@@ -122,7 +122,7 @@ const Education: React.FC = () => {
           {categories.map((cat) => (
             <button key={cat.name} className="bg-white p-6 rounded-3xl border border-brand-accent hover:border-brand-navy transition-all text-left group">
               <cat.icon className="h-8 w-8 text-brand-navy mb-4 group-hover:text-brand-green transition-colors" />
-              <h3 className="font-bold text-brand-navy">{cat.name}</h3>
+              <h2 className="font-bold text-brand-navy text-lg">{cat.name}</h2>
               <p className="text-xs text-brand-muted uppercase font-bold tracking-wider">{cat.count} Articles</p>
             </button>
           ))}
@@ -134,7 +134,9 @@ const Education: React.FC = () => {
             <div className="lg:w-1/2">
               <img 
                 src={articles[0].image} 
-                alt="Featured" 
+                alt="Featured"
+                width="800"
+                height="600"
                 className="h-full w-full object-cover"
               />
             </div>
@@ -162,7 +164,7 @@ const Education: React.FC = () => {
               whileHover={{ y: -8 }}
               className="bg-white rounded-3xl overflow-hidden border border-brand-accent shadow-sm flex flex-col"
             >
-              <img src={article.image} alt={article.title} className="h-48 w-full object-cover" />
+              <img src={article.image} alt={article.title} width="800" height="600" className="h-48 w-full object-cover" />
               <div className="p-8 flex-grow">
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-brand-green bg-brand-green/10 px-2 py-1 rounded">
@@ -247,7 +249,7 @@ const Education: React.FC = () => {
           <div className="absolute inset-0 bg-brand-green/10 blur-[100px]" />
           <div className="relative z-10 max-w-2xl mx-auto">
             <ShieldCheckIcon className="h-16 w-16 text-brand-yellow mx-auto mb-6" />
-            <h3 className="text-3xl font-serif font-bold mb-4">Our Impartiality Promise</h3>
+            <h2 className="text-3xl font-serif font-bold mb-4">Our Impartiality Promise</h2>
             <p className="text-brand-accent text-lg mb-8 opacity-80">
               We never accept payments for editorial rankings or content placement. 
               Our advice is based solely on data, consumer interests, and technical feasibility.

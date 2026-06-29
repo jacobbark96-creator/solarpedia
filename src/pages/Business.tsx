@@ -58,7 +58,9 @@ const Business: React.FC = () => {
             <div className="relative">
               <img 
                 src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80" 
-                alt="Commercial Solar" 
+                alt="Commercial Solar"
+                width="1200"
+                height="800"
                 className="rounded-[2.5rem] shadow-2xl"
               />
               <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-3xl shadow-xl border border-brand-accent text-brand-navy">

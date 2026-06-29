@@ -6,6 +6,7 @@ import {
   createBreadcrumbSchema,
   createServiceSchema,
   getSolarQuotesCitySeo,
+  createFAQSchema,
 } from '../lib/seo';
 
 type City = { name: string; slug: string };
@@ -51,6 +52,24 @@ const SolarPanelQuotesCity: React.FC = () => {
     turnaround: `Well-qualified enquiries in ${city.name} usually get faster responses, especially when postcode, roof details, and energy usage are supplied up front.`,
   } : null;
 
+  const cityFaqs = useMemo(() => {
+    if (!city) return [];
+    return [
+      {
+        question: `How many solar quotes should I compare in ${city.name}?`,
+        answer: `Three is usually enough to compare price, equipment, installation approach, and warranty terms without creating unnecessary noise in the buying process.`,
+      },
+      {
+        question: `Does postcode matter when requesting quotes in ${city.name}?`,
+        answer: `Yes. Postcode helps route your enquiry to installers who actually cover your part of ${city.name} and influences travel, survey speed, and installer availability.`,
+      },
+      {
+        question: `What should I prepare before asking for solar quotes in ${city.name}?`,
+        answer: 'Have your postcode, roof details, approximate bill size, and any battery or EV plans ready so installers can scope the project more accurately.',
+      },
+    ];
+  }, [city]);
+
   usePageMetadata({
     title: seo?.title || 'Solar Panel Quotes',
     description:
@@ -67,6 +86,7 @@ const SolarPanelQuotesCity: React.FC = () => {
             serviceType: 'Solar panel quote comparison',
             areaServed: city.name,
           }),
+          createFAQSchema(cityFaqs),
           createBreadcrumbSchema([
             { name: 'Home', path: '/' },
             { name: 'Solar Panel Quotes', path: '/solar-panel-quotes' },
@@ -171,20 +191,7 @@ const SolarPanelQuotesCity: React.FC = () => {
             <div className="bg-white border border-brand-accent rounded-[2.5rem] p-8 md:p-10">
               <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">FAQs for solar quotes in {city.name}</h2>
               <div className="space-y-5">
-                {[
-                  {
-                    question: `How many solar quotes should I compare in ${city.name}?`,
-                    answer: `Three is usually enough to compare price, equipment, installation approach, and warranty terms without creating unnecessary noise in the buying process.`,
-                  },
-                  {
-                    question: `Does postcode matter when requesting quotes in ${city.name}?`,
-                    answer: `Yes. Postcode helps route your enquiry to installers who actually cover your part of ${city.name} and influences travel, survey speed, and installer availability.`,
-                  },
-                  {
-                    question: `What should I prepare before asking for solar quotes in ${city.name}?`,
-                    answer: 'Have your postcode, roof details, approximate bill size, and any battery or EV plans ready so installers can scope the project more accurately.',
-                  },
-                ].map((item) => (
+                {cityFaqs.map((item) => (
                   <div key={item.question}>
                     <h3 className="text-xl font-serif font-bold text-brand-navy mb-2">{item.question}</h3>
                     <p className="text-brand-muted leading-relaxed">{item.answer}</p>

@@ -130,6 +130,7 @@ const Wizard: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button
                       onClick={() => updateData({ propertyType: 'residential' })}
+                      aria-pressed={data.propertyType === 'residential'}
                       className={`p-6 rounded-xl border-2 transition-all flex flex-col items-center gap-3 ${data.propertyType === 'residential' ? 'border-brand-navy bg-brand-navy/5' : 'border-brand-accent hover:border-brand-navy/30'}`}
                     >
                       <HomeIcon className={`h-10 w-10 ${data.propertyType === 'residential' ? 'text-brand-navy' : 'text-brand-muted'}`} />
@@ -140,6 +141,7 @@ const Wizard: React.FC = () => {
                     </button>
                     <button
                       onClick={() => updateData({ propertyType: 'commercial' })}
+                      aria-pressed={data.propertyType === 'commercial'}
                       className={`p-6 rounded-xl border-2 transition-all flex flex-col items-center gap-3 ${data.propertyType === 'commercial' ? 'border-brand-navy bg-brand-navy/5' : 'border-brand-accent hover:border-brand-navy/30'}`}
                     >
                       <Building2 className={`h-10 w-10 ${data.propertyType === 'commercial' ? 'text-brand-navy' : 'text-brand-muted'}`} />
@@ -161,8 +163,9 @@ const Wizard: React.FC = () => {
                   <div className="space-y-5">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="md:col-span-1">
-                        <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">House Number</label>
+                        <label htmlFor="house-number" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">House Number</label>
                         <input
+                          id="house-number"
                           type="text"
                           placeholder="e.g. 18"
                           value={data.houseNumber}
@@ -171,8 +174,9 @@ const Wizard: React.FC = () => {
                         />
                       </div>
                       <div className="md:col-span-2">
-                        <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Postcode</label>
+                        <label htmlFor="postcode" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Postcode</label>
                         <input
+                          id="postcode"
                           type="text"
                           placeholder="e.g. SW1A 1AA"
                           value={data.postcode}
@@ -242,10 +246,11 @@ const Wizard: React.FC = () => {
                   <div className="space-y-5">
                     <div>
                       <div className="flex justify-between mb-3">
-                        <label className="text-[10px] font-bold text-brand-navy uppercase">Average Monthly Bill</label>
+                        <label htmlFor="energy-bill" className="text-[10px] font-bold text-brand-navy uppercase">Average Monthly Bill</label>
                         <span className="text-lg font-bold text-brand-navy">£{data.energyBill}</span>
                       </div>
                       <input
+                        id="energy-bill"
                         type="range"
                         min="50"
                         max="1000"
@@ -260,6 +265,7 @@ const Wizard: React.FC = () => {
                         <button
                           key={pattern}
                           onClick={() => updateData({ usagePattern: pattern as any })}
+                          aria-pressed={data.usagePattern === pattern}
                           className={`p-3 rounded-lg border-2 text-xs font-bold capitalize transition-all ${data.usagePattern === pattern ? 'border-brand-navy bg-brand-navy text-white' : 'border-brand-accent hover:border-brand-navy/30'}`}
                         >
                           {pattern} Usage
@@ -279,7 +285,7 @@ const Wizard: React.FC = () => {
                   <div className="rounded-xl border border-brand-accent bg-brand-accent/20 p-5">
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-4">
                       <div>
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-brand-muted mb-1">Usable roof area</p>
+                        <label htmlFor="roof-size-range" className="block text-[10px] font-bold uppercase tracking-wider text-brand-muted mb-1">Usable roof area</label>
                         <p className="text-2xl font-serif font-bold text-brand-navy">{Math.round(data.roofSize)} sqm</p>
                       </div>
                       <div className="text-xs text-brand-muted">
@@ -291,6 +297,7 @@ const Wizard: React.FC = () => {
                       </div>
                     </div>
                     <input
+                      id="roof-size-range"
                       type="range"
                       min="10"
                       max={data.propertyType === 'commercial' ? '2000' : '250'}
@@ -305,8 +312,9 @@ const Wizard: React.FC = () => {
                       className="w-full h-1.5 bg-brand-accent rounded-lg appearance-none cursor-pointer accent-brand-navy"
                     />
                     <div className="mt-3">
-                      <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Manual roof area override (sqm)</label>
+                      <label htmlFor="roof-size-manual" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Manual roof area override (sqm)</label>
                       <input
+                        id="roof-size-manual"
                         type="number"
                         min="10"
                         max={data.propertyType === 'commercial' ? '2000' : '250'}
@@ -331,6 +339,7 @@ const Wizard: React.FC = () => {
                           <button
                             key={dir}
                             onClick={() => updateData({ roofDirection: dir as any })}
+                            aria-pressed={data.roofDirection === dir}
                             className={`p-2.5 rounded-lg border-2 text-xs font-bold capitalize transition-all ${data.roofDirection === dir ? 'border-brand-navy bg-brand-navy text-white' : 'border-brand-accent hover:border-brand-navy/30'}`}
                           >
                             {dir}
@@ -347,6 +356,7 @@ const Wizard: React.FC = () => {
                           <button
                             key={val ? 'yes' : 'no'}
                             onClick={() => updateData({ hasBattery: val })}
+                            aria-pressed={data.hasBattery === val}
                             className={`flex-1 p-2.5 rounded-lg border-2 text-xs font-bold capitalize transition-all ${data.hasBattery === val ? 'border-brand-navy bg-brand-navy text-white' : 'border-brand-accent hover:border-brand-navy/30'}`}
                           >
                             {val ? 'Include' : 'Exclude'}
@@ -366,8 +376,9 @@ const Wizard: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-1 gap-5">
                     <div>
-                      <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Full Name</label>
+                      <label htmlFor="contact-name" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Full Name</label>
                       <input
+                        id="contact-name"
                         type="text"
                         placeholder="Your full name"
                         value={data.name}
@@ -378,8 +389,9 @@ const Wizard: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Email Address</label>
+                        <label htmlFor="contact-email" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Email Address</label>
                         <input
+                          id="contact-email"
                           type="email"
                           placeholder="you@example.com"
                           value={data.email}
@@ -389,8 +401,9 @@ const Wizard: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Contact Number</label>
+                        <label htmlFor="contact-phone" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Contact Number</label>
                         <input
+                          id="contact-phone"
                           type="tel"
                           placeholder="07xxx xxx xxx"
                           value={data.phone}
@@ -461,6 +474,12 @@ const Wizard: React.FC = () => {
               {step === steps.length ? 'See Results' : 'Continue'}
               <ArrowRight className="h-4 w-4" />
             </button>
+          </div>
+
+          <div className="mt-6 flex items-center justify-center gap-4 text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+            <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> 100% Free</span>
+            <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> No Obligation</span>
+            <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Secure</span>
           </div>
         </div>
       </div>

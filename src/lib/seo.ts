@@ -41,6 +41,11 @@ type SoftwareApplicationSchemaInput = {
   path: string;
 };
 
+type FAQSchemaInput = {
+  question: string;
+  answer: string;
+}[];
+
 type City = {
   name: string;
   slug: string;
@@ -188,6 +193,21 @@ export function createSoftwareApplicationSchema({
       price: '0',
       priceCurrency: 'GBP',
     },
+  };
+}
+
+export function createFAQSchema(faqs: FAQSchemaInput): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
   };
 }
 

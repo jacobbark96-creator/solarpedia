@@ -6,6 +6,7 @@ import {
   createBreadcrumbSchema,
   createServiceSchema,
   getInstallerCitySeo,
+  createFAQSchema,
 } from '../lib/seo';
 
 type City = { name: string; slug: string };
@@ -51,6 +52,24 @@ const BestSolarInstallersCity: React.FC = () => {
     timing: `Installer response times in ${city.name} improve when users provide postcode, roof detail, and a clear project scope from the start.`,
   } : null;
 
+  const cityFaqs = useMemo(() => {
+    if (!city) return [];
+    return [
+      {
+        question: `How do I compare solar installers in ${city.name}?`,
+        answer: 'Start with MCS status, then compare survey quality, projected output, workmanship cover, component choice, and how clearly the proposal explains assumptions.',
+      },
+      {
+        question: `Should I choose the cheapest installer in ${city.name}?`,
+        answer: 'Not automatically. The cheapest quote can omit monitoring, warranty detail, roof accessories, or realistic generation assumptions.',
+      },
+      {
+        question: `What should I ask before accepting a quote in ${city.name}?`,
+        answer: 'Ask who is doing the survey, what system size is recommended, what export assumptions are used, how long installation takes, and what aftercare is included.',
+      },
+    ];
+  }, [city]);
+
   usePageMetadata({
     title: seo?.title || 'Local Solar Installers',
     description:
@@ -67,6 +86,7 @@ const BestSolarInstallersCity: React.FC = () => {
             serviceType: 'Solar installer comparison',
             areaServed: city.name,
           }),
+          createFAQSchema(cityFaqs),
           createBreadcrumbSchema([
             { name: 'Home', path: '/' },
             { name: 'Local Solar Installers', path: '/best-solar-installers' },
@@ -167,20 +187,7 @@ const BestSolarInstallersCity: React.FC = () => {
             <div className="bg-white border border-brand-accent rounded-[2.5rem] p-8 md:p-10">
               <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">FAQs for choosing solar installers in {city.name}</h2>
               <div className="space-y-5">
-                {[
-                  {
-                    question: `How do I compare solar installers in ${city.name}?`,
-                    answer: 'Start with MCS status, then compare survey quality, projected output, workmanship cover, component choice, and how clearly the proposal explains assumptions.',
-                  },
-                  {
-                    question: `Should I choose the cheapest installer in ${city.name}?`,
-                    answer: 'Not automatically. The cheapest quote can omit monitoring, warranty detail, roof accessories, or realistic generation assumptions.',
-                  },
-                  {
-                    question: `What should I ask before accepting a quote in ${city.name}?`,
-                    answer: 'Ask who is doing the survey, what system size is recommended, what export assumptions are used, how long installation takes, and what aftercare is included.',
-                  },
-                ].map((item) => (
+                {cityFaqs.map((item) => (
                   <div key={item.question}>
                     <h3 className="text-xl font-serif font-bold text-brand-navy mb-2">{item.question}</h3>
                     <p className="text-brand-muted leading-relaxed">{item.answer}</p>

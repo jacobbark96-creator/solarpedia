@@ -11,7 +11,25 @@ import { useLiveNews } from '../hooks/useLiveNews';
 import cities from '../data/ukCities.json';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
-import { createBreadcrumbSchema, createWebsiteSchema } from '../lib/seo';
+import { createBreadcrumbSchema, createWebsiteSchema, createFAQSchema } from '../lib/seo';
+
+const homeFaqs = [
+  {
+    question: 'Is solar worth it in the UK?',
+    answer:
+      'For many homes and businesses, yes. The answer depends on roof area, direction, daytime electricity use, battery plans, and local installation costs.',
+  },
+  {
+    question: 'How much do solar panels cost in the UK?',
+    answer:
+      'Costs vary by system size, roof complexity, battery storage, scaffolding, and electrical upgrades. That is why city quote pages and the savings wizard are useful starting points.',
+  },
+  {
+    question: 'How do I compare solar installers properly?',
+    answer:
+      'Check MCS certification, survey quality, workmanship warranties, projected generation, battery specification, monitoring, and aftercare support rather than comparing only the headline price.',
+  },
+];
 
 const Home: React.FC = () => {
   usePageMetadata({
@@ -24,6 +42,7 @@ const Home: React.FC = () => {
     schema: [
       createWebsiteSchema(),
       createBreadcrumbSchema([{ name: 'Home', path: '/' }]),
+      createFAQSchema(homeFaqs),
     ],
   });
   const { news: liveNews, loading: newsLoading } = useLiveNews();
@@ -106,7 +125,7 @@ const Home: React.FC = () => {
                 <div className="flex justify-between items-start mb-10">
                   <div>
                     <p className="text-[10px] font-bold text-brand-muted uppercase tracking-[0.2em] mb-2">Regional Benchmark</p>
-                    <h3 className="text-3xl font-serif font-bold text-brand-navy">South West England</h3>
+                    <h2 className="text-3xl font-serif font-bold text-brand-navy">South West England</h2>
                   </div>
                   <div className="bg-brand-green/10 px-4 py-2 rounded-2xl text-brand-green font-bold text-sm">
                     +15.2% ROI
@@ -146,14 +165,18 @@ const Home: React.FC = () => {
               <div className="absolute -top-12 -right-12 w-64 h-64 rounded-[2rem] overflow-hidden shadow-2xl -z-0 rotate-6 border-4 border-white">
                 <img 
                   src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=600&q=80" 
-                  alt="Solar Roof" 
+                  alt="Solar Roof"
+                  width="600"
+                  height="600"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="absolute -bottom-8 -left-8 w-48 h-48 rounded-[2rem] overflow-hidden shadow-2xl -z-0 -rotate-6 border-4 border-white">
                 <img 
                   src="https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&w=400&q=80" 
-                  alt="Solar Installation" 
+                  alt="Solar Installation"
+                  width="400"
+                  height="400"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -315,23 +338,7 @@ const Home: React.FC = () => {
             </p>
           </div>
           <div className="space-y-5">
-            {[
-              {
-                question: 'Is solar worth it in the UK?',
-                answer:
-                  'For many homes and businesses, yes. The answer depends on roof area, direction, daytime electricity use, battery plans, and local installation costs.',
-              },
-              {
-                question: 'How much do solar panels cost in the UK?',
-                answer:
-                  'Costs vary by system size, roof complexity, battery storage, scaffolding, and electrical upgrades. That is why city quote pages and the savings wizard are useful starting points.',
-              },
-              {
-                question: 'How do I compare solar installers properly?',
-                answer:
-                  'Check MCS certification, survey quality, workmanship warranties, projected generation, battery specification, monitoring, and aftercare support rather than comparing only the headline price.',
-              },
-            ].map((item) => (
+            {homeFaqs.map((item) => (
               <div key={item.question} className="rounded-[2rem] border border-brand-accent bg-white p-8">
                 <h3 className="text-2xl font-serif font-bold text-brand-navy mb-3">{item.question}</h3>
                 <p className="text-brand-muted leading-relaxed">{item.answer}</p>
@@ -375,7 +382,7 @@ const Home: React.FC = () => {
                         <item.icon className="h-6 w-6 text-brand-yellow" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-xl mb-1">{item.title}</h4>
+                        <h3 className="font-bold text-xl mb-1">{item.title}</h3>
                         <p className="text-brand-accent text-sm leading-relaxed opacity-70">{item.desc}</p>
                       </div>
                     </motion.div>

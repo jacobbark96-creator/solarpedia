@@ -12,8 +12,8 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-1">
-            <Link to="/" className="flex items-center mb-6">
-              <img src="/logo.png" alt="Solarpedia Logo" className="h-40 w-auto brightness-0 invert" />
+            <Link to="/" className="flex items-center mb-6" aria-label="Solarpedia Home">
+              <img src="/logo.png" alt="Solarpedia Logo" width="160" height="40" className="h-40 w-auto brightness-0 invert" />
             </Link>
             <p className="text-brand-accent text-sm leading-relaxed mb-6">
               Independent UK solar insights, cost estimates and savings forecasts powered by real energy and regional data.
@@ -84,6 +84,8 @@ const Footer: React.FC = () => {
               <img
                 src="/kairo-studio-logo.png"
                 alt="Kairo Studio"
+                width="140"
+                height="62"
                 className="h-[62px] w-auto brightness-0 invert opacity-90"
               />
             </a>
