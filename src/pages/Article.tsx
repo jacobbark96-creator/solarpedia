@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Calendar, User, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, User, Clock, ShieldCheck, BookOpen, Link as LinkIcon } from 'lucide-react';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { createArticleSchema, createBreadcrumbSchema, createFAQSchema } from '../lib/seo';
 import { ARTICLES_DB, nextStepsBySlug } from '../data/articles';
@@ -104,6 +104,22 @@ const Article: React.FC = () => {
   const contentBeforeWidget = contentParts[0];
   const contentAfterWidget = contentParts.length > 1 ? contentParts.slice(1).join('') : '';
 
+  // Fallbacks for trust signals if not explicitly defined in the article data
+  const articleSources = article.sources || [
+    { name: 'Energy Saving Trust', link: 'https://energysavingtrust.org.uk/' },
+    { name: 'Ofgem', link: 'https://www.ofgem.gov.uk/' },
+    { name: 'Microgeneration Certification Scheme (MCS)', link: 'https://mcscertified.com/' }
+  ];
+
+  const genericGlossaryTerms = [
+    'Kilowatt Peak (kWp)',
+    'Inverter',
+    'Smart Export Guarantee (SEG)',
+    'Microgeneration Certification Scheme (MCS)',
+    'Return on Investment (ROI)'
+  ];
+  const displayGlossaryTerms = article.relatedGlossaryTerms || genericGlossaryTerms;
+
   return (
     <div className="bg-brand-white min-h-screen pt-12 pb-24">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -132,18 +148,31 @@ const Article: React.FC = () => {
               {article.title}
             </h1>
             
-            <div className="flex flex-wrap items-center gap-6 text-xs text-brand-muted font-medium border-y border-brand-accent py-4">
-              <div className="flex items-center gap-2">
-                <User className="h-4 w-4" />
-                {article.author}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 text-sm text-brand-muted font-medium border-y border-brand-accent py-5">
+              <div className="flex flex-wrap items-center gap-6">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 bg-brand-navy rounded-full flex items-center justify-center text-white font-bold">
+                    <User className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="text-brand-navy font-bold">{article.author}</div>
+                    <div className="text-[10px] uppercase tracking-wider">Energy Analyst</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  <span>Last reviewed: <strong className="text-brand-navy">{article.date}</strong></span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  {article.readTime}
+                </div>
               </div>
               <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                {article.date}
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                {article.readTime}
+                <ShieldCheck className="h-4 w-4 text-brand-green" />
+                <Link to="/education#impartiality" className="text-brand-navy hover:text-brand-green font-bold transition-colors">
+                  Editorial Policy
+                </Link>
               </div>
             </div>
           </div>
@@ -168,6 +197,45 @@ const Article: React.FC = () => {
             {contentAfterWidget && (
               <div dangerouslySetInnerHTML={{ __html: contentAfterWidget }} />
             )}
+
+            <div className="mt-16 p-8 bg-brand-white border border-brand-accent rounded-2xl not-prose">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-lg font-serif font-bold text-brand-navy mb-4 flex items-center gap-2">
+                    <LinkIcon className="h-5 w-5" /> Sources & Citations
+                  </h3>
+                  <ul className="space-y-3">
+                    {articleSources.map((source, index) => (
+                      <li key={index} className="text-sm text-brand-muted">
+                        {source.link ? (
+                          <a href={source.link} target="_blank" rel="noopener noreferrer" className="hover:text-brand-green transition-colors">
+                            {source.name}
+                          </a>
+                        ) : (
+                          source.name
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-lg font-serif font-bold text-brand-navy mb-4 flex items-center gap-2">
+                    <BookOpen className="h-5 w-5" /> Related Glossary Terms
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {displayGlossaryTerms.map((term, index) => (
+                      <Link 
+                        key={index} 
+                        to="/glossary" 
+                        className="text-xs font-bold text-brand-navy bg-white border border-brand-accent px-3 py-1.5 rounded-full hover:border-brand-navy transition-colors"
+                      >
+                        {term}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="mt-12 rounded-[2rem] border border-brand-accent bg-brand-accent/20 p-8">

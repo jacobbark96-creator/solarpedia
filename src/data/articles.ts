@@ -10,6 +10,8 @@ export interface ArticleData {
   aiSummary: string;
   content: string;
   widget?: 'BatteryROI' | 'SystemSize' | 'RoofSuitability' | 'EVCharging' | 'ExportTariff';
+  sources?: Array<{ name: string; link?: string }>;
+  relatedGlossaryTerms?: string[];
   nextSteps?: Array<{
     title: string;
     description: string;
