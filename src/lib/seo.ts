@@ -1,7 +1,7 @@
 export const SITE_NAME = 'Solarpedia UK';
 export const SITE_URL = 'https://solarpedia.co.uk';
 export const DEFAULT_OG_IMAGE =
-  'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=1200&q=80';
+  'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=high%20quality%20solar%20panels%20on%20a%20modern%20UK%20house%20roof%20with%20a%20clear%20blue%20sky&image_size=landscape_16_9';
 
 export type JsonLd = Record<string, unknown>;
 
