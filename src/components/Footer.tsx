@@ -41,6 +41,7 @@ const Footer: React.FC = () => {
             <h4 className="font-bold text-lg mb-6">Resources</h4>
             <ul className="space-y-4 text-brand-accent text-sm">
               <li><Link to="/education#impartiality" onClick={handleFooterClick} className="hover:text-white transition-colors">How we stay impartial</Link></li>
+              <li><Link to="/glossary" onClick={handleFooterClick} className="hover:text-white transition-colors">Solar Glossary</Link></li>
               <li><Link to="/education" onClick={handleFooterClick} className="hover:text-white transition-colors">Data methodology</Link></li>
               <li><Link to="/education/article/solar-myths-explained" onClick={handleFooterClick} className="hover:text-white transition-colors">Solar myths explained</Link></li>
               <li><Link to="/legal/privacy" onClick={handleFooterClick} className="hover:text-white transition-colors">Privacy & GDPR</Link></li>

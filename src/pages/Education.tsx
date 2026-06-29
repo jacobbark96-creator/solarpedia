@@ -16,6 +16,7 @@ const categories = [
   { name: 'Analysis', icon: Search, count: 2 },
   { name: 'Myths & Facts', icon: MessageCircle, count: 1 },
   { name: 'Technical Guides', icon: BookOpen, count: 1 },
+  { name: 'Glossary', icon: BookOpen, count: 66, link: '/glossary' },
 ];
 
 const articles = [
@@ -148,11 +149,26 @@ const Education: React.FC = () => {
         {/* Categories */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
           {categories.map((cat) => (
-            <button key={cat.name} className="bg-white p-6 rounded-3xl border border-brand-accent hover:border-brand-navy transition-all text-left group">
-              <cat.icon className="h-8 w-8 text-brand-navy mb-4 group-hover:text-brand-green transition-colors" />
-              <h2 className="font-bold text-brand-navy text-lg">{cat.name}</h2>
-              <p className="text-xs text-brand-muted uppercase font-bold tracking-wider">{cat.count} Articles</p>
-            </button>
+            cat.link ? (
+              <Link 
+                key={cat.name} 
+                to={cat.link}
+                className="bg-white p-6 rounded-3xl border border-brand-accent hover:border-brand-navy transition-all text-left group"
+              >
+                <cat.icon className="h-8 w-8 text-brand-navy mb-4 group-hover:text-brand-green transition-colors" />
+                <h2 className="font-bold text-brand-navy text-lg">{cat.name}</h2>
+                <p className="text-xs text-brand-muted uppercase font-bold tracking-wider">{cat.count} {cat.name === 'Glossary' ? 'Terms' : 'Articles'}</p>
+              </Link>
+            ) : (
+              <button 
+                key={cat.name} 
+                className="bg-white p-6 rounded-3xl border border-brand-accent hover:border-brand-navy transition-all text-left group"
+              >
+                <cat.icon className="h-8 w-8 text-brand-navy mb-4 group-hover:text-brand-green transition-colors" />
+                <h2 className="font-bold text-brand-navy text-lg">{cat.name}</h2>
+                <p className="text-xs text-brand-muted uppercase font-bold tracking-wider">{cat.count} Articles</p>
+              </button>
+            )
           ))}
         </div>
 

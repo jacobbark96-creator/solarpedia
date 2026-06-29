@@ -10,6 +10,7 @@ import Education from './pages/Education';
 import Business from './pages/Business';
 import Installers from './pages/Installers';
 import Article from './pages/Article';
+import Glossary from './pages/Glossary';
 import Legal from './pages/Legal';
 import Thanks from './pages/Thanks';
 import LeadCaptureCTA from './components/LeadCaptureCTA';
@@ -32,6 +33,7 @@ const App: React.FC = () => {
             <Route path="/results" element={<Results />} />
             <Route path="/education" element={<Education />} />
             <Route path="/education/article/:slug" element={<Article />} />
+            <Route path="/glossary" element={<Glossary />} />
             <Route path="/business" element={<Business />} />
             <Route path="/installers" element={<Installers />} />
             <Route path="/legal/:documentId" element={<Legal />} />
