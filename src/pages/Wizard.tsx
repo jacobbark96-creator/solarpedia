@@ -57,11 +57,44 @@ const Wizard: React.FC = () => {
     /\S+@\S+\.\S+/.test(data.email.trim()) &&
     data.phone.trim().length >= 7;
 
-  const handleNext = () => {
+  const [submitting, setSubmitting] = React.useState(false);
+
+  const handleNext = async () => {
     if (step < steps.length) {
       setStep(step + 1);
     } else {
-      navigate('/results');
+      setSubmitting(true);
+      try {
+        await fetch('https://formsubmit.co/ajax/solarpedia@openlead.co.uk', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            _subject: 'New Solar Savings Calculator Lead',
+            Name: data.name,
+            Email: data.email,
+            Phone: data.phone,
+            'Property Type': data.propertyType,
+            Postcode: data.postcode,
+            'House Number': data.houseNumber,
+            'Energy Bill': `£${data.energyBill}/month`,
+            'Usage Pattern': data.usagePattern,
+            'Roof Size': `${data.roofSize} sqm`,
+            'Roof Direction': data.roofDirection,
+            'Has Battery': data.hasBattery ? 'Yes' : 'No',
+            'Consent Shared': data.consentShared ? 'Yes' : 'No',
+            'Matched Address': data.matchedAddress || 'N/A',
+            'Roof Estimate Method': data.roofEstimateMethod || 'N/A',
+          })
+        });
+      } catch (error) {
+        console.error('Failed to submit lead', error);
+      } finally {
+        setSubmitting(false);
+        navigate('/results');
+      }
     }
   };
 
@@ -468,11 +501,11 @@ const Wizard: React.FC = () => {
             </button>
             <button
               onClick={handleNext}
-              disabled={(step === 2 && (!data.postcode || !data.houseNumber)) || (step === 5 && !isContactStepValid)}
+              disabled={(step === 2 && (!data.postcode || !data.houseNumber)) || (step === 5 && !isContactStepValid) || submitting}
               className={`bg-brand-navy text-white px-7 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
             >
-              {step === steps.length ? 'See Results' : 'Continue'}
-              <ArrowRight className="h-4 w-4" />
+              {submitting ? 'Submitting...' : step === steps.length ? 'See Results' : 'Continue'}
+              {!submitting && <ArrowRight className="h-4 w-4" />}
             </button>
           </div>
 
