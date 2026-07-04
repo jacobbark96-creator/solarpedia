@@ -46,8 +46,8 @@ const BatteryROICalculator: React.FC = () => {
                Did you know?
              </h2>
              <p className="text-white/90 text-base md:text-lg leading-relaxed">
-               "Adding a home battery can increase your solar self-consumption from 50% to over 80%, drastically cutting your reliance on the grid."
-             </p>
+                "Don't let your free solar energy slip away. A home battery can boost your self-reliance to 80%—meaning you use what you generate, instead of buying it back."
+              </p>
           </div>
         </div>
 

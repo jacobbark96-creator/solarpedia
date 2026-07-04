@@ -46,8 +46,8 @@ const SystemSizeEstimator: React.FC = () => {
                Did you know?
              </h2>
              <p className="text-white/90 text-base md:text-lg leading-relaxed">
-               "A typical 12-panel (4.8kWp) solar array takes up around 25 square metres of roof space and generates roughly 4,200 kWh of free electricity per year."
-             </p>
+                "You don't need a massive roof to go solar. Just 25 square metres is enough space for a 12-panel system that churns out 4,200 kWh of free electricity every year."
+              </p>
           </div>
         </div>
 

@@ -46,8 +46,8 @@ const RoofSuitabilityChecker: React.FC = () => {
                Did you know?
              </h2>
              <p className="text-white/90 text-base md:text-lg leading-relaxed">
-               "Even an east or west-facing roof in the UK can still generate up to 86% of the energy produced by a perfectly south-facing roof."
-             </p>
+                "Think your roof is facing the wrong way? Think again. East and west-facing UK roofs still generate a massive 86% of the power of a perfect south-facing setup."
+              </p>
           </div>
         </div>
 

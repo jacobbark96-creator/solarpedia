@@ -146,7 +146,7 @@ const Wizard: React.FC = () => {
                Did you know?
              </h2>
              <p className="text-white/90 text-base md:text-lg leading-relaxed">
-               "The average UK household saves over £1,200 annually on their energy bills by installing solar panels and a battery system."
+               "UK homeowners are wiping out over £1,200 a year from their energy bills with solar and battery systems. Stop overpaying the grid."
              </p>
           </div>
         </div>

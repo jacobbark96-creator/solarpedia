@@ -46,8 +46,8 @@ const ExportTariffCompare: React.FC = () => {
                Did you know?
              </h2>
              <p className="text-white/90 text-base md:text-lg leading-relaxed">
-               "Households on the most competitive export tariffs can earn over £250 a year simply by selling their excess solar electricity back to the grid."
-             </p>
+                "Your roof could be making you money. Top export tariffs are paying households over £250 a year just for selling their leftover solar energy back to the grid."
+              </p>
           </div>
         </div>
 

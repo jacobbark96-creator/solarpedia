@@ -46,8 +46,8 @@ const EVChargingCalculator: React.FC = () => {
                Did you know?
              </h2>
              <p className="text-white/90 text-base md:text-lg leading-relaxed">
-               "Charging an electric vehicle with home-generated solar energy can cost as little as 2p per mile, compared to around 9p on standard grid tariffs."
-             </p>
+                "Slash your driving costs to just 2p per mile. Charging your EV with free solar energy is up to 75% cheaper than using standard grid electricity."
+              </p>
           </div>
         </div>
 
