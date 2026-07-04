@@ -129,8 +129,28 @@ const Wizard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-brand-white pt-10 pb-20">
-      <div className="max-w-2xl mx-auto px-4">
+    <div className="min-h-screen bg-brand-white pt-16 pb-20">
+      <div className="max-w-3xl mx-auto px-4">
+        {/* Landing Page Hero & Hook */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-6">
+            Solar Savings Calculator
+          </h1>
+          <p className="text-xl text-brand-muted max-w-2xl mx-auto mb-8 leading-relaxed">
+            Find out exactly how much you could save on your energy bills and how quickly a solar system could pay for itself.
+          </p>
+          
+          <div className="bg-brand-navy rounded-3xl p-6 md:p-8 shadow-xl inline-block text-left border border-brand-accent w-full max-w-2xl">
+             <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+               <Zap className="h-5 w-5 text-brand-yellow" />
+               Did you know?
+             </h2>
+             <p className="text-white/90 text-base md:text-lg leading-relaxed">
+               "The average UK household saves over £1,200 annually on their energy bills by installing solar panels and a battery system."
+             </p>
+          </div>
+        </div>
+
         {/* Progress Bar */}
         <div className="mb-10">
           <div className="flex justify-between mb-3">
@@ -514,6 +534,12 @@ const Wizard: React.FC = () => {
             <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> No Obligation</span>
             <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Secure</span>
           </div>
+        </div>
+
+        <div className="text-center mt-16 pt-8 border-t border-brand-accent">
+          <p className="text-[10px] text-brand-muted uppercase tracking-wider">
+            Source: Energy Saving Trust (2025/2026 data projections based on typical usage)
+          </p>
         </div>
       </div>
     </div>
