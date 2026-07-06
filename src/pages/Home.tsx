@@ -164,7 +164,7 @@ const Home: React.FC = () => {
               {/* Decorative images */}
               <div className="absolute -top-12 -right-12 w-64 h-64 rounded-[2rem] overflow-hidden shadow-2xl -z-0 rotate-6 border-4 border-white">
                 <img 
-                  src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=modern%20solar%20panels%20on%20a%20uk%20house%20roof&image_size=landscape_4_3" 
+                  src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=600&q=80" 
                   alt="Solar Roof"
                   width="600"
                   height="600"
@@ -173,7 +173,7 @@ const Home: React.FC = () => {
               </div>
               <div className="absolute -bottom-8 -left-8 w-48 h-48 rounded-[2rem] overflow-hidden shadow-2xl -z-0 -rotate-6 border-4 border-white">
                 <img 
-                  src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20of%20a%20solar%20inverter%20and%20battery%20system&image_size=square" 
+                  src="https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&w=400&q=80" 
                   alt="Solar Installation"
                   width="400"
                   height="400"

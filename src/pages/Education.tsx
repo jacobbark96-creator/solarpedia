@@ -26,7 +26,7 @@ const articles = [
     excerpt: 'An impartial look at the current energy landscape, installation costs, and smart export guarantees.',
     category: 'Analysis',
     readTime: ARTICLES_DB['is-solar-worth-it-uk'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=solar%20panels%20on%20residential%20roof%20uk&image_size=landscape_4_3'
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=800&q=80'
   },
   {
     title: ARTICLES_DB['solar-myths-explained'].title,
@@ -34,7 +34,7 @@ const articles = [
     excerpt: 'We debunk the most common misconceptions about solar panels in the UK climate.',
     category: 'Myths & Facts',
     readTime: ARTICLES_DB['solar-myths-explained'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=high%20tech%20solar%20battery%20energy%20storage%20system&image_size=landscape_4_3'
+    image: 'https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?auto=format&fit=crop&w=800&q=80'
   },
   {
     title: ARTICLES_DB['best-export-tariffs-uk'].title,
@@ -42,7 +42,7 @@ const articles = [
     excerpt: 'Octopus Energy dominates the UK export market in 2026. Compare the best export tariffs available today.',
     category: 'Export Tariffs',
     readTime: ARTICLES_DB['best-export-tariffs-uk'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=financial%20chart%20with%20solar%20energy%20icon&image_size=landscape_4_3'
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'
   },
   {
     title: ARTICLES_DB['solar-panel-installation-cost-uk'].title,
@@ -50,7 +50,7 @@ const articles = [
     excerpt: 'A practical breakdown of what actually drives install cost, from system size to batteries and roof complexity.',
     category: 'Costs & Financing',
     readTime: ARTICLES_DB['solar-panel-installation-cost-uk'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=solar%20panel%20installation%20process%20on%20a%20roof&image_size=landscape_4_3'
+    image: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&w=800&q=80'
   },
   {
     title: ARTICLES_DB['lfp-vs-nmc-solar-batteries'].title,
@@ -58,7 +58,7 @@ const articles = [
     excerpt: 'LFP is the dominant and recommended home battery chemistry. It offers 6,000+ cycles and 15-20 years of life.',
     category: 'Solar Batteries',
     readTime: ARTICLES_DB['lfp-vs-nmc-solar-batteries'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=modern%20home%20solar%20battery%20storage%20unit&image_size=landscape_4_3'
+    image: 'https://images.unsplash.com/photo-1592833159117-ac790d406391?auto=format&fit=crop&w=800&q=80'
   },
   {
     title: ARTICLES_DB['solar-battery-sizing-guide'].title,
@@ -66,7 +66,7 @@ const articles = [
     excerpt: 'The ideal solar battery size depends on your evening electricity usage and solar array size.',
     category: 'Solar Batteries',
     readTime: ARTICLES_DB['solar-battery-sizing-guide'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=electric%20meter%20and%20solar%20battery%20setup&image_size=landscape_4_3'
+    image: 'https://images.unsplash.com/photo-1620800632597-9e0d16568eb2?auto=format&fit=crop&w=800&q=80'
   },
   {
     title: ARTICLES_DB['solar-panel-bird-proofing'].title,
@@ -74,7 +74,7 @@ const articles = [
     excerpt: 'Bird proofing prevents pigeons from nesting under solar panels, which can cause cable damage and noise.',
     category: 'Solar Panels',
     readTime: ARTICLES_DB['solar-panel-bird-proofing'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=solar%20panels%20with%20protective%20bird%20mesh%20netting&image_size=landscape_4_3'
+    image: 'https://images.unsplash.com/photo-1592833159057-6dd15bd0b852?auto=format&fit=crop&w=800&q=80'
   },
   {
     title: ARTICLES_DB['solar-panel-cleaning-maintenance'].title,
@@ -82,7 +82,7 @@ const articles = [
     excerpt: 'In the UK, natural rainfall cleans most residential solar panels effectively. Learn when manual cleaning is needed.',
     category: 'Solar Panels',
     readTime: ARTICLES_DB['solar-panel-cleaning-maintenance'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=cleaning%20solar%20panels%20with%20water&image_size=landscape_4_3'
+    image: 'https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=800&q=80'
   },
   {
     title: ARTICLES_DB['commercial-solar-for-business-uk'].title,
@@ -90,7 +90,7 @@ const articles = [
     excerpt: 'A buyer-focused guide to commercial solar economics, procurement, and what to compare in an installer proposal.',
     category: 'Commercial',
     readTime: ARTICLES_DB['commercial-solar-for-business-uk'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=aerial%20view%20of%20warehouse%20roof%20covered%20in%20solar%20panels&image_size=landscape_4_3'
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=800&q=80'
   },
   {
     title: ARTICLES_DB['planning-permission-for-solar-uk'].title,
@@ -98,7 +98,7 @@ const articles = [
     excerpt: 'What usually falls under permitted development, what can trigger extra checks, and why it pays to confirm early.',
     category: 'Technical Guides',
     readTime: ARTICLES_DB['planning-permission-for-solar-uk'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=architectural%20blueprint%20of%20a%20house%20with%20solar%20panels&image_size=landscape_4_3'
+    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80'
   }
 ];
 
