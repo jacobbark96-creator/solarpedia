@@ -26,7 +26,7 @@ const articles = [
     excerpt: 'An impartial look at the current energy landscape, installation costs, and smart export guarantees.',
     category: 'Analysis',
     readTime: ARTICLES_DB['is-solar-worth-it-uk'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=solar%20panels%20on%20residential%20roof%20uk&image_size=landscape_4_3' // Solar panels on roof
+    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=solar%20panels%20on%20residential%20roof%20uk&image_size=landscape_4_3'
   },
   {
     title: ARTICLES_DB['solar-myths-explained'].title,
@@ -34,7 +34,7 @@ const articles = [
     excerpt: 'We debunk the most common misconceptions about solar panels in the UK climate.',
     category: 'Myths & Facts',
     readTime: ARTICLES_DB['solar-myths-explained'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=high%20tech%20solar%20battery%20energy%20storage%20system&image_size=landscape_4_3' // High tech battery/energy
+    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=high%20tech%20solar%20battery%20energy%20storage%20system&image_size=landscape_4_3'
   },
   {
     title: ARTICLES_DB['best-export-tariffs-uk'].title,
@@ -42,7 +42,7 @@ const articles = [
     excerpt: 'Octopus Energy dominates the UK export market in 2026. Compare the best export tariffs available today.',
     category: 'Export Tariffs',
     readTime: ARTICLES_DB['best-export-tariffs-uk'].readTime,
-    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=financial%20chart%20with%20solar%20energy%20icon&image_size=landscape_4_3' // Charts/Finance
+    image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=financial%20chart%20with%20solar%20energy%20icon&image_size=landscape_4_3'
   },
   {
     title: ARTICLES_DB['solar-panel-installation-cost-uk'].title,
