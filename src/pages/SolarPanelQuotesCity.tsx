@@ -75,6 +75,7 @@ const SolarPanelQuotesCity: React.FC = () => {
     description:
       seo?.description || 'Get free solar panel installation quotes from local installers in your area.',
     path: seo?.path || '/solar-panel-quotes',
+    image: seo?.image,
     keywords: seo?.keywords || 'solar panel quotes UK',
     noindex: !city,
     schema: city
@@ -123,7 +124,7 @@ const SolarPanelQuotesCity: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-12">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-3">
-            Solar panel quotes {city.name}
+            UK Regional Guide
           </p>
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-5">
             {seo?.h1}

@@ -11,7 +11,7 @@ import { useLiveNews } from '../hooks/useLiveNews';
 import cities from '../data/ukCities.json';
 
 import { usePageMetadata } from '../hooks/usePageMetadata';
-import { createBreadcrumbSchema, createWebsiteSchema, createFAQSchema } from '../lib/seo';
+import { createBreadcrumbSchema, createWebsiteSchema, createFAQSchema, OG_IMAGES } from '../lib/seo';
 
 const homeFaqs = [
   {
@@ -37,6 +37,7 @@ const Home: React.FC = () => {
     description:
       'Independent UK solar insights, cost estimates and savings forecasts powered by real energy and regional data.',
     path: '/',
+    image: OG_IMAGES.home,
     keywords:
       'is solar worth it UK, solar savings calculator UK, solar cost calculator UK, solar installers UK',
     schema: [

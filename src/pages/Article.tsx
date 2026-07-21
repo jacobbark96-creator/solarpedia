@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Calendar, User, Clock, ShieldCheck, BookOpen, Link as LinkIcon } from 'lucide-react';
 import { usePageMetadata } from '../hooks/usePageMetadata';
-import { createArticleSchema, createBreadcrumbSchema, createFAQSchema } from '../lib/seo';
+import { createArticleSchema, createBreadcrumbSchema, createFAQSchema, OG_IMAGES } from '../lib/seo';
 import { ARTICLES_DB, nextStepsBySlug } from '../data/articles';
 
 // Import Widgets
@@ -61,6 +61,7 @@ const Article: React.FC = () => {
     title: article?.title || 'Article Not Found',
     description: articleDescription,
     path: articlePath,
+    image: OG_IMAGES.education,
     keywords: article ? `${article.title}, solar education UK, solar advice UK` : 'solar education UK',
     noindex: !article,
     schema: article

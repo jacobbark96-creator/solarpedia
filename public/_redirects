@@ -1,1 +1,5 @@
+# Enforce non-www
+https://www.solarpedia.co.uk/* https://solarpedia.co.uk/:splat 301!
+
+# SPA routing
 /* /index.html 200

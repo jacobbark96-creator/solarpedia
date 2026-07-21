@@ -3,6 +3,13 @@ export const SITE_URL = 'https://solarpedia.co.uk';
 export const DEFAULT_OG_IMAGE =
   'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=1200&q=80';
 
+export const OG_IMAGES = {
+  home: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=1200&q=80',
+  commercial: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
+  education: 'https://images.unsplash.com/photo-1454165833767-131f72a1003c?auto=format&fit=crop&w=1200&q=80',
+  city: 'https://images.unsplash.com/photo-1449156001437-3a166aefbb0a?auto=format&fit=crop&w=1200&q=80',
+};
+
 export type JsonLd = Record<string, unknown>;
 
 type BreadcrumbItem = {
@@ -62,7 +69,8 @@ function normalizePath(path: string) {
 
 export function buildAbsoluteUrl(pathOrUrl: string = '/') {
   if (/^https?:\/\//i.test(pathOrUrl)) {
-    return pathOrUrl;
+    // Enforce non-www even for absolute URLs
+    return pathOrUrl.replace('https://www.solarpedia.co.uk', SITE_URL);
   }
 
   return `${SITE_URL}${normalizePath(pathOrUrl)}`;
@@ -222,6 +230,7 @@ export function getSolarQuotesHubSeo() {
       'Choose your city to compare solar panel quotes, check local installer coverage, and start a postcode-matched enquiry.',
     keywords:
       'solar panel quotes UK, solar panel quotes by city, compare solar quotes, free solar quotes',
+    image: OG_IMAGES.city,
   };
 }
 
@@ -231,8 +240,9 @@ export function getSolarQuotesCitySeo(city: City) {
     description: `Compare solar panel quotes in ${city.name}. Get up to 3 free quotes, review local installer availability, and estimate likely installation costs for your postcode.`,
     path: `/solar-panel-quotes/${city.slug}`,
     h1: `Solar panel quotes in ${city.name}`,
-    intro: `Compare up to 3 solar panel quotes in ${city.name}, see how local installer availability can affect pricing, and start with a postcode-matched enquiry.`,
+    intro: `Request up to 3 solar panel quotes from vetted installers covering ${city.name}. See how local coverage affects pricing and get a postcode-matched response today.`,
     keywords: `solar panel quotes ${city.name}, solar installation quotes ${city.name}, compare solar quotes ${city.name}`,
+    image: OG_IMAGES.city,
   };
 }
 
@@ -247,6 +257,7 @@ export function getInstallerHubSeo() {
       'Browse UK city pages to compare local solar installers, shortlist MCS-certified companies, and move into quote collection faster.',
     keywords:
       'local solar installers UK, local solar installers by city, compare solar installers, solar companies near me',
+    image: OG_IMAGES.city,
   };
 }
 
@@ -258,6 +269,7 @@ export function getInstallerCitySeo(city: City) {
     h1: `Local solar installers in ${city.name}`,
     intro: `Use this ${city.name} solar installer guide to compare local companies, check credentials, and move into quote requests with stronger shortlist criteria.`,
     keywords: `local solar installers ${city.name}, solar installers ${city.name}, local solar companies ${city.name}`,
+    image: OG_IMAGES.city,
   };
 }
 
@@ -272,5 +284,6 @@ export function getCommercialQuotesSeo() {
       'Request commercial solar quotes for UK business premises, compare installer responses, and speed up supplier selection with postcode-led routing.',
     keywords:
       'commercial solar quotes UK, business solar quotes UK, commercial solar installers UK, commercial solar panel quotes',
+    image: OG_IMAGES.commercial,
   };
 }

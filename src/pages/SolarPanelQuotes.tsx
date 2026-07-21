@@ -18,6 +18,7 @@ const SolarPanelQuotes: React.FC = () => {
     title: seo.title,
     description: seo.description,
     path: seo.path,
+    image: seo.image,
     keywords: seo.keywords,
     schema: [
       createCollectionPageSchema({
