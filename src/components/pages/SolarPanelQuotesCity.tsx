@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { Link } from '../Link';
-import cities from '../data/ukCities.json';
-import {
-  createBreadcrumbSchema,
-  createServiceSchema,
-  getSolarQuotesCitySeo,
-  createFAQSchema,
-} from '../lib/seo';
+import cities from '../../data/ukCities.json';
+import { 
+  createBreadcrumbSchema, 
+  createServiceSchema, 
+  getSolarQuotesCitySeo, 
+  buildAbsoluteUrl 
+} from '../../lib/seo';
 
 type City = { name: string; slug: string };
 

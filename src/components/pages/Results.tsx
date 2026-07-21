@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useWizardStore } from '../hooks/useWizardStore';
-import { NATIONAL_AVERAGES, UK_REGIONS_DATA } from '../data/mockData';
+import { useWizardStore } from '../../hooks/useWizardStore';
+import { NATIONAL_AVERAGES, UK_REGIONS_DATA } from '../../data/mockData';
 import { 
   TrendingUp, 
   Zap, 
@@ -26,7 +26,7 @@ import {
   Cell
 } from 'recharts';
 
-import { buildAbsoluteUrl, createBreadcrumbSchema } from '../lib/seo';
+import { buildAbsoluteUrl, createBreadcrumbSchema } from '../../lib/seo';
 
 const Results: React.FC = () => {
   const { data } = useWizardStore();

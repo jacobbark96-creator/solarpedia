@@ -1,12 +1,12 @@
 import React from 'react';
-import { Link } from '../Link';
-import cities from '../data/ukCities.json';
-import {
-  createBreadcrumbSchema,
-  createCollectionPageSchema,
-  createServiceSchema,
-  getSolarQuotesHubSeo,
-} from '../lib/seo';
+import { Link } from '../Link';import cities from '../../data/ukCities.json';
+import { 
+  createBreadcrumbSchema, 
+  createCollectionPageSchema, 
+  createServiceSchema, 
+  getSolarQuotesHubSeo, 
+  buildAbsoluteUrl 
+} from '../../lib/seo';
 
 type City = { name: string; slug: string };
 

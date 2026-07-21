@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useWizardStore } from '../hooks/useWizardStore';
+import { useWizardStore } from '../../hooks/useWizardStore';
 import { 
   Home as HomeIcon, 
   Building2, 
@@ -15,8 +15,8 @@ import {
   Home
 } from 'lucide-react';
 
-import { lookupPropertyRoofEstimate } from '../lib/propertyLookup';
-import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../lib/seo';
+import { lookupPropertyRoofEstimate } from '../../lib/propertyLookup';
+import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../../lib/seo';
 
 const steps = [
   { id: 1, title: 'Property Type' },

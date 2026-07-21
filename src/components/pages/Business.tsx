@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Building2, TrendingUp, ShieldCheck, Factory, Warehouse, Building, ArrowRight } from 'lucide-react';
 import { Link } from '../Link';
 
-import { createBreadcrumbSchema, createServiceSchema } from '../lib/seo';
+import { createBreadcrumbSchema, createServiceSchema } from '../../lib/seo';
 
 const Business: React.FC = () => {
   return (

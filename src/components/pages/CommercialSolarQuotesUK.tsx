@@ -4,7 +4,7 @@ import {
   createBreadcrumbSchema,
   createServiceSchema,
   getCommercialQuotesSeo,
-} from '../lib/seo';
+} from '../../lib/seo';
 
 const CommercialSolarQuotesUK: React.FC = () => {
   const seo = getCommercialQuotesSeo();

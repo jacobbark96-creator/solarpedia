@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '../../Link';
 import { ChevronLeft, Zap } from 'lucide-react';
-import BatteryROIWidget from '../../components/widgets/BatteryROIWidget';
+import BatteryROIWidget from '../../widgets/BatteryROIWidget';
 
 const BatteryROICalculator: React.FC = () => {
   return (

@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { Link } from '../Link';
-import cities from '../data/ukCities.json';
+import cities from '../../data/ukCities.json';
 import {
   createBreadcrumbSchema,
   createServiceSchema,
-  getInstallerCitySeo,
-  createFAQSchema,
-} from '../lib/seo';
+  getBestInstallersCitySeo,
+  buildAbsoluteUrl,
+} from '../../lib/seo';
 
 type City = { name: string; slug: string };
 
@@ -43,7 +43,7 @@ const BestSolarInstallersCity: React.FC<{ citySlug?: string }> = ({ citySlug }) 
       .filter(Boolean)
       .slice(0, 4);
   }, [city, cityList]);
-  const seo = city ? getInstallerCitySeo(city) : null;
+  const seo = city ? getBestInstallersCitySeo(city) : null;
   const localInstallerContext = city ? installerContext[city.slug] || {
     market: `${city.name} has a mixed local installer market, so you should check exactly which postcodes each company covers before comparing proposals.`,
     shortlist: `In ${city.name}, the best shortlist usually balances credentials, survey quality, generation assumptions, and aftercare, not just price.`,

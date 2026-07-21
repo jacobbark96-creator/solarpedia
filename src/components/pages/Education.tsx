@@ -2,10 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from '../Link';
 import { Search, BookOpen, MessageCircle, FileText, ChevronRight, Newspaper, Battery, Sun, Zap } from 'lucide-react';
-import { useLiveNews } from '../hooks/useLiveNews';
-
-import { buildAbsoluteUrl, createBreadcrumbSchema, createCollectionPageSchema } from '../lib/seo';
-import { ARTICLES_DB } from '../data/articles';
+import { useLiveNews } from '../../hooks/useLiveNews';
+import { buildAbsoluteUrl, createBreadcrumbSchema, createCollectionPageSchema } from '../../lib/seo';
+import { ARTICLES_DB } from '../../data/articles';
 
 const categories = [
   { name: 'Solar Panels', icon: Sun, count: 2 },

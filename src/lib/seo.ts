@@ -246,7 +246,7 @@ export function getSolarQuotesCitySeo(city: City) {
   };
 }
 
-export function getInstallerHubSeo() {
+export function getBestInstallersHubSeo() {
   return {
     title: 'Local Solar Installers by City',
     description:
@@ -261,7 +261,7 @@ export function getInstallerHubSeo() {
   };
 }
 
-export function getInstallerCitySeo(city: City) {
+export function getBestInstallersCitySeo(city: City) {
   return {
     title: `Local Solar Installers ${city.name} | Compare Local Companies`,
     description: `Find local solar installers in ${city.name}. Compare local companies, review MCS-certified options, and request quotes matched to your postcode.`,

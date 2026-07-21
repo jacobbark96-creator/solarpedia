@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '../../Link';
 import { ChevronLeft, Zap } from 'lucide-react';
-import EVChargingWidget from '../../components/widgets/EVChargingWidget';
+import EVChargingWidget from '../../widgets/EVChargingWidget';
 
 const EVChargingCalculator: React.FC = () => {
   return (

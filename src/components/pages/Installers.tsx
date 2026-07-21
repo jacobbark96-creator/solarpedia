@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from '../Link';
 import { Search, MapPin, Star, ShieldCheck, BadgeCheck, Phone, ExternalLink } from 'lucide-react';
-import installerDataset from '../data/certifiedInstallers.json';
+import installerDataset from '../../data/certifiedInstallers.json';
 
 type InstallerRecord = {
   slug: string;

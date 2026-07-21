@@ -1,17 +1,18 @@
 import React from 'react';
 import { Link } from '../Link';
-import cities from '../data/ukCities.json';
+import cities from '../../data/ukCities.json';
 import {
   createBreadcrumbSchema,
   createCollectionPageSchema,
   createServiceSchema,
-  getInstallerHubSeo,
-} from '../lib/seo';
+  getBestInstallersHubSeo,
+  buildAbsoluteUrl,
+} from '../../lib/seo';
 
 type City = { name: string; slug: string };
 
 const BestSolarInstallers: React.FC = () => {
-  const seo = getInstallerHubSeo();
+  const seo = getBestInstallersHubSeo();
 
   return (
     <div className="bg-brand-white py-20">

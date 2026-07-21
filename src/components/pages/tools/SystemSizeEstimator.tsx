@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '../../Link';
 import { ChevronLeft, Zap } from 'lucide-react';
-import SystemSizeWidget from '../../components/widgets/SystemSizeWidget';
+import SystemSizeWidget from '../../widgets/SystemSizeWidget';
 
 const SystemSizeEstimator: React.FC = () => {
   return (

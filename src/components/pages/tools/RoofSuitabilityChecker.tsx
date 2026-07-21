@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '../../Link';
 import { ChevronLeft, Zap } from 'lucide-react';
-import RoofSuitabilityWidget from '../../components/widgets/RoofSuitabilityWidget';
+import RoofSuitabilityWidget from '../../widgets/RoofSuitabilityWidget';
 
 const RoofSuitabilityChecker: React.FC = () => {
   return (

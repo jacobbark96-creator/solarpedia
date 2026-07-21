@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { ShieldCheck } from 'lucide-react';
 import { useWizardStore } from '../hooks/useWizardStore';
 
@@ -19,16 +18,20 @@ function encode(data: Record<string, string>) {
 }
 
 const LeadCaptureCTA: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { data } = useWizardStore();
 
-  const hidden = location.pathname === '/thanks';
+  const [pathname, setPathname] = useState('');
+
+  React.useEffect(() => {
+    setPathname(window.location.pathname);
+  }, []);
+
+  const hidden = pathname === '/thanks';
 
   const defaultPropertyType = useMemo(() => {
-    if (location.pathname.startsWith('/commercial')) return 'Commercial';
+    if (pathname.startsWith('/commercial')) return 'Commercial';
     return 'Residential';
-  }, [location.pathname]);
+  }, [pathname]);
 
   const [values, setValues] = useState<LeadCaptureValues>({
     name: data.name || '',
@@ -59,7 +62,7 @@ const LeadCaptureCTA: React.FC = () => {
         postcode: values.postcode,
         propertyType: values.propertyType,
         'bot-field': values.botField,
-        page: location.pathname,
+        page: pathname,
       };
 
       await fetch('/', {
@@ -68,7 +71,7 @@ const LeadCaptureCTA: React.FC = () => {
         body: encode(payload),
       });
 
-      navigate('/thanks');
+      window.location.href = '/thanks';
     } catch (err) {
       setError('Something went wrong. Please try again.');
     } finally {

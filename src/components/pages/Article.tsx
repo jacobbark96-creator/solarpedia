@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from '../Link';
 import { ChevronLeft, ChevronRight, Calendar, User, Clock, ShieldCheck, BookOpen, Link as LinkIcon } from 'lucide-react';
-import { createArticleSchema, createBreadcrumbSchema, createFAQSchema, OG_IMAGES } from '../lib/seo';
-import { ARTICLES_DB, nextStepsBySlug } from '../data/articles';
+import { createArticleSchema, createBreadcrumbSchema, createFAQSchema, OG_IMAGES } from '../../lib/seo';
+import { ARTICLES_DB, nextStepsBySlug } from '../../data/articles';
 
 // Import Widgets
-import BatteryROIWidget from '../components/widgets/BatteryROIWidget';
-import SystemSizeWidget from '../components/widgets/SystemSizeWidget';
-import RoofSuitabilityWidget from '../components/widgets/RoofSuitabilityWidget';
-import EVChargingWidget from '../components/widgets/EVChargingWidget';
-import ExportTariffWidget from '../components/widgets/ExportTariffWidget';
+import BatteryROIWidget from '../widgets/BatteryROIWidget';
+import SystemSizeWidget from '../widgets/SystemSizeWidget';
+import RoofSuitabilityWidget from '../widgets/RoofSuitabilityWidget';
+import EVChargingWidget from '../widgets/EVChargingWidget';
+import ExportTariffWidget from '../widgets/ExportTariffWidget';
 
 const WidgetMap: Record<string, React.FC> = {
   BatteryROI: BatteryROIWidget,

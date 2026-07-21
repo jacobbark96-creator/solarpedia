@@ -5,12 +5,11 @@ import {
   Database, Newspaper, ChevronRight, Info, Calendar
 } from 'lucide-react';
 import { Link } from '../Link';
-import { NATIONAL_AVERAGES } from '../data/mockData';
-import UKMap from '../components/UKMap';
-import { useLiveNews } from '../hooks/useLiveNews';
-import cities from '../data/ukCities.json';
-
-import { createBreadcrumbSchema, createWebsiteSchema, createFAQSchema, OG_IMAGES } from '../lib/seo';
+import { NATIONAL_AVERAGES } from '../../data/mockData';
+import UKMap from '../UKMap';
+import { useLiveNews } from '../../hooks/useLiveNews';
+import cities from '../../data/ukCities.json';
+import { createBreadcrumbSchema, createWebsiteSchema, createFAQSchema, OG_IMAGES } from '../../lib/seo';
 
 const homeFaqs = [
   {

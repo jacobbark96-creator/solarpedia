@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, BookOpen } from 'lucide-react';
-import { glossaryData } from '../data/glossary';
+import { glossaryData } from '../../data/glossary';
 
 const Glossary: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');

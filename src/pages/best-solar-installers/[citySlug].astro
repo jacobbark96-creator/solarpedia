@@ -5,7 +5,7 @@ import cities from '../../data/ukCities.json';
 import {
   createBreadcrumbSchema,
   createServiceSchema,
-  getInstallerCitySeo,
+  getBestInstallersCitySeo,
   createFAQSchema,
 } from '../../lib/seo';
 
@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 const { citySlug } = Astro.params;
 const { city } = Astro.props;
 
-const seo = getInstallerCitySeo(city);
+const seo = getBestInstallersCitySeo(city);
 
 const cityFaqs = [
   {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '../../Link';
 import { ChevronLeft, Zap } from 'lucide-react';
-import ExportTariffWidget from '../../components/widgets/ExportTariffWidget';
+import ExportTariffWidget from '../../widgets/ExportTariffWidget';
 
 const ExportTariffCompare: React.FC = () => {
   return (
