@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BatteryROICalculator from '../../components/pages/tools/BatteryROICalculator';
+import { buildAbsoluteUrl, createBreadcrumbSchema } from '../../lib/seo';
+
+const title = "Solar Battery ROI Calculator UK | Solarpedia";
+const description = "Calculate the return on investment and payback period for adding a solar battery to your UK home.";
+const url = buildAbsoluteUrl('/tools/battery-roi');
+
+const schema = [
+  createBreadcrumbSchema([
+    { name: 'Home', item: buildAbsoluteUrl('/') },
+    { name: 'Tools', item: buildAbsoluteUrl('/tools') },
+    { name: 'Battery ROI Calculator', item: url }
+  ])
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <BatteryROICalculator client:load />
+</BaseLayout>

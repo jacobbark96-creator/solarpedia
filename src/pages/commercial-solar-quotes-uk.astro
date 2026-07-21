@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CommercialSolarQuotesUK from '../components/pages/CommercialSolarQuotesUK';
+import {
+  createBreadcrumbSchema,
+  createServiceSchema,
+  getCommercialQuotesSeo,
+} from '../lib/seo';
+
+const seo = getCommercialQuotesSeo();
+
+const schema = [
+  createServiceSchema({
+    name: seo.title,
+    description: seo.description,
+    path: seo.path,
+    serviceType: 'Commercial solar quote comparison',
+  }),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Commercial Solar Quotes UK', path: seo.path },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  keywords={seo.keywords}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${seo.path}`}
+>
+  <CommercialSolarQuotesUK client:load />
+</BaseLayout>

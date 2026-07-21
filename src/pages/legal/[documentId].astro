@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Legal from '../../components/pages/Legal';
+import { buildAbsoluteUrl } from '../../lib/seo';
+
+export function getStaticPaths() {
+  return [
+    { params: { documentId: 'privacy' } },
+    { params: { documentId: 'terms' } },
+    { params: { documentId: 'cookies' } },
+  ];
+}
+
+const { documentId } = Astro.params;
+
+const getTitle = (id: string) => {
+  switch (id) {
+    case 'privacy': return 'Privacy Policy & GDPR';
+    case 'terms': return 'Terms & Conditions';
+    case 'cookies': return 'Cookie Policy';
+    default: return 'Legal Information';
+  }
+};
+
+const title = `${getTitle(documentId)} | Solarpedia`;
+const description = 'Read our legal documentation, privacy policy, and terms of service to understand how Solarpedia protects your data.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Legal documentId={documentId} />
+</BaseLayout>

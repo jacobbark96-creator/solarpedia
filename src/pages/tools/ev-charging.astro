@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EVChargingCalculator from '../../components/pages/tools/EVChargingCalculator';
+import { buildAbsoluteUrl, createBreadcrumbSchema } from '../../lib/seo';
+
+const title = "EV Charging Solar Calculator UK | Solarpedia";
+const description = "Calculate how much you can save by charging your electric vehicle from solar panels versus the grid on standard and EV tariffs.";
+const url = buildAbsoluteUrl('/tools/ev-charging');
+
+const schema = [
+  createBreadcrumbSchema([
+    { name: 'Home', item: buildAbsoluteUrl('/') },
+    { name: 'Tools', item: buildAbsoluteUrl('/tools') },
+    { name: 'EV Charging Calculator', item: url }
+  ])
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <EVChargingCalculator client:load />
+</BaseLayout>

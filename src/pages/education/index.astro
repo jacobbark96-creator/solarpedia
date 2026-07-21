@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Education from '../../components/pages/Education';
+import { buildAbsoluteUrl, createBreadcrumbSchema, createCollectionPageSchema } from '../../lib/seo';
+import { ARTICLES_DB } from '../../data/articles';
+
+const articles = [
+  {
+    title: ARTICLES_DB['is-solar-worth-it-uk'].title,
+    slug: 'is-solar-worth-it-uk',
+  },
+  {
+    title: ARTICLES_DB['solar-myths-explained'].title,
+    slug: 'solar-myths-explained',
+  },
+  {
+    title: ARTICLES_DB['best-export-tariffs-uk'].title,
+    slug: 'best-export-tariffs-uk',
+  },
+  {
+    title: ARTICLES_DB['solar-panel-installation-cost-uk'].title,
+    slug: 'solar-panel-installation-cost-uk',
+  },
+  {
+    title: ARTICLES_DB['lfp-vs-nmc-solar-batteries'].title,
+    slug: 'lfp-vs-nmc-solar-batteries',
+  },
+  {
+    title: ARTICLES_DB['solar-battery-sizing-guide'].title,
+    slug: 'solar-battery-sizing-guide',
+  },
+  {
+    title: ARTICLES_DB['solar-panel-bird-proofing'].title,
+    slug: 'solar-panel-bird-proofing',
+  },
+  {
+    title: ARTICLES_DB['solar-panel-cleaning-maintenance'].title,
+    slug: 'solar-panel-cleaning-maintenance',
+  },
+  {
+    title: ARTICLES_DB['commercial-solar-for-business-uk'].title,
+    slug: 'commercial-solar-for-business-uk',
+  },
+  {
+    title: ARTICLES_DB['planning-permission-for-solar-uk'].title,
+    slug: 'planning-permission-for-solar-uk',
+  }
+];
+
+const title = 'Solar Education Hub | Solarpedia';
+const description = 'Expert guidance, data-driven analysis, and unbiased advice to help you navigate the UK solar market.';
+const keywords = 'solar education UK, solar guides UK, solar panel costs UK, battery storage UK, commercial solar UK';
+
+const schema = [
+  createCollectionPageSchema({
+    name: 'Solar Education Hub',
+    description: description,
+    path: '/education',
+    about: 'Solar energy in the United Kingdom',
+  }),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Solar education articles',
+    itemListElement: articles.map((article, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: article.title,
+      url: buildAbsoluteUrl(`/education/article/${article.slug}`),
+    })),
+  },
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Education', path: '/education' },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  schema={schema}
+  canonical="https://solarpedia.co.uk/education"
+>
+  <Education client:load />
+</BaseLayout>

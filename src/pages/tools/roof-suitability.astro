@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RoofSuitabilityChecker from '../../components/pages/tools/RoofSuitabilityChecker';
+import { buildAbsoluteUrl, createBreadcrumbSchema } from '../../lib/seo';
+
+const title = "Solar Roof Suitability Checker UK | Solarpedia";
+const description = "Check if your UK roof is suitable for solar panels based on direction, pitch, and shading.";
+const url = buildAbsoluteUrl('/tools/roof-suitability');
+
+const schema = [
+  createBreadcrumbSchema([
+    { name: 'Home', item: buildAbsoluteUrl('/') },
+    { name: 'Tools', item: buildAbsoluteUrl('/tools') },
+    { name: 'Roof Suitability Checker', item: url }
+  ])
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <RoofSuitabilityChecker client:load />
+</BaseLayout>

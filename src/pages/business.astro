@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Business from '../components/pages/Business';
+import { createBreadcrumbSchema, createServiceSchema } from '../lib/seo';
+
+const title = 'Commercial Solar Solutions | Solarpedia';
+const description = 'Independent ROI analysis for warehouses, factories, and office blocks. Lock in energy costs and meet ESG targets.';
+const keywords = 'commercial solar UK, business solar solutions, warehouse solar UK, factory solar panels, office solar ROI';
+
+const schema = [
+  createServiceSchema({
+    name: 'Commercial Solar Solutions',
+    description: 'Independent commercial solar guidance for UK warehouses, factories, offices, and other business premises.',
+    path: '/business',
+    serviceType: 'Commercial solar guidance',
+  }),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Business Solar', path: '/business' },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  schema={schema}
+  canonical="https://solarpedia.co.uk/business"
+>
+  <Business client:load />
+</BaseLayout>

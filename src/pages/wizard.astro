@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Wizard from '../components/pages/Wizard';
+import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../lib/seo';
+
+const title = 'Solar Savings Wizard | Solarpedia';
+const description = 'Calculate your potential solar savings with our impartial UK-wide data-driven tool.';
+const keywords = 'solar savings calculator UK, solar cost calculator UK, solar ROI calculator UK, commercial solar calculator';
+
+const schema = [
+  createSoftwareApplicationSchema({
+    name: 'Solarpedia Solar Savings Wizard',
+    description: 'Calculate solar savings, payback, and likely system size for UK homes and businesses.',
+    path: '/wizard',
+  }),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Solar Savings Wizard', path: '/wizard' },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  schema={schema}
+  canonical="https://solarpedia.co.uk/wizard"
+>
+  <Wizard client:load />
+</BaseLayout>

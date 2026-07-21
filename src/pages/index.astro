@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Home from '../components/pages/Home';
+import { createBreadcrumbSchema, createWebsiteSchema, createFAQSchema, OG_IMAGES } from '../lib/seo';
+
+const homeFaqs = [
+  {
+    question: 'Is solar worth it in the UK?',
+    answer:
+      'For many homes and businesses, yes. The answer depends on roof area, direction, daytime electricity use, battery plans, and local installation costs.',
+  },
+  {
+    question: 'How much do solar panels cost in the UK?',
+    answer:
+      'Costs vary by system size, roof complexity, battery storage, scaffolding, and electrical upgrades. That is why city quote pages and the savings wizard are useful starting points.',
+  },
+  {
+    question: 'How do I compare solar installers properly?',
+    answer:
+      'Check MCS certification, survey quality, workmanship warranties, projected generation, battery specification, monitoring, and aftercare support rather than comparing only the headline price.',
+  },
+];
+
+const title = 'Find out if solar is actually worth it';
+const description = 'Independent UK solar insights, cost estimates and savings forecasts powered by real energy and regional data.';
+const keywords = 'is solar worth it UK, solar savings calculator UK, solar cost calculator UK, solar installers UK';
+const schema = [
+  createWebsiteSchema(),
+  createBreadcrumbSchema([{ name: 'Home', path: '/' }]),
+  createFAQSchema(homeFaqs),
+];
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  image={OG_IMAGES.home}
+  keywords={keywords}
+  schema={schema}
+  canonical="https://solarpedia.co.uk/"
+>
+  <Home client:load />
+</BaseLayout>

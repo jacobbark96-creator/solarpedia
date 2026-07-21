@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SolarPanelQuotesCity from '../../components/pages/SolarPanelQuotesCity';
+import cities from '../../data/ukCities.json';
+import {
+  createBreadcrumbSchema,
+  createServiceSchema,
+  getSolarQuotesCitySeo,
+  createFAQSchema,
+} from '../../lib/seo';
+
+export async function getStaticPaths() {
+  return cities.map((city) => ({
+    params: { citySlug: city.slug },
+    props: { city },
+  }));
+}
+
+const { citySlug } = Astro.params;
+const { city } = Astro.props;
+
+const seo = getSolarQuotesCitySeo(city);
+
+const cityFaqs = [
+  {
+    question: `How many solar quotes should I compare in ${city.name}?`,
+    answer: `Three is usually enough to compare price, equipment, installation approach, and warranty terms without creating unnecessary noise in the buying process.`,
+  },
+  {
+    question: `Does postcode matter when requesting quotes in ${city.name}?`,
+    answer: `Yes. Postcode helps route your enquiry to installers who actually cover your part of ${city.name} and influences travel, survey speed, and installer availability.`,
+  },
+  {
+    question: `What should I prepare before asking for solar quotes in ${city.name}?`,
+    answer: 'Have your postcode, roof details, approximate bill size, and any battery or EV plans ready so installers can scope the project more accurately.',
+  },
+];
+
+const schema = [
+  createServiceSchema({
+    name: seo.title,
+    description: seo.description,
+    path: seo.path,
+    serviceType: 'Solar panel quote comparison',
+    areaServed: city.name,
+  }),
+  createFAQSchema(cityFaqs),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Solar Panel Quotes', path: '/solar-panel-quotes' },
+    { name: city.name, path: seo.path },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  keywords={seo.keywords}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${seo.path}`}
+>
+  <SolarPanelQuotesCity citySlug={citySlug} client:load />
+</BaseLayout>

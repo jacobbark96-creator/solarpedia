@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Installers from '../components/pages/Installers';
+import { buildAbsoluteUrl, createBreadcrumbSchema, createCollectionPageSchema } from '../lib/seo';
+
+const title = "MCS-Certified Solar Installers | Solarpedia";
+const description = "Search our directory of MCS-certified solar installers in the UK. Find local professionals for your solar panel installation.";
+const url = buildAbsoluteUrl('/installers');
+
+const schema = [
+  createBreadcrumbSchema([
+    { name: 'Home', item: buildAbsoluteUrl('/') },
+    { name: 'Installers', item: url }
+  ]),
+  createCollectionPageSchema(
+    title,
+    description,
+    url
+  )
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <Installers client:load />
+</BaseLayout>

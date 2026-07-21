@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BestSolarInstallers from '../../components/pages/BestSolarInstallers';
+import {
+  createBreadcrumbSchema,
+  createCollectionPageSchema,
+  createServiceSchema,
+  getInstallerHubSeo,
+} from '../../lib/seo';
+
+const seo = getInstallerHubSeo();
+
+const schema = [
+  createCollectionPageSchema({
+    name: seo.title,
+    description: seo.description,
+    path: seo.path,
+    about: 'Best solar installer pages by UK city',
+  }),
+  createServiceSchema({
+    name: seo.title,
+    description: seo.description,
+    path: seo.path,
+    serviceType: 'Solar installer comparison',
+  }),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Local Solar Installers', path: seo.path },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  keywords={seo.keywords}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${seo.path}`}
+>
+  <BestSolarInstallers client:load />
+</BaseLayout>

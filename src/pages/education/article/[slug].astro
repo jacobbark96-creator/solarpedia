@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Article from '../../../components/pages/Article';
+import { ARTICLES_DB, nextStepsBySlug } from '../../../data/articles';
+import { createArticleSchema, createBreadcrumbSchema, createFAQSchema, OG_IMAGES } from '../../../lib/seo';
+
+export async function getStaticPaths() {
+  return Object.keys(ARTICLES_DB).map((slug) => ({
+    params: { slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const article = ARTICLES_DB[slug];
+
+if (!article) {
+  return Astro.redirect('/404');
+}
+
+const articlePath = `/education/article/${slug}`;
+const articleDescription = `Read Solarpedia's guide to ${article.title.toLowerCase()} with UK-focused analysis, practical context, and buying guidance.`;
+
+const articleFaqs = [
+  {
+    question: `How should I use this ${article.category.toLowerCase()} guide?`,
+    answer: 'Use it as a decision-support page, then move into the savings wizard, quote pages, or installer directory depending on how close you are to buying.',
+  },
+  {
+    question: 'Should I compare quotes before speaking to installers?',
+    answer: 'Yes. Shortlisting installers, understanding likely costs, and knowing your roof and usage assumptions will usually lead to stronger and more comparable proposals.',
+  },
+  {
+    question: 'What is the next best step after reading this article?',
+    answer: 'If you are still researching, continue through the education hub. If you are moving toward purchase, use the wizard or city quote pages so you can compare real options.',
+  },
+];
+
+const schema = [
+  createArticleSchema({
+    headline: article.title,
+    description: articleDescription,
+    path: articlePath,
+    authorName: article.author,
+    datePublished: article.date,
+    dateModified: article.date,
+  }),
+  createFAQSchema(articleFaqs),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Education', path: '/education' },
+    { name: article.title, path: articlePath },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={article.title}
+  description={articleDescription}
+  image={OG_IMAGES.education}
+  keywords={`${article.title}, solar education UK, solar advice UK`}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${articlePath}`}
+>
+  <Article slug={slug} client:load />
+</BaseLayout>

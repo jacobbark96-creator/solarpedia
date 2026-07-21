@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Glossary from '../components/pages/Glossary';
+import { buildAbsoluteUrl, createBreadcrumbSchema, createCollectionPageSchema } from '../lib/seo';
+
+const title = "Solar Glossary | UK Solar Jargon Explained";
+const description = "Confused by solar jargon? Our comprehensive UK solar glossary explains hundreds of terms, from AC/DC and Inverters to MPPT and Tariffs.";
+const url = buildAbsoluteUrl('/glossary');
+
+const schema = [
+  createBreadcrumbSchema([
+    { name: 'Home', item: buildAbsoluteUrl('/') },
+    { name: 'Education', item: buildAbsoluteUrl('/education') },
+    { name: 'Solar Glossary', item: url }
+  ]),
+  createCollectionPageSchema(
+    title,
+    description,
+    url
+  )
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <Glossary client:load />
+</BaseLayout>

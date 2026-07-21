@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SolarPanelQuotes from '../../components/pages/SolarPanelQuotes';
+import {
+  createBreadcrumbSchema,
+  createCollectionPageSchema,
+  createServiceSchema,
+  getSolarQuotesHubSeo,
+} from '../../lib/seo';
+
+const seo = getSolarQuotesHubSeo();
+
+const schema = [
+  createCollectionPageSchema({
+    name: seo.title,
+    description: seo.description,
+    path: seo.path,
+    about: 'Solar panel quote comparison pages by UK city',
+  }),
+  createServiceSchema({
+    name: seo.title,
+    description: seo.description,
+    path: seo.path,
+    serviceType: 'Solar quote comparison',
+  }),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Solar Panel Quotes', path: seo.path },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  keywords={seo.keywords}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${seo.path}`}
+>
+  <SolarPanelQuotes client:load />
+</BaseLayout>

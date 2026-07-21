@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Tools from '../../components/pages/Tools';
+import { buildAbsoluteUrl, createBreadcrumbSchema, createCollectionPageSchema } from '../../lib/seo';
+
+const title = "Solar Calculators & Interactive Tools UK | Solarpedia";
+const description = "Free interactive solar calculators. Estimate solar savings, compare export tariffs, and calculate battery ROI for your UK home.";
+const url = buildAbsoluteUrl('/tools');
+
+const schema = [
+  createBreadcrumbSchema([
+    { name: 'Home', item: buildAbsoluteUrl('/') },
+    { name: 'Tools & Calculators', item: url }
+  ]),
+  createCollectionPageSchema(
+    title,
+    description,
+    url
+  )
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <Tools />
+</BaseLayout>

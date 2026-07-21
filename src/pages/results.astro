@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Results from '../components/pages/Results';
+import { buildAbsoluteUrl, createBreadcrumbSchema } from '../lib/seo';
+
+const title = 'Your Solar Forecast | Solarpedia';
+const description = 'View your personalised solar savings estimate, ROI projection, and system recommendations.';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Solar Forecast Results",
+    "description": "A personalised solar estimate generated from the Solarpedia savings calculator.",
+    "url": "https://solarpedia.co.uk/results",
+  },
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Solar Savings Wizard', path: '/wizard' },
+    { name: 'Solar Forecast', path: '/results' },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  schema={schema}
+  canonical="https://solarpedia.co.uk/results"
+>
+  <Results client:load />
+</BaseLayout>

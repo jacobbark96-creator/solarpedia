@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BestSolarInstallersCity from '../../components/pages/BestSolarInstallersCity';
+import cities from '../../data/ukCities.json';
+import {
+  createBreadcrumbSchema,
+  createServiceSchema,
+  getInstallerCitySeo,
+  createFAQSchema,
+} from '../../lib/seo';
+
+export async function getStaticPaths() {
+  return cities.map((city) => ({
+    params: { citySlug: city.slug },
+    props: { city },
+  }));
+}
+
+const { citySlug } = Astro.params;
+const { city } = Astro.props;
+
+const seo = getInstallerCitySeo(city);
+
+const cityFaqs = [
+  {
+    question: `How do I compare solar installers in ${city.name}?`,
+    answer: 'Start with MCS status, then compare survey quality, projected output, workmanship cover, component choice, and how clearly the proposal explains assumptions.',
+  },
+  {
+    question: `Should I choose the cheapest installer in ${city.name}?`,
+    answer: 'Not automatically. The cheapest quote can omit monitoring, warranty detail, roof accessories, or realistic generation assumptions.',
+  },
+  {
+    question: `What should I ask before accepting a quote in ${city.name}?`,
+    answer: 'Ask who is doing the survey, what system size is recommended, what export assumptions are used, how long installation takes, and what aftercare is included.',
+  },
+];
+
+const schema = [
+  createServiceSchema({
+    name: seo.title,
+    description: seo.description,
+    path: seo.path,
+    serviceType: 'Solar installer comparison',
+    areaServed: city.name,
+  }),
+  createFAQSchema(cityFaqs),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Local Solar Installers', path: '/best-solar-installers' },
+    { name: city.name, path: seo.path },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={seo.title}
+  description={seo.description}
+  image={seo.image}
+  keywords={seo.keywords}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${seo.path}`}
+>
+  <BestSolarInstallersCity citySlug={citySlug} client:load />
+</BaseLayout>

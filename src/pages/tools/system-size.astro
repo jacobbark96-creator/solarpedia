@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SystemSizeEstimator from '../../components/pages/tools/SystemSizeEstimator';
+import { buildAbsoluteUrl, createBreadcrumbSchema } from '../../lib/seo';
+
+const title = "Solar System Size Estimator UK | Solarpedia";
+const description = "Calculate how many solar panels you need based on your electricity bill, roof space, and energy usage in the UK.";
+const url = buildAbsoluteUrl('/tools/system-size');
+
+const schema = [
+  createBreadcrumbSchema([
+    { name: 'Home', item: buildAbsoluteUrl('/') },
+    { name: 'Tools', item: buildAbsoluteUrl('/tools') },
+    { name: 'System Size Estimator', item: url }
+  ])
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <SystemSizeEstimator client:load />
+</BaseLayout>

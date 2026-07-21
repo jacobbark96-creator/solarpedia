@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ExportTariffCompare from '../../components/pages/tools/ExportTariffCompare';
+import { buildAbsoluteUrl, createBreadcrumbSchema } from '../../lib/seo';
+
+const title = "Solar Export Tariff Comparison Calculator UK | Solarpedia";
+const description = "Compare Octopus Flux, E.ON Next, and standard SEG rates to see how much you could earn by exporting solar energy to the UK grid.";
+const url = buildAbsoluteUrl('/tools/export-tariffs');
+
+const schema = [
+  createBreadcrumbSchema([
+    { name: 'Home', item: buildAbsoluteUrl('/') },
+    { name: 'Tools', item: buildAbsoluteUrl('/tools') },
+    { name: 'Export Tariff Comparison', item: url }
+  ])
+];
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <ExportTariffCompare client:load />
+</BaseLayout>
