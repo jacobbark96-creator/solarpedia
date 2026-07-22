@@ -64,23 +64,6 @@ const siteUrl = "https://solarpedia.co.uk";
     <meta name="twitter:image" content={image}>
     
     <!-- Structured Data -->
-    <script type="application/ld+json" is:inline set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Solarpedia UK",
-      "url": siteUrl,
-      "description": "Independent UK solar insights, cost estimates and savings forecasts powered by real energy and regional data.",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Solarpedia UK"
-      }
-    })} />
-    <script type="application/ld+json" is:inline set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Solarpedia UK",
-      "url": siteUrl
-    })} />
     {schema.map(s => (
       <script type="application/ld+json" is:inline set:html={JSON.stringify(s)} />
     ))}

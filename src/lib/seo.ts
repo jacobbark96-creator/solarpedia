@@ -160,7 +160,7 @@ export function createServiceSchema({
     provider: createOrganizationSchema(),
     areaServed: Array.isArray(areaServed)
       ? areaServed.map((item) => ({ '@type': 'AdministrativeArea', name: item }))
-      : { '@type': 'Country', name: areaServed },
+      : { '@type': 'AdministrativeArea', name: areaServed },
     url: buildAbsoluteUrl(path),
   };
 }
