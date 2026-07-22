@@ -1,11 +1,40 @@
 export const currentMonth = new Date().toLocaleString('default', { month: 'long' });
 export const currentYear = new Date().getFullYear();
 
+export interface Author {
+  id: string;
+  name: string;
+  role: string;
+  credentials: string;
+  bio: string;
+  image?: string;
+}
+
+export const AUTHORS: Record<string, Author> = {
+  'solarpedia-team': {
+    id: 'solarpedia-team',
+    name: 'Solarpedia Analysis Team',
+    role: 'Energy Analysts',
+    credentials: 'MSc Renewable Energy, MCS Certified Auditors',
+    bio: 'Our central analysis team combines decade-long experience in UK renewable policy, hardware auditing, and energy market forecasting to provide impartial, data-led guidance.',
+    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=256&q=80',
+  },
+  'j-davies': {
+    id: 'j-davies',
+    name: 'James Davies',
+    role: 'Senior Energy Consultant',
+    credentials: 'BEng, Renewable Energy Systems',
+    bio: 'James has overseen over 500 residential solar installations across the UK and specializes in battery storage ROI and grid-connection optimization.',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=256&q=80',
+  }
+};
+
 export interface ArticleData {
   title: string;
+  description?: string;
   category: string;
   date: string;
-  author: string;
+  authorId: string;
   readTime: string;
   aiSummary: string;
   content: string;
@@ -23,9 +52,10 @@ export interface ArticleData {
 export const ARTICLES_DB: Record<string, ArticleData> = {
   'solar-myths-explained': {
     title: 'Solar Myths Explained: Separating Fact from Fiction',
+    description: 'Busting common UK solar panel myths about cloud cover, installation costs, and planning permission requirements.',
     category: 'Myths & Facts',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'solarpedia-team',
     readTime: '5 min read',
     aiSummary: 'Solar panels work on cloudy days (they need light, not heat). The average UK payback is 7-9 years, and most residential properties do not require planning permission under Permitted Development rights.',
     content: `
@@ -41,9 +71,10 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
   },
   'is-solar-worth-it-uk': {
     title: `Is Solar Actually Worth it in the UK? (${currentYear} Edition)`,
+    description: 'A data-driven look at the financial viability of solar panels in the UK, including payback periods and export tariff income.',
     category: 'Analysis',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'solarpedia-team',
     readTime: '8 min read',
     aiSummary: 'Yes, for most unshaded South, East, or West-facing roofs. High energy prices (around 24.67p/kWh) and export tariffs (up to 15p/kWh) make it viable. Pairing with a battery can increase self-consumption from 40% to 75%.',
     widget: 'RoofSuitability',
@@ -68,7 +99,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     title: 'The Smart Export Guarantee (SEG) Explained',
     category: 'Finance',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'solarpedia-team',
     readTime: '10 min read',
     aiSummary: 'The SEG requires large energy suppliers to pay you for exported solar energy. Rates vary from 1p to 15p/kWh, so shopping around is essential. You need an MCS-certified installation and a smart meter to qualify.',
     widget: 'ExportTariff',
@@ -87,7 +118,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     title: `Solar Panel Installation Cost in the UK (${currentYear})`,
     category: 'Costs & Financing',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'j-davies',
     readTime: '7 min read',
     aiSummary: `System size and battery storage are the biggest drivers of UK solar costs. A standard 4kWp system typically costs £5,500 - £7,000, while adding a 5kWh battery pushes the price to £8,500 - £10,000. Scaffolding, bird protection, and inverter upgrades also affect the final quote. Always compare the expected generation and warranty terms, not just the headline price.`,
     widget: 'SystemSize',
@@ -119,7 +150,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     title: `Is Battery Storage Worth It in the UK? (${currentYear})`,
     category: 'Analysis',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'j-davies',
     readTime: '6 min read',
     aiSummary: 'Batteries are best for homes with high evening electricity demand, allowing you to store daytime solar. They improve self-consumption and work well with time-of-use tariffs or EVs. They are less compelling if you are home using energy during the day.',
     widget: 'BatteryROI',
@@ -143,7 +174,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     title: 'Commercial Solar for UK Businesses: What Matters Most',
     category: 'Commercial',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'solarpedia-team',
     readTime: '9 min read',
     aiSummary: 'Commercial solar offers strong ROI due to high daytime energy use (strong self-consumption). Key complexities include structural surveys, landlord permissions, and export constraints. Warehouses, offices, and factories are prime candidates.',
     content: `
@@ -166,7 +197,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     title: 'Do You Need Planning Permission for Solar Panels in the UK?',
     category: 'Technical Guides',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'solarpedia-team',
     readTime: '5 min read',
     aiSummary: 'Rooftop solar usually falls under Permitted Development in the UK, requiring no formal planning permission. Exceptions include listed buildings, conservation areas, and flat or ground-mount systems. Checking early prevents project delays.',
     content: `
@@ -189,7 +220,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     title: 'How to Size a Solar Battery for Your UK Home',
     category: 'Solar Batteries',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'j-davies',
     readTime: '8 min read',
     aiSummary: 'The ideal solar battery size depends on your evening electricity usage and solar array size. For a typical UK home with a 4kWp array, a 5kWh battery is standard. Avoid oversizing, as it extends the payback period unnecessarily.',
     widget: 'BatteryROI',
@@ -251,7 +282,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     title: 'LFP vs NMC: Which Solar Battery Chemistry is Best?',
     category: 'Solar Batteries',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'solarpedia-team',
     readTime: '7 min read',
     aiSummary: 'LFP (Lithium Iron Phosphate) is the dominant and recommended home battery chemistry. It offers 6,000+ cycles, 15-20 years of life, and is highly safe against thermal runaway. NMC batteries are denser but have shorter lifespans and tighter safety margins.',
     content: `
@@ -314,7 +345,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     title: 'Best UK Solar Export Tariffs Guide',
     category: 'Export Tariffs',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'solarpedia-team',
     readTime: '9 min read',
     aiSummary: 'Octopus Energy dominates the UK export market. Outgoing Octopus offers a flat 12p/kWh, while Octopus Flux offers peak rates of ~30p/kWh between 4pm-7pm. You must have an MCS-certified installation and a smart meter to access these rates.',
     widget: 'ExportTariff',
@@ -353,7 +384,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     title: 'Bird Proofing Solar Panels: Costs, Options & Is It Worth It?',
     category: 'Solar Panels',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'solarpedia-team',
     readTime: '6 min read',
     aiSummary: 'Bird proofing prevents pigeons from nesting under solar panels, which can cause cable damage, noise, and severe guano buildup. Installing mesh during the initial panel installation costs £300-£500. Retrofitting costs significantly more due to scaffolding.',
     content: `
@@ -402,7 +433,7 @@ export const ARTICLES_DB: Record<string, ArticleData> = {
     title: 'Solar Panel Cleaning & Maintenance: A Complete UK Guide',
     category: 'Solar Panels',
     date: `${currentMonth} ${currentYear}`,
-    author: 'Solarpedia Analysis Team',
+    authorId: 'solarpedia-team',
     readTime: '6 min read',
     aiSummary: 'In the UK, natural rainfall cleans most residential solar panels effectively. Manual cleaning is only necessary every 2-3 years, or if panels are mounted flat (under 10 degrees pitch) or near heavy pollution. Never use abrasive chemicals or pressure washers.',
     content: `

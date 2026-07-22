@@ -1,32 +1,13 @@
 import React, { useMemo } from 'react';
 import { Link } from '../Link';
+import { Zap, TrendingUp, ShieldCheck, Database, ArrowRight } from 'lucide-react';
 import cities from '../../data/ukCities.json';
+import { UK_REGIONS_DATA } from '../../data/mockData';
 import { 
-  createBreadcrumbSchema, 
-  createServiceSchema, 
   getSolarQuotesCitySeo, 
-  buildAbsoluteUrl 
 } from '../../lib/seo';
 
-type City = { name: string; slug: string };
-
-const marketNotes: Record<string, { coverage: string; stock: string; turnaround: string }> = {
-  london: {
-    coverage: 'London usually has strong installer coverage, but lead volumes and travel times can make survey scheduling and quote turnaround more variable by postcode.',
-    stock: 'Roof complexity, scaffolding access, and mixed housing stock can all affect quote totals in London boroughs.',
-    turnaround: 'Busy installers often prioritise enquiries with clear roof and contact details, so complete lead information matters more in high-demand areas.',
-  },
-  manchester: {
-    coverage: 'Manchester tends to have good installer availability, especially across suburban postcodes where access and survey logistics are simpler.',
-    stock: 'Semi-detached and terraced housing often means roof shape, party-wall access, and available panel count need careful review.',
-    turnaround: 'Quote turnaround is usually helped by strong local competition, but installer capacity can tighten during peak demand periods.',
-  },
-  birmingham: {
-    coverage: 'Birmingham combines strong installer presence with a broad suburban catchment, which can help users compare several providers quickly.',
-    stock: 'Property type varies widely, so roof area, orientation, and meter setup can all change quote quality and recommended system size.',
-    turnaround: 'Postcode-led routing is useful here because installers may cover only part of the wider West Midlands area.',
-  },
-};
+type City = { name: string; slug: string; regionCode: string };
 
 const SolarPanelQuotesCity: React.FC<{ citySlug?: string }> = ({ citySlug }) => {
 
@@ -34,6 +15,12 @@ const SolarPanelQuotesCity: React.FC<{ citySlug?: string }> = ({ citySlug }) => 
   const city = useMemo(() => {
     return cityList.find((c) => c.slug === citySlug) || null;
   }, [cityList, citySlug]);
+
+  const regionData = useMemo(() => {
+    if (!city) return null;
+    return UK_REGIONS_DATA[city.regionCode] || null;
+  }, [city]);
+
   const nearbyCities = useMemo(() => {
     if (!city) return [];
     const index = cityList.findIndex((c) => c.slug === city.slug);
@@ -43,12 +30,8 @@ const SolarPanelQuotesCity: React.FC<{ citySlug?: string }> = ({ citySlug }) => 
       .filter(Boolean)
       .slice(0, 4);
   }, [city, cityList]);
+
   const seo = city ? getSolarQuotesCitySeo(city) : null;
-  const localContext = city ? marketNotes[city.slug] || {
-    coverage: `${city.name} has varying installer coverage by postcode, so local routing can affect how many quotes you receive and how quickly installers respond.`,
-    stock: `Roof size, housing stock, and property access in ${city.name} can all influence system design, scaffolding requirements, and final quote totals.`,
-    turnaround: `Well-qualified enquiries in ${city.name} usually get faster responses, especially when postcode, roof details, and energy usage are supplied up front.`,
-  } : null;
 
   const cityFaqs = useMemo(() => {
     if (!city) return [];
@@ -90,22 +73,50 @@ const SolarPanelQuotesCity: React.FC<{ citySlug?: string }> = ({ citySlug }) => 
   return (
     <div className="bg-brand-white py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mb-12">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-3">
-            UK Regional Guide
-          </p>
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-5">
-            {seo?.h1}
-          </h1>
-          <p className="text-lg text-brand-muted leading-relaxed">
-            {seo?.intro}
-          </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end mb-16">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-3">
+              UK Regional Guide
+            </p>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-5">
+              {seo?.h1}
+            </h1>
+            <p className="text-lg text-brand-muted leading-relaxed max-w-2xl">
+              {seo?.intro}
+            </p>
+          </div>
+
+          {regionData && (
+            <div className="bg-white rounded-3xl p-8 border border-brand-accent shadow-sm">
+              <div className="flex justify-between items-start mb-8">
+                <div>
+                  <p className="text-[10px] font-bold text-brand-muted uppercase tracking-[0.2em] mb-1">{regionData.region} Benchmark</p>
+                  <h2 className="text-2xl font-serif font-bold text-brand-navy">{city.name}</h2>
+                </div>
+                <div className="bg-brand-green/10 px-3 py-1.5 rounded-xl text-brand-green font-bold text-xs">
+                  +{regionData.roiPercentage}% ROI
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-brand-white rounded-2xl border border-brand-accent">
+                  <Zap className="h-5 w-5 text-brand-yellow mb-2" />
+                  <p className="text-[10px] font-bold text-brand-muted uppercase mb-1">Avg. Saving</p>
+                  <p className="text-xl font-serif font-bold">£{regionData.avgBillSavings}</p>
+                </div>
+                <div className="p-4 bg-brand-white rounded-2xl border border-brand-accent">
+                  <TrendingUp className="h-5 w-5 text-brand-green mb-2" />
+                  <p className="text-[10px] font-bold text-brand-muted uppercase mb-1">Payback</p>
+                  <p className="text-xl font-serif font-bold">{regionData.paybackPeriodYears} Years</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white border border-brand-accent rounded-[2.5rem] p-8 md:p-10">
-              <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">How quotes work</h2>
+              <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">How solar quotes work in {city.name}</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
                   { title: 'Tell us your postcode', text: 'So we can match you with nearby installers.' },
@@ -124,42 +135,80 @@ const SolarPanelQuotesCity: React.FC<{ citySlug?: string }> = ({ citySlug }) => 
             </div>
 
             <div className="bg-white border border-brand-accent rounded-[2.5rem] p-8 md:p-10">
-              <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">What affects your quote in {city.name}</h2>
-              <ul className="space-y-4 text-brand-muted text-base leading-relaxed">
-                <li>Roof size, shading, and orientation</li>
-                <li>Scaffolding access and property height</li>
-                <li>System size (kWp) and battery add-ons</li>
-                <li>Grid connection needs and meter upgrades</li>
-                <li>Your exact postcode (installer travel + scheduling)</li>
+              <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">Local installation factors for {city.name}</h2>
+              <p className="text-brand-muted leading-relaxed mb-6">
+                In {city.name}, an average 4kWp solar installation costs roughly <strong className="text-brand-navy">£{regionData?.avgInstallCost}</strong>. 
+                However, your final quote will depend on several local variables including:
+              </p>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-brand-muted text-sm leading-relaxed mb-8">
+                <li className="flex items-start gap-3">
+                  <div className="h-5 w-5 rounded-full bg-brand-green/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="h-1.5 w-1.5 rounded-full bg-brand-green" />
+                  </div>
+                  <span>Roof size, shading, and orientation (South-facing is best)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="h-5 w-5 rounded-full bg-brand-green/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="h-1.5 w-1.5 rounded-full bg-brand-green" />
+                  </div>
+                  <span>Scaffolding access and property height in {city.name}</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="h-5 w-5 rounded-full bg-brand-green/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="h-1.5 w-1.5 rounded-full bg-brand-green" />
+                  </div>
+                  <span>System size (kWp) and whether you add battery storage</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="h-5 w-5 rounded-full bg-brand-green/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="h-1.5 w-1.5 rounded-full bg-brand-green" />
+                  </div>
+                  <span>Grid connection (DNO) requirements for your specific postcode</span>
+                </li>
               </ul>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/wizard"
                   className="bg-brand-navy text-white px-8 py-4 rounded-full font-bold text-base hover:shadow-2xl hover:-translate-y-0.5 transition-all text-center"
                 >
-                  Estimate savings first
+                  Estimate savings for my roof
                 </Link>
                 <Link
                   to={`/best-solar-installers/${city.slug}`}
                   className="bg-white border border-brand-accent text-brand-navy px-8 py-4 rounded-full font-bold text-base hover:border-brand-navy transition-all text-center"
                 >
-                  Local installers {city.name}
+                  View installers in {city.name}
                 </Link>
               </div>
             </div>
 
             <div className="bg-white border border-brand-accent rounded-[2.5rem] p-8 md:p-10">
-              <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">{city.name} solar quote considerations</h2>
-              <div className="space-y-5 text-brand-muted leading-relaxed">
-                <p>{localContext?.coverage}</p>
-                <p>{localContext?.stock}</p>
-                <p>{localContext?.turnaround}</p>
+              <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">Why compare quotes through Solarpedia?</h2>
+              <div className="space-y-6">
+                <div className="flex gap-4">
+                  <div className="h-10 w-10 rounded-xl bg-brand-white border border-brand-accent flex items-center justify-center flex-shrink-0">
+                    <ShieldCheck className="h-5 w-5 text-brand-green" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-brand-navy mb-1">Vetted local network</h3>
+                    <p className="text-sm text-brand-muted leading-relaxed">We only route leads to installers covering {city.name} who maintain high survey standards and workmanship warranties.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="h-10 w-10 rounded-xl bg-brand-white border border-brand-accent flex items-center justify-center flex-shrink-0">
+                    <Database className="h-5 w-5 text-brand-yellow" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-brand-navy mb-1">Data-backed assumptions</h3>
+                    <p className="text-sm text-brand-muted leading-relaxed">Our benchmarks for {city.name} use current {regionData?.region} energy prices and regional sunlight data.</p>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="bg-white border border-brand-accent rounded-[2.5rem] p-8 md:p-10">
-              <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">FAQs for solar quotes in {city.name}</h2>
-              <div className="space-y-5">
+              <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">Common questions in {city.name}</h2>
+              <div className="space-y-6">
                 {cityFaqs.map((item) => (
                   <div key={item.question}>
                     <h3 className="text-xl font-serif font-bold text-brand-navy mb-2">{item.question}</h3>
@@ -172,43 +221,42 @@ const SolarPanelQuotesCity: React.FC<{ citySlug?: string }> = ({ citySlug }) => 
 
           <aside className="space-y-6">
             <div className="bg-white border border-brand-accent rounded-[2.5rem] p-8">
-              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-2">
-                Nearby pages
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-4">
+                Nearby city pages
               </div>
               <div className="space-y-3">
                 {nearbyCities.map((c) => (
                     <Link
                       key={c.slug}
                       to={`/solar-panel-quotes/${c.slug}`}
-                      className="block bg-brand-white border border-brand-accent rounded-2xl px-4 py-3 hover:border-brand-navy transition-colors"
+                      className="group block bg-brand-white border border-brand-accent rounded-2xl px-5 py-4 hover:border-brand-navy transition-all"
                     >
-                      <div className="text-sm font-bold text-brand-navy">Solar panel quotes {c.name}</div>
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm font-bold text-brand-navy">Quotes {c.name}</div>
+                        <ArrowRight className="h-4 w-4 text-brand-muted group-hover:text-brand-navy group-hover:translate-x-1 transition-all" />
+                      </div>
                     </Link>
                   ))}
               </div>
               <Link
                 to="/solar-panel-quotes"
-                className="mt-5 inline-block text-sm font-bold text-brand-navy hover:text-brand-green transition-colors"
+                className="mt-6 inline-block text-sm font-bold text-brand-navy hover:text-brand-green transition-colors"
               >
                 View all cities
               </Link>
             </div>
 
-            <div className="bg-white border border-brand-accent rounded-[2.5rem] p-8">
-              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted mb-2">
-                Also explore
-              </div>
-              <div className="space-y-3">
-                <Link to="/installers" className="block text-sm font-bold text-brand-navy hover:text-brand-green transition-colors">
-                  Browse MCS-certified installers
-                </Link>
-                <Link to="/education/article/solar-panel-installation-cost-uk" className="block text-sm font-bold text-brand-navy hover:text-brand-green transition-colors">
-                  Read UK solar cost guide
-                </Link>
-                <Link to="/education/article/is-solar-worth-it-uk" className="block text-sm font-bold text-brand-navy hover:text-brand-green transition-colors">
-                  Is solar worth it in the UK?
+            <div className="bg-brand-navy rounded-[2.5rem] p-8 text-white relative overflow-hidden group">
+              <div className="relative z-10">
+                <h3 className="text-xl font-serif font-bold mb-3">Solar for business</h3>
+                <p className="text-brand-accent text-sm mb-6 leading-relaxed opacity-80">
+                  Own a commercial property in {city.name}? Solar ROI is often higher for business premises.
+                </p>
+                <Link to="/commercial-solar-quotes-uk" className="inline-flex items-center gap-2 text-brand-yellow font-bold text-sm hover:gap-3 transition-all">
+                  Commercial quotes <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
+              <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors" />
             </div>
           </aside>
         </div>

@@ -7,6 +7,8 @@ import {
   getBestInstallersCitySeo,
   buildAbsoluteUrl,
 } from '../../lib/seo';
+import { INSTALLERS_DB } from '../../data/installers';
+import { Star, ShieldCheck, MapPin, Award } from 'lucide-react';
 
 type City = { name: string; slug: string };
 
@@ -44,6 +46,12 @@ const BestSolarInstallersCity: React.FC<{ citySlug?: string }> = ({ citySlug }) 
       .slice(0, 4);
   }, [city, cityList]);
   const seo = city ? getBestInstallersCitySeo(city) : null;
+
+  const localInstallers = useMemo(() => {
+    if (!city) return [];
+    return INSTALLERS_DB.filter(inst => inst.coverage.includes(city.slug));
+  }, [city]);
+
   const localInstallerContext = city ? installerContext[city.slug] || {
     market: `${city.name} has a mixed local installer market, so you should check exactly which postcodes each company covers before comparing proposals.`,
     shortlist: `In ${city.name}, the best shortlist usually balances credentials, survey quality, generation assumptions, and aftercare, not just price.`,
@@ -104,6 +112,65 @@ const BestSolarInstallersCity: React.FC<{ citySlug?: string }> = ({ citySlug }) 
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
+            {/* Installer Listings */}
+            <div className="bg-white border border-brand-accent rounded-[2.5rem] p-8 md:p-10">
+              <h2 className="text-2xl font-serif font-bold text-brand-navy mb-6">Vetted installers covering {city.name}</h2>
+              {localInstallers.length > 0 ? (
+                <div className="space-y-6">
+                  {localInstallers.map((inst) => (
+                    <div key={inst.id} className="bg-brand-white border border-brand-accent rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 items-start">
+                      {inst.logo && (
+                        <img src={inst.logo} alt={inst.name} className="h-16 w-16 rounded-2xl object-cover bg-white p-2 border border-brand-accent" />
+                      )}
+                      <div className="flex-grow">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                          <div>
+                            <h3 className="text-xl font-serif font-bold text-brand-navy mb-1">{inst.name}</h3>
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-1 text-brand-yellow">
+                                <Star className="h-4 w-4 fill-current" />
+                                <span className="text-sm font-bold">{inst.rating}</span>
+                                <span className="text-xs text-brand-muted font-medium">({inst.reviewCount} reviews)</span>
+                              </div>
+                              {inst.mcsCertified && (
+                                <div className="flex items-center gap-1 text-brand-green bg-brand-green/10 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
+                                  <ShieldCheck className="h-3 w-3" /> MCS Certified
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <Link to="/solar-panel-quotes" className="bg-brand-navy text-white px-5 py-2 rounded-full text-xs font-bold hover:shadow-lg transition-all text-center">
+                            Request Quote
+                          </Link>
+                        </div>
+                        <p className="text-sm text-brand-muted leading-relaxed mb-4">{inst.description}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {inst.specialties.map(spec => (
+                            <span key={spec} className="text-[10px] font-bold text-brand-navy bg-white border border-brand-accent px-2.5 py-1 rounded-full">
+                              {spec}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <p className="text-xs text-brand-muted italic text-center pt-4">
+                    Solarpedia lists only MCS-certified installers who pass our internal survey and workmanship audit.
+                  </p>
+                </div>
+              ) : (
+                <div className="text-center py-10">
+                  <Award className="h-12 w-12 text-brand-accent mx-auto mb-4" />
+                  <p className="text-brand-muted leading-relaxed mb-6">
+                    We are currently vetting new installers in {city.name}. In the meantime, you can use our central quote service to be matched with our national partner network.
+                  </p>
+                  <Link to="/solar-panel-quotes" className="bg-brand-navy text-white px-8 py-4 rounded-full font-bold text-base hover:shadow-2xl transition-all inline-block">
+                    Match me with installers
+                  </Link>
+                </div>
+              )}
+            </div>
+
             <div className="bg-white border border-brand-accent rounded-[2.5rem] p-8 md:p-10">
               <h2 className="text-2xl font-serif font-bold text-brand-navy mb-4">What to look for</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

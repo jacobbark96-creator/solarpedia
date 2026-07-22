@@ -67,6 +67,18 @@ const {
     {schema.map(s => (
       <script type="application/ld+json" is:inline set:html={JSON.stringify(s)} />
     ))}
+
+    <script>
+      import { trackPageView } from '../lib/tracking';
+      
+      // Track on initial load
+      trackPageView();
+
+      // Track on view transition if enabled (Solarpedia doesn't seem to use ViewTransitions yet, but good for future)
+      document.addEventListener('astro:page-load', () => {
+        trackPageView();
+      });
+    </script>
   </head>
   <body class="bg-brand-white text-brand-navy antialiased">
     <form name="get-3-free-solar-quotes" data-netlify="true" data-netlify-honeypot="bot-field" hidden>

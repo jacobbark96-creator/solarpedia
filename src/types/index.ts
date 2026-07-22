@@ -40,3 +40,16 @@ export interface SavingsResult {
   systemSize: number;
   suitabilityScore: number;
 }
+
+export interface Installer {
+  id: string;
+  name: string;
+  mcsCertified: boolean;
+  rating: number;
+  reviewCount: number;
+  coverage: string[]; // List of city slugs or regions
+  specialties: string[];
+  description: string;
+  logo?: string;
+  website?: string;
+}

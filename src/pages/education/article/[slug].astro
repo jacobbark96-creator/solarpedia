@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Article from '../../../components/pages/Article';
-import { ARTICLES_DB, nextStepsBySlug } from '../../../data/articles';
+import { ARTICLES_DB, nextStepsBySlug, AUTHORS } from '../../../data/articles';
 import { createArticleSchema, createBreadcrumbSchema, createFAQSchema, OG_IMAGES, buildAbsoluteUrl } from '../../../lib/seo';
 
 export async function getStaticPaths() {
@@ -12,13 +12,14 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const article = ARTICLES_DB[slug];
+const author = article ? AUTHORS[article.authorId] : null;
 
 if (!article) {
   return Astro.redirect('/404');
 }
 
 const articlePath = `/education/article/${slug}`;
-const articleDescription = `Read Solarpedia's guide to ${article.title.toLowerCase()} with UK-focused analysis, practical context, and buying guidance.`;
+const articleDescription = article.description || `Read Solarpedia's guide to ${article.title.toLowerCase()} with UK-focused analysis, practical context, and buying guidance.`;
 
 const articleFaqs = [
   {
@@ -40,7 +41,7 @@ const schema = [
     headline: article.title,
     description: articleDescription,
     path: articlePath,
-    authorName: article.author,
+    authorName: author?.name || article.authorId,
     datePublished: article.date,
     dateModified: article.date,
   }),
@@ -57,7 +58,6 @@ const schema = [
   title={article.title}
   description={articleDescription}
   image={OG_IMAGES.education}
-  keywords={`${article.title}, solar education UK, solar advice UK`}
   schema={schema}
   canonical={buildAbsoluteUrl(articlePath)}
 >

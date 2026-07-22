@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from '../Link';
 import { ChevronLeft, ChevronRight, Calendar, User, Clock, ShieldCheck, BookOpen, Link as LinkIcon } from 'lucide-react';
 import { createArticleSchema, createBreadcrumbSchema, createFAQSchema, OG_IMAGES } from '../../lib/seo';
-import { ARTICLES_DB, nextStepsBySlug } from '../../data/articles';
+import { ARTICLES_DB, nextStepsBySlug, AUTHORS } from '../../data/articles';
 
 // Import Widgets
 import BatteryROIWidget from '../widgets/BatteryROIWidget';
@@ -21,9 +21,10 @@ const WidgetMap: Record<string, React.FC> = {
 
 const Article: React.FC<{ slug?: string }> = ({ slug }) => {
   const article = slug ? ARTICLES_DB[slug] : null;
+  const author = article ? AUTHORS[article.authorId] : null;
   const articlePath = slug ? `/education/article/${slug}` : '/education';
   const articleDescription = article
-    ? `Read Solarpedia's guide to ${article.title.toLowerCase()} with UK-focused analysis, practical context, and buying guidance.`
+    ? (article.description || `Read Solarpedia's guide to ${article.title.toLowerCase()} with UK-focused analysis, practical context, and buying guidance.`)
     : 'Read the full analysis and expert breakdown on Solarpedia.';
   const relatedArticles = Object.entries(ARTICLES_DB)
     .filter(([entrySlug, entry]) => entrySlug !== slug && entry.category === article?.category)
@@ -120,12 +121,20 @@ const Article: React.FC<{ slug?: string }> = ({ slug }) => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 text-sm text-brand-muted font-medium border-y border-brand-accent py-5">
               <div className="flex flex-wrap items-center gap-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 bg-brand-navy rounded-full flex items-center justify-center text-white font-bold">
-                    <User className="h-5 w-5" />
-                  </div>
+                  {author?.image ? (
+                    <img 
+                      src={author.image} 
+                      alt={author.name} 
+                      className="h-12 w-12 rounded-full object-cover border-2 border-brand-accent"
+                    />
+                  ) : (
+                    <div className="h-12 w-12 bg-brand-navy rounded-full flex items-center justify-center text-white font-bold">
+                      <User className="h-6 w-6" />
+                    </div>
+                  )}
                   <div>
-                    <div className="text-brand-navy font-bold">{article.author}</div>
-                    <div className="text-[10px] uppercase tracking-wider">Energy Analyst</div>
+                    <div className="text-brand-navy font-bold">{author?.name || article.authorId}</div>
+                    <div className="text-[10px] uppercase tracking-wider">{author?.role || 'Energy Analyst'}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -167,7 +176,32 @@ const Article: React.FC<{ slug?: string }> = ({ slug }) => {
               <div dangerouslySetInnerHTML={{ __html: contentAfterWidget }} />
             )}
 
-            <div className="mt-16 p-8 bg-brand-white border border-brand-accent rounded-2xl not-prose">
+            {author && (
+              <div className="mt-16 p-8 bg-brand-white border border-brand-accent rounded-3xl not-prose flex flex-col md:flex-row gap-8 items-start">
+                {author.image && (
+                  <img 
+                    src={author.image} 
+                    alt={author.name} 
+                    className="h-24 w-24 rounded-2xl object-cover border-4 border-white shadow-sm flex-shrink-0"
+                  />
+                )}
+                <div>
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 mb-3">
+                    <h3 className="text-xl font-serif font-bold text-brand-navy">{author.name}</h3>
+                    <span className="hidden md:block text-brand-accent">•</span>
+                    <span className="text-sm font-bold text-brand-green">{author.credentials}</span>
+                  </div>
+                  <p className="text-brand-muted text-sm leading-relaxed mb-4">
+                    {author.bio}
+                  </p>
+                  <Link to="/about" className="text-xs font-bold text-brand-navy hover:text-brand-green transition-colors flex items-center gap-1">
+                    Meet the team <ChevronRight className="h-3 w-3" />
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-12 p-8 bg-brand-white border border-brand-accent rounded-2xl not-prose">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                   <h3 className="text-lg font-serif font-bold text-brand-navy mb-4 flex items-center gap-2">

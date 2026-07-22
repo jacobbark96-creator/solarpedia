@@ -1,18 +1,17 @@
 [
-  { "name": "London", "slug": "london" },
-  { "name": "Birmingham", "slug": "birmingham" },
-  { "name": "Manchester", "slug": "manchester" },
-  { "name": "Leeds", "slug": "leeds" },
-  { "name": "Liverpool", "slug": "liverpool" },
-  { "name": "Bristol", "slug": "bristol" },
-  { "name": "Sheffield", "slug": "sheffield" },
-  { "name": "Newcastle", "slug": "newcastle" },
-  { "name": "Nottingham", "slug": "nottingham" },
-  { "name": "Leicester", "slug": "leicester" },
-  { "name": "Glasgow", "slug": "glasgow" },
-  { "name": "Edinburgh", "slug": "edinburgh" },
-  { "name": "Cardiff", "slug": "cardiff" },
-  { "name": "Belfast", "slug": "belfast" },
-  { "name": "Southampton", "slug": "southampton" }
+  { "name": "London", "slug": "london", "regionCode": "LON" },
+  { "name": "Birmingham", "slug": "birmingham", "regionCode": "WM" },
+  { "name": "Manchester", "slug": "manchester", "regionCode": "NW" },
+  { "name": "Leeds", "slug": "leeds", "regionCode": "YOR" },
+  { "name": "Liverpool", "slug": "liverpool", "regionCode": "NW" },
+  { "name": "Bristol", "slug": "bristol", "regionCode": "SW" },
+  { "name": "Sheffield", "slug": "sheffield", "regionCode": "YOR" },
+  { "name": "Newcastle", "slug": "newcastle", "regionCode": "NE" },
+  { "name": "Nottingham", "slug": "nottingham", "regionCode": "EM" },
+  { "name": "Leicester", "slug": "leicester", "regionCode": "EM" },
+  { "name": "Glasgow", "slug": "glasgow", "regionCode": "SCO" },
+  { "name": "Edinburgh", "slug": "edinburgh", "regionCode": "SCO" },
+  { "name": "Cardiff", "slug": "cardiff", "regionCode": "WAL" },
+  { "name": "Belfast", "slug": "belfast", "regionCode": "NI" },
+  { "name": "Southampton", "slug": "southampton", "regionCode": "SE" }
 ]
-

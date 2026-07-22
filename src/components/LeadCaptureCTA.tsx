@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { useWizardStore } from '../hooks/useWizardStore';
+import { trackFormSubmission } from '../lib/tracking';
 
 type LeadCaptureValues = {
   name: string;
@@ -69,6 +70,13 @@ const LeadCaptureCTA: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: encode(payload),
+      });
+
+      // Track the submission in Supabase matched by IP
+      await trackFormSubmission({
+        full_name: values.name,
+        email: values.email,
+        phone: values.phone,
       });
 
       window.location.href = '/thanks';

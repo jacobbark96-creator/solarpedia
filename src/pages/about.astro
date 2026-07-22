@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import About from '../components/pages/About';
+import { buildAbsoluteUrl } from '../lib/seo';
+
+const title = "About Solarpedia | Impartial UK Solar Advice & Data";
+const description = "Learn about Solarpedia's mission to provide independent, data-driven solar guidance for UK homeowners and businesses. Transparent business model and expert team.";
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  canonical={buildAbsoluteUrl('/about')}
+>
+  <About client:load />
+</BaseLayout>

@@ -17,6 +17,7 @@ import {
 
 import { lookupPropertyRoofEstimate } from '../../lib/propertyLookup';
 import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../../lib/seo';
+import { trackFormSubmission } from '../../lib/tracking';
 
 const steps = [
   { id: 1, title: 'Property Type' },
@@ -44,6 +45,13 @@ const Wizard: React.FC = () => {
     } else {
       setSubmitting(true);
       try {
+        // Track the submission in Supabase matched by IP
+        await trackFormSubmission({
+          full_name: data.name,
+          email: data.email,
+          phone: data.phone,
+        });
+
         await fetch('https://formsubmit.co/ajax/solarpedia@openlead.co.uk', {
           method: 'POST',
           headers: {
