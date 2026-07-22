@@ -1,26 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Glossary from '../components/pages/Glossary';
-import { buildAbsoluteUrl, createBreadcrumbSchema, createCollectionPageSchema } from '../lib/seo';
+import { createBreadcrumbSchema, createCollectionPageSchema, buildAbsoluteUrl } from '../lib/seo';
 
 const title = "Solar Glossary | UK Solar Jargon Explained";
 const description = "Confused by solar jargon? Our comprehensive UK solar glossary explains hundreds of terms, from AC/DC and Inverters to MPPT and Tariffs.";
-const url = buildAbsoluteUrl('/glossary');
+const path = '/glossary';
 
 const schema = [
   createBreadcrumbSchema([
-    { name: 'Home', item: buildAbsoluteUrl('/') },
-    { name: 'Education', item: buildAbsoluteUrl('/education') },
-    { name: 'Solar Glossary', item: url }
+    { name: 'Home', path: '/' },
+    { name: 'Education', path: '/education' },
+    { name: 'Solar Glossary', path: path }
   ]),
-  createCollectionPageSchema(
-    title,
-    description,
-    url
-  )
+  createCollectionPageSchema({
+    name: title,
+    description: description,
+    path: path
+  })
 ];
 ---
 
-<BaseLayout title={title} description={description} schema={schema}>
+<BaseLayout 
+  title={title} 
+  description={description} 
+  schema={schema}
+  canonical={buildAbsoluteUrl(path)}
+>
   <Glossary client:load />
 </BaseLayout>

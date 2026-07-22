@@ -1,11 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Thanks from '../components/pages/Thanks';
+import { buildAbsoluteUrl } from '../lib/seo';
 
 const title = "Thank You | Solarpedia";
 const description = "We’ve received your details. We’ll be in touch with your solar quotes shortly.";
+const path = '/thanks';
 ---
 
-<BaseLayout title={title} description={description} noindex={true}>
+<BaseLayout 
+  title={title} 
+  description={description} 
+  noindex={true}
+  canonical={buildAbsoluteUrl(path)}
+>
   <Thanks />
 </BaseLayout>

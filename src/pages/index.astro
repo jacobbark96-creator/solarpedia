@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/pages/Home';
-import { createBreadcrumbSchema, createWebsiteSchema, createFAQSchema, OG_IMAGES } from '../lib/seo';
+import { createBreadcrumbSchema, createWebsiteSchema, createFAQSchema, OG_IMAGES, buildAbsoluteUrl } from '../lib/seo';
 
 const homeFaqs = [
   {
@@ -37,7 +37,7 @@ const schema = [
   image={OG_IMAGES.home}
   keywords={keywords}
   schema={schema}
-  canonical="https://solarpedia.co.uk/"
+  canonical={buildAbsoluteUrl('/')}
 >
   <Home client:load />
 </BaseLayout>

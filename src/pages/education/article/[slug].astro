@@ -2,7 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Article from '../../../components/pages/Article';
 import { ARTICLES_DB, nextStepsBySlug } from '../../../data/articles';
-import { createArticleSchema, createBreadcrumbSchema, createFAQSchema, OG_IMAGES } from '../../../lib/seo';
+import { createArticleSchema, createBreadcrumbSchema, createFAQSchema, OG_IMAGES, buildAbsoluteUrl } from '../../../lib/seo';
 
 export async function getStaticPaths() {
   return Object.keys(ARTICLES_DB).map((slug) => ({
@@ -59,7 +59,7 @@ const schema = [
   image={OG_IMAGES.education}
   keywords={`${article.title}, solar education UK, solar advice UK`}
   schema={schema}
-  canonical={`https://solarpedia.co.uk${articlePath}`}
+  canonical={buildAbsoluteUrl(articlePath)}
 >
   <Article slug={slug} client:load />
 </BaseLayout>

@@ -6,6 +6,7 @@ import {
   createCollectionPageSchema,
   createServiceSchema,
   getBestInstallersHubSeo,
+  buildAbsoluteUrl,
 } from '../../lib/seo';
 
 const seo = getBestInstallersHubSeo();
@@ -36,7 +37,7 @@ const schema = [
   image={seo.image}
   keywords={seo.keywords}
   schema={schema}
-  canonical={`https://solarpedia.co.uk${seo.path}`}
+  canonical={buildAbsoluteUrl(seo.path)}
 >
   <BestSolarInstallers client:load />
 </BaseLayout>

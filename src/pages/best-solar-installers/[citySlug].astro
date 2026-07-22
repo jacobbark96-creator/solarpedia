@@ -7,6 +7,7 @@ import {
   createServiceSchema,
   getBestInstallersCitySeo,
   createFAQSchema,
+  buildAbsoluteUrl,
 } from '../../lib/seo';
 
 export async function getStaticPaths() {
@@ -59,7 +60,7 @@ const schema = [
   image={seo.image}
   keywords={seo.keywords}
   schema={schema}
-  canonical={`https://solarpedia.co.uk${seo.path}`}
+  canonical={buildAbsoluteUrl(seo.path)}
 >
   <BestSolarInstallersCity citySlug={citySlug} client:load />
 </BaseLayout>

@@ -11,6 +11,7 @@ interface Props {
   canonical?: string;
   keywords?: string;
   schema?: any[];
+  noindex?: boolean;
 }
 
 const {
@@ -19,10 +20,9 @@ const {
   image = "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=1200&q=80",
   canonical = "https://solarpedia.co.uk",
   keywords = "Is solar worth it UK, Solar cost calculator UK, Commercial solar calculator, Solar savings estimator, Solar ROI calculator, Business solar savings",
-  schema = []
+  schema = [],
+  noindex = false
 } = Astro.props;
-
-const siteUrl = "https://solarpedia.co.uk";
 ---
 
 <!DOCTYPE html>
@@ -39,7 +39,7 @@ const siteUrl = "https://solarpedia.co.uk";
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index, follow" />
+    {noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow" />}
     <link rel="canonical" href={canonical} />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

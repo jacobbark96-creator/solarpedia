@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Results from '../components/pages/Results';
-import { buildAbsoluteUrl, createBreadcrumbSchema } from '../lib/seo';
+import { createBreadcrumbSchema, buildAbsoluteUrl } from '../lib/seo';
 
 const title = 'Your Solar Forecast | Solarpedia';
 const description = 'View your personalised solar savings estimate, ROI projection, and system recommendations.';
+const path = '/results';
 
 const schema = [
   {
@@ -12,21 +13,21 @@ const schema = [
     "@type": "WebPage",
     "name": "Solar Forecast Results",
     "description": "A personalised solar estimate generated from the Solarpedia savings calculator.",
-    "url": "https://solarpedia.co.uk/results",
+    "url": buildAbsoluteUrl(path),
   },
   createBreadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: 'Solar Savings Wizard', path: '/wizard' },
-    { name: 'Solar Forecast', path: '/results' },
+    { name: 'Solar Forecast', path: path },
   ]),
 ];
 ---
 
 <BaseLayout 
-  title={title}
-  description={description}
+  title={title} 
+  description={description} 
   schema={schema}
-  canonical="https://solarpedia.co.uk/results"
+  canonical={buildAbsoluteUrl(path)}
 >
   <Results client:load />
 </BaseLayout>

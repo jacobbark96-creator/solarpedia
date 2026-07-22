@@ -5,6 +5,7 @@ import {
   createBreadcrumbSchema,
   createServiceSchema,
   getCommercialQuotesSeo,
+  buildAbsoluteUrl,
 } from '../lib/seo';
 
 const seo = getCommercialQuotesSeo();
@@ -21,6 +22,8 @@ const schema = [
     { name: 'Commercial Solar Quotes UK', path: seo.path },
   ]),
 ];
+
+const canonical = buildAbsoluteUrl(seo.path);
 ---
 
 <BaseLayout 
@@ -29,7 +32,7 @@ const schema = [
   image={seo.image}
   keywords={seo.keywords}
   schema={schema}
-  canonical={`https://solarpedia.co.uk${seo.path}`}
+  canonical={canonical}
 >
   <CommercialSolarQuotesUK client:load />
 </BaseLayout>
