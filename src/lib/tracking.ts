@@ -70,3 +70,30 @@ export async function trackFormSubmission(formData: {
     console.error('Form Tracking Error (catch):', err);
   }
 }
+
+export async function getVisitorData() {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const ipResponse = await fetch('https://api.ipify.org?format=json');
+    const { ip } = await ipResponse.json();
+
+    if (!ip) return null;
+
+    const { data, error } = await supabase
+      .from('visitor_tracking')
+      .select('*')
+      .eq('ip_address', ip)
+      .single();
+
+    if (error) {
+      console.error('Get Visitor Data Error:', error);
+      return { ip_address: ip };
+    }
+
+    return data;
+  } catch (err) {
+    console.error('Get Visitor Data Error (catch):', err);
+    return null;
+  }
+}

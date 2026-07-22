@@ -17,7 +17,7 @@ import {
 
 import { lookupPropertyRoofEstimate } from '../../lib/propertyLookup';
 import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../../lib/seo';
-import { trackFormSubmission } from '../../lib/tracking';
+import { trackFormSubmission, getVisitorData } from '../../lib/tracking';
 
 const steps = [
   { id: 1, title: 'Property Type' },
@@ -45,21 +45,25 @@ const Wizard: React.FC = () => {
     } else {
       setSubmitting(true);
       try {
-        // Track the submission in Supabase matched by IP
+        // 1. Fetch visitor tracking data first
+        const visitorData = await getVisitorData();
+
+        // 2. Track the submission in Supabase
         await trackFormSubmission({
           full_name: data.name,
           email: data.email,
           phone: data.phone,
         });
 
-        await fetch('https://formsubmit.co/ajax/solarpedia@openlead.co.uk', {
+        // 3. Send email to support@openlead.co.uk with enriched data
+        await fetch('https://formsubmit.co/ajax/support@openlead.co.uk', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
           body: JSON.stringify({
-            _subject: 'New Solar Savings Calculator Lead',
+            _subject: `Solar Lead: ${data.name} (${data.postcode})`,
             Name: data.name,
             Email: data.email,
             Phone: data.phone,
@@ -73,7 +77,10 @@ const Wizard: React.FC = () => {
             'Has Battery': data.hasBattery ? 'Yes' : 'No',
             'Consent Shared': data.consentShared ? 'Yes' : 'No',
             'Matched Address': data.matchedAddress || 'N/A',
-            'Roof Estimate Method': data.roofEstimateMethod || 'N/A',
+            'IP Address': visitorData?.ip_address || 'Unknown',
+            'Page Views History': visitorData?.page_views ? JSON.stringify(visitorData.page_views) : 'No history',
+            'First Seen': visitorData?.first_seen || 'Unknown',
+            'Last Seen': visitorData?.last_seen || 'Unknown',
           })
         });
       } catch (error) {

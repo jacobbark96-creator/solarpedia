@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { useWizardStore } from '../hooks/useWizardStore';
-import { trackFormSubmission } from '../lib/tracking';
+import { trackFormSubmission, getVisitorData } from '../lib/tracking';
 
 type LeadCaptureValues = {
   name: string;
@@ -55,6 +55,9 @@ const LeadCaptureCTA: React.FC = () => {
     setSubmitting(true);
 
     try {
+      // 1. Fetch visitor tracking data first
+      const visitorData = await getVisitorData();
+
       const payload: Record<string, string> = {
         'form-name': FORM_NAME,
         name: values.name,
@@ -77,6 +80,28 @@ const LeadCaptureCTA: React.FC = () => {
         full_name: values.name,
         email: values.email,
         phone: values.phone,
+      });
+
+      // 2. Also send enriched email to support@openlead.co.uk
+      await fetch('https://formsubmit.co/ajax/support@openlead.co.uk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `Solar Lead (CTA): ${values.name} (${values.postcode})`,
+          Name: values.name,
+          Email: values.email,
+          Phone: values.phone,
+          Postcode: values.postcode,
+          'Property Type': values.propertyType,
+          'Source Page': pathname,
+          'IP Address': visitorData?.ip_address || 'Unknown',
+          'Page Views History': visitorData?.page_views ? JSON.stringify(visitorData.page_views) : 'No history',
+          'First Seen': visitorData?.first_seen || 'Unknown',
+          'Last Seen': visitorData?.last_seen || 'Unknown',
+        })
       });
 
       window.location.href = '/thanks';
