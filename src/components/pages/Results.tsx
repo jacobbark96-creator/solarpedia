@@ -53,8 +53,10 @@ const Results: React.FC = () => {
   // We aim to offset ~100% of annual consumption, capped by roof space.
   const targetSystemSize = annualConsumptionKwh / (900 * regionalYield * roofDirectionFactor);
   
-  // Cap system size by roof area (Assuming 1kWp requires ~4.5sqm of roof space)
-  const maxPossibleSize = data.roofSize / 4.5;
+  // Account for ~25% unusable roof space (margins, chimneys, skylights)
+  const usableRoofSpace = data.roofSize * 0.75;
+  // Cap system size by usable roof area (Assuming 1kWp requires ~4.5sqm of roof space)
+  const maxPossibleSize = usableRoofSpace / 4.5;
   const systemSize = Math.max(1, Math.min(targetSystemSize, maxPossibleSize)); // Minimum 1kWp system
 
   // Dynamic cost per kWp (Smaller systems are more expensive per unit)
@@ -267,7 +269,7 @@ const Results: React.FC = () => {
               <div className="space-y-3">
                 {[
                   { title: 'Roof Direction', desc: `Your ${data.roofDirection}-facing roof applies a ${Math.round(roofDirectionFactor * 100)}% generation factor in the forecast.`, impact: 'High' },
-                  { title: 'Roof Area', desc: `We used ${Math.round(data.roofSize)} sqm of usable roof area based on a ${data.roofSizeSource === 'estimated' ? 'property footprint estimate' : data.roofSizeSource === 'manual' ? 'manual input' : 'default assumption'}.`, impact: 'High' },
+                  { title: 'Roof Area', desc: `We used ${Math.round(data.roofSize)} sqm of total roof area (reduced by 25% for margins/unusable space) based on a ${data.roofSizeSource === 'estimated' ? 'property footprint estimate' : data.roofSizeSource === 'manual' ? 'manual input' : 'default assumption'}.`, impact: 'High' },
                   { title: 'Usage Pattern', desc: `Your ${data.usagePattern} usage pattern sets self-consumption at ${Math.round(selfConsumptionRate * 100)}%, which directly changes annual savings.`, impact: 'High' },
                   { title: 'Electricity Tariffs', desc: `Current UK average of ${(NATIONAL_AVERAGES.energyPrice * 100).toFixed(1)}p/kWh used, with export income modelled at ${(exportRate * 100).toFixed(0)}p/kWh.`, impact: 'Medium' },
                   { title: 'Shading & Obstructions', desc: 'We assume a clear roof. Shading from trees or chimneys can reduce yield by 10-25%.', impact: 'Medium' },
