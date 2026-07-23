@@ -32,7 +32,10 @@ const Results: React.FC = () => {
   const { data } = useWizardStore();
 
   // Advanced calculation logic based on energy usage and property constraints
-  const annualConsumptionKwh = (data.energyBill * 12) / NATIONAL_AVERAGES.energyPrice;
+  const annualBill = data.energyBill * 12;
+  const annualStandingCharge = 0.60 * 365; // ~60p/day average UK standing charge
+  const energySpend = Math.max(0, annualBill - annualStandingCharge);
+  const annualConsumptionKwh = energySpend / NATIONAL_AVERAGES.energyPrice;
   
   // Get regional data or fallback to national average
   const regionCode = data.postcode?.toUpperCase().slice(0, 3) || 'SW';
@@ -47,12 +50,12 @@ const Results: React.FC = () => {
     }[data.roofDirection] || 1;
 
   // Estimate required system size (kWp) to cover usage
-  // UK average solar production is approx 850-1000 kWh per 1 kWp installed
+  // We aim to offset ~100% of annual consumption, capped by roof space.
   const targetSystemSize = annualConsumptionKwh / (900 * regionalYield * roofDirectionFactor);
   
   // Cap system size by roof area (Assuming 1kWp requires ~4.5sqm of roof space)
   const maxPossibleSize = data.roofSize / 4.5;
-  const systemSize = Math.min(targetSystemSize, maxPossibleSize);
+  const systemSize = Math.max(1, Math.min(targetSystemSize, maxPossibleSize)); // Minimum 1kWp system
 
   // Dynamic cost per kWp (Smaller systems are more expensive per unit)
   let costPerKwp = data.propertyType === 'residential' ? 1800 : 1300;
