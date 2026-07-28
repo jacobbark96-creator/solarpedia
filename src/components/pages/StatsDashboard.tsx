@@ -24,10 +24,13 @@ interface Visitor {
   phone?: string;
 }
 
+type TimeScale = 'today' | 'wtd' | 'mtd' | 'ytd' | 'all';
+
 const StatsDashboard: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState('');
+  const [timeScale, setTimeScale] = useState<TimeScale>('all');
   
   const [visitors, setVisitors] = useState<Visitor[]>([]);
   const [loading, setLoading] = useState(false);
@@ -80,7 +83,23 @@ const StatsDashboard: React.FC = () => {
 
   // Derived Statistics
   const stats = useMemo(() => {
-    const totalVisitors = visitors.length;
+    const now = new Date();
+    let startDate = new Date(0); // Default to all time
+
+    if (timeScale === 'today') {
+      startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    } else if (timeScale === 'wtd') {
+      const day = now.getDay() || 7; // Convert Sunday (0) to 7
+      startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - day + 1);
+    } else if (timeScale === 'mtd') {
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    } else if (timeScale === 'ytd') {
+      startDate = new Date(now.getFullYear(), 0, 1);
+    }
+
+    const filteredVisitors = visitors.filter(v => new Date(v.last_seen) >= startDate);
+
+    const totalVisitors = filteredVisitors.length;
     let totalPageViews = 0;
     const pageViewCounts: Record<string, number> = {};
     let leadsCount = 0;
@@ -88,7 +107,7 @@ const StatsDashboard: React.FC = () => {
 
     const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
 
-    visitors.forEach((visitor) => {
+    filteredVisitors.forEach((visitor) => {
       // Leads
       if (visitor.email || visitor.phone) leadsCount++;
 
@@ -117,6 +136,7 @@ const StatsDashboard: React.FC = () => {
     ];
 
     return {
+      filteredVisitors,
       totalVisitors,
       totalPageViews,
       leadsCount,
@@ -124,7 +144,7 @@ const StatsDashboard: React.FC = () => {
       topPages,
       conversionData
     };
-  }, [visitors]);
+  }, [visitors, timeScale]);
 
   if (!isAuthenticated) {
     return (
@@ -176,6 +196,17 @@ const StatsDashboard: React.FC = () => {
             </p>
           </div>
           <div className="flex items-center gap-4">
+            <select
+              value={timeScale}
+              onChange={(e) => setTimeScale(e.target.value as TimeScale)}
+              className="bg-brand-white border border-brand-accent rounded-xl px-4 py-2.5 text-sm font-bold text-brand-navy outline-none focus:border-brand-navy focus:ring-1 focus:ring-brand-navy transition-all cursor-pointer"
+            >
+              <option value="today">Today</option>
+              <option value="wtd">Week to Date (WTD)</option>
+              <option value="mtd">Month to Date (MTD)</option>
+              <option value="ytd">Year to Date (YTD)</option>
+              <option value="all">All Time</option>
+            </select>
             <button 
               onClick={() => setIsAuthenticated(false)}
               className="text-sm font-medium text-brand-muted hover:text-brand-navy transition-colors"
@@ -313,16 +344,16 @@ const StatsDashboard: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-brand-accent text-sm">
-                {loading && visitors.length === 0 ? (
+                {loading && stats.filteredVisitors.length === 0 ? (
                   <tr>
                     <td colSpan={4} className="px-6 py-8 text-center text-brand-muted">Loading visitor data...</td>
                   </tr>
-                ) : visitors.length === 0 ? (
+                ) : stats.filteredVisitors.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-6 py-8 text-center text-brand-muted">No visitors tracked yet.</td>
+                    <td colSpan={4} className="px-6 py-8 text-center text-brand-muted">No visitors tracked for this period.</td>
                   </tr>
                 ) : (
-                  visitors.slice(0, 15).map((visitor) => {
+                  stats.filteredVisitors.slice(0, 15).map((visitor) => {
                     const views = visitor.page_views ? Object.values(visitor.page_views).reduce((a, b) => a + b, 0) : 0;
                     const isLead = visitor.email || visitor.phone;
                     
