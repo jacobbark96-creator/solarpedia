@@ -98,8 +98,9 @@ const StatsDashboard: React.FC = () => {
     }
 
     const filteredVisitors = visitors.filter(v => new Date(v.last_seen) >= startDate);
+    const nonAdminVisitors = filteredVisitors.filter(v => !v.page_views || !v.page_views['/stats']);
 
-    const totalVisitors = filteredVisitors.length;
+    const totalVisitors = nonAdminVisitors.length;
     let totalPageViews = 0;
     const pageViewCounts: Record<string, number> = {};
     let leadsCount = 0;
@@ -107,7 +108,7 @@ const StatsDashboard: React.FC = () => {
 
     const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
 
-    filteredVisitors.forEach((visitor) => {
+    nonAdminVisitors.forEach((visitor) => {
       // Leads
       if (visitor.email || visitor.phone) leadsCount++;
 
@@ -357,6 +358,7 @@ const StatsDashboard: React.FC = () => {
                   stats.filteredVisitors.slice(0, 15).map((visitor) => {
                     const views = visitor.page_views ? Object.entries(visitor.page_views).reduce((sum, [path, count]) => path !== '/' ? sum + (count as number) : sum, 0) : 0;
                     const isLead = visitor.email || visitor.phone;
+                    const isAdmin = visitor.page_views && visitor.page_views['/stats'];
                     
                     return (
                       <tr key={visitor.ip_address} className="hover:bg-brand-white/50 transition-colors">
@@ -366,7 +368,7 @@ const StatsDashboard: React.FC = () => {
                             className="font-bold text-brand-navy hover:text-brand-green transition-colors text-left flex items-center gap-2 group"
                             title="View movements profile"
                           >
-                            {visitor.full_name ? visitor.full_name : <span className="font-mono text-sm">{visitor.ip_address}</span>}
+                            {visitor.full_name ? visitor.full_name : <span className="font-mono text-sm">{isAdmin ? 'ADMIN' : visitor.ip_address}</span>}
                             <Eye className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </button>
                         </td>
@@ -376,7 +378,11 @@ const StatsDashboard: React.FC = () => {
                         </td>
                         <td className="px-6 py-4 font-semibold text-brand-navy">{views}</td>
                         <td className="px-6 py-4">
-                          {isLead ? (
+                          {isAdmin ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-brand-navy text-white">
+                              ADMIN
+                            </span>
+                          ) : isLead ? (
                             <div className="text-xs">
                               {visitor.full_name && <div className="font-bold text-brand-navy">{visitor.full_name}</div>}
                               {visitor.email && <div className="text-brand-muted">{visitor.email}</div>}
@@ -406,7 +412,7 @@ const StatsDashboard: React.FC = () => {
             <div className="p-6 border-b border-brand-accent flex justify-between items-center bg-brand-white">
               <div>
                 <h2 className="text-2xl font-serif font-bold text-brand-navy">
-                  {selectedVisitor.full_name || 'Anonymous Visitor'}
+                  {selectedVisitor.full_name || (selectedVisitor.page_views?.['/stats'] ? 'Admin User' : 'Anonymous Visitor')}
                 </h2>
                 <p className="text-sm font-mono text-brand-muted mt-1">{selectedVisitor.ip_address}</p>
               </div>
