@@ -12,7 +12,7 @@ import {
   Pie,
   Cell
 } from 'recharts';
-import { Lock, Users, MousePointerClick, UserPlus, Activity, Clock } from 'lucide-react';
+import { Lock, Users, MousePointerClick, UserPlus, Activity, Clock, X, Eye } from 'lucide-react';
 
 interface Visitor {
   ip_address: string;
@@ -31,6 +31,7 @@ const StatsDashboard: React.FC = () => {
   
   const [visitors, setVisitors] = useState<Visitor[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedVisitor, setSelectedVisitor] = useState<Visitor | null>(null);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -305,7 +306,7 @@ const StatsDashboard: React.FC = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-brand-white/50 text-brand-muted text-xs uppercase tracking-wider border-b border-brand-accent">
-                  <th className="px-6 py-4 font-semibold">IP Address</th>
+                  <th className="px-6 py-4 font-semibold">Visitor</th>
                   <th className="px-6 py-4 font-semibold">Last Seen</th>
                   <th className="px-6 py-4 font-semibold">Total Views</th>
                   <th className="px-6 py-4 font-semibold">Lead Info</th>
@@ -327,7 +328,16 @@ const StatsDashboard: React.FC = () => {
                     
                     return (
                       <tr key={visitor.ip_address} className="hover:bg-brand-white/50 transition-colors">
-                        <td className="px-6 py-4 font-mono text-brand-navy">{visitor.ip_address}</td>
+                        <td className="px-6 py-4">
+                          <button 
+                            onClick={() => setSelectedVisitor(visitor)}
+                            className="font-bold text-brand-navy hover:text-brand-green transition-colors text-left flex items-center gap-2 group"
+                            title="View movements profile"
+                          >
+                            {visitor.full_name ? visitor.full_name : <span className="font-mono text-sm">{visitor.ip_address}</span>}
+                            <Eye className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </button>
+                        </td>
                         <td className="px-6 py-4 text-brand-muted flex items-center gap-2">
                           <Clock className="w-4 h-4" />
                           {new Date(visitor.last_seen).toLocaleString()}
@@ -356,6 +366,59 @@ const StatsDashboard: React.FC = () => {
         </div>
 
       </div>
+
+      {/* Visitor Profile Modal */}
+      {selectedVisitor && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-navy/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-brand-accent flex justify-between items-center bg-brand-white">
+              <div>
+                <h2 className="text-2xl font-serif font-bold text-brand-navy">
+                  {selectedVisitor.full_name || 'Anonymous Visitor'}
+                </h2>
+                <p className="text-sm font-mono text-brand-muted mt-1">{selectedVisitor.ip_address}</p>
+              </div>
+              <button 
+                onClick={() => setSelectedVisitor(null)} 
+                className="p-2 bg-white rounded-full border border-brand-accent hover:border-brand-navy hover:text-brand-navy text-brand-muted transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto">
+              {/* Contact Info if lead */}
+              {(selectedVisitor.email || selectedVisitor.phone) && (
+                <div className="mb-6 p-5 bg-brand-green/10 rounded-2xl border border-brand-green/20">
+                  <h3 className="text-sm font-bold text-brand-green uppercase tracking-wider mb-3">Lead Details</h3>
+                  <div className="space-y-2">
+                    {selectedVisitor.email && (
+                      <p className="text-brand-navy"><strong className="text-brand-muted font-normal mr-2">Email:</strong> {selectedVisitor.email}</p>
+                    )}
+                    {selectedVisitor.phone && (
+                      <p className="text-brand-navy"><strong className="text-brand-muted font-normal mr-2">Phone:</strong> {selectedVisitor.phone}</p>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              {/* Timeline/Movements */}
+              <h3 className="text-sm font-bold text-brand-muted uppercase tracking-wider mb-4">Page Movements</h3>
+              <div className="space-y-3">
+                {Object.entries(selectedVisitor.page_views || {})
+                  .sort(([, a], [, b]) => (b as number) - (a as number))
+                  .map(([path, count]) => (
+                  <div key={path} className="flex justify-between items-center p-4 bg-brand-white border border-brand-accent rounded-xl">
+                    <div className="font-medium text-brand-navy truncate max-w-[70%]">{path === '/' ? '/ (Home)' : path}</div>
+                    <div className="text-sm font-bold text-brand-muted bg-white px-3 py-1 rounded-full border border-brand-accent">
+                      {count as number} {count === 1 ? 'view' : 'views'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
