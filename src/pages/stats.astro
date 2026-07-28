@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StatsDashboard from '../components/pages/StatsDashboard';
+
+const title = "Live Analytics Dashboard | Solarpedia";
+const description = "Internal real-time visitor analytics and lead tracking dashboard.";
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  noindex={true}
+>
+  <StatsDashboard client:only="react" />
+</BaseLayout>
