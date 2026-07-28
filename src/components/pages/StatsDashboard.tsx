@@ -114,9 +114,10 @@ const StatsDashboard: React.FC = () => {
       // Active
       if (new Date(visitor.last_seen) >= fiveMinsAgo) activeNow++;
 
-      // Page Views
+      // Page Views (Excluding Home)
       if (visitor.page_views) {
         Object.entries(visitor.page_views).forEach(([path, count]) => {
+          if (path === '/') return; // Ignore home page
           totalPageViews += count;
           pageViewCounts[path] = (pageViewCounts[path] || 0) + count;
         });
@@ -354,7 +355,7 @@ const StatsDashboard: React.FC = () => {
                   </tr>
                 ) : (
                   stats.filteredVisitors.slice(0, 15).map((visitor) => {
-                    const views = visitor.page_views ? Object.values(visitor.page_views).reduce((a, b) => a + b, 0) : 0;
+                    const views = visitor.page_views ? Object.entries(visitor.page_views).reduce((sum, [path, count]) => path !== '/' ? sum + (count as number) : sum, 0) : 0;
                     const isLead = visitor.email || visitor.phone;
                     
                     return (
@@ -433,13 +434,14 @@ const StatsDashboard: React.FC = () => {
               )}
               
               {/* Timeline/Movements */}
-              <h3 className="text-sm font-bold text-brand-muted uppercase tracking-wider mb-4">Page Movements</h3>
+              <h3 className="text-sm font-bold text-brand-muted uppercase tracking-wider mb-4">Page Movements (Excl. Home)</h3>
               <div className="space-y-3">
                 {Object.entries(selectedVisitor.page_views || {})
+                  .filter(([path]) => path !== '/')
                   .sort(([, a], [, b]) => (b as number) - (a as number))
                   .map(([path, count]) => (
                   <div key={path} className="flex justify-between items-center p-4 bg-brand-white border border-brand-accent rounded-xl">
-                    <div className="font-medium text-brand-navy truncate max-w-[70%]">{path === '/' ? '/ (Home)' : path}</div>
+                    <div className="font-medium text-brand-navy truncate max-w-[70%]">{path}</div>
                     <div className="text-sm font-bold text-brand-muted bg-white px-3 py-1 rounded-full border border-brand-accent">
                       {count as number} {count === 1 ? 'view' : 'views'}
                     </div>
