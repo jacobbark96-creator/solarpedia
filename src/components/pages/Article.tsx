@@ -307,8 +307,9 @@ const Article: React.FC<{ slug?: string }> = ({ slug }) => {
                   <p className="text-brand-muted leading-relaxed">{faq.answer}</p>
                 </div>
               ))}
-              </div>
-            </article>
+            </div>
+          </div>
+        </article>
           </div>
 
           {/* Sticky Sidebar CTA */}
