@@ -49,15 +49,51 @@ const Wizard: React.FC = () => {
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setBillFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setBillFile(file);
       setUploading(true);
-      // Simulate AI OCR scanning process
-      setTimeout(() => {
-        setUploading(false);
-        // Automatically jump to the next step
-        updateData({ energyBill: 120, usagePattern: 'balanced' });
+      setLookupError('');
+
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch('/api/scan-bill', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to scan bill');
+        }
+
+        const data = await response.json();
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        // Successfully extracted data
+        const extractedSpend = data.monthly_spend ? Math.min(Math.max(data.monthly_spend, 50), 1000) : 120;
+        
+        // Infer usage pattern based on annual kWh (very rough heuristic, defaults to balanced)
+        let inferredPattern = 'balanced';
+        if (data.annual_kwh > 5000) inferredPattern = 'evening';
+        else if (data.annual_kwh < 2500) inferredPattern = 'day';
+
+        updateData({ 
+          energyBill: Math.round(extractedSpend / 10) * 10, // Round to nearest 10
+          usagePattern: inferredPattern as any 
+        });
+        
         setStep(4);
-      }, 2500);
+      } catch (err) {
+        console.error("Bill scan error:", err);
+        setLookupError('Could not read the bill clearly. Please enter manually.');
+        setManualEnergy(true);
+      } finally {
+        setUploading(false);
+      }
     }
   };
 
