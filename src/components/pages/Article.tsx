@@ -92,7 +92,7 @@ const Article: React.FC<{ slug?: string }> = ({ slug }) => {
 
   return (
     <div className="bg-brand-white min-h-screen pt-12 pb-24">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-2 text-sm text-brand-muted mb-8 overflow-x-auto whitespace-nowrap pb-2">
           <Link to="/" className="hover:text-brand-navy transition-colors">Home</Link>
           <ChevronRight className="h-4 w-4 flex-shrink-0" />
@@ -109,7 +109,10 @@ const Article: React.FC<{ slug?: string }> = ({ slug }) => {
           Back to {article.category} guides
         </Link>
 
-        <article className="bg-white rounded-[2rem] p-10 md:p-16 border border-brand-accent shadow-sm">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Main Article Content */}
+          <div className="lg:col-span-8">
+            <article className="bg-white rounded-[2rem] p-8 md:p-12 border border-brand-accent shadow-sm">
           <div className="mb-10">
             <span className="px-3 py-1 bg-brand-green/10 text-brand-green font-bold text-[10px] uppercase tracking-widest rounded-full mb-6 inline-block">
               {article.category}
@@ -304,9 +307,59 @@ const Article: React.FC<{ slug?: string }> = ({ slug }) => {
                   <p className="text-brand-muted leading-relaxed">{faq.answer}</p>
                 </div>
               ))}
-            </div>
+              </div>
+            </article>
           </div>
-        </article>
+
+          {/* Sticky Sidebar CTA */}
+          <aside className="lg:col-span-4">
+            <div className="sticky top-24 space-y-6">
+              <div className="bg-brand-navy rounded-[2rem] p-8 text-white shadow-xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                <div className="relative z-10">
+                  <span className="inline-flex items-center gap-1.5 bg-brand-green/20 text-brand-green px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider mb-4 border border-brand-green/20">
+                    <ShieldCheck className="w-3 h-3" /> Impartial Tool
+                  </span>
+                  <h3 className="text-2xl font-serif font-bold mb-3">See how much your specific roof can generate.</h3>
+                  <p className="text-brand-accent text-sm leading-relaxed mb-6 opacity-90">
+                    Use our calculator to get an exact ROI and payback period based on your postcode.
+                  </p>
+                  
+                  <form action="/wizard" method="GET" className="space-y-3">
+                    <div className="bg-white/10 p-1.5 rounded-xl border border-white/20 focus-within:border-brand-green focus-within:bg-white/15 transition-all flex">
+                      <input 
+                        type="text" 
+                        name="postcode"
+                        placeholder="Enter postcode" 
+                        className="bg-transparent text-white placeholder:text-brand-accent/70 px-3 w-full outline-none font-bold text-sm"
+                        required
+                      />
+                      <button type="submit" className="bg-brand-green text-brand-navy p-2.5 rounded-lg hover:shadow-lg transition-all flex-shrink-0">
+                        <ChevronRight className="w-4 h-4 font-bold" />
+                      </button>
+                    </div>
+                    <p className="text-[10px] text-brand-accent/60 text-center uppercase tracking-wider font-bold">100% Free • No Obligation</p>
+                  </form>
+                </div>
+              </div>
+              
+              <div className="bg-white border border-brand-accent rounded-[2rem] p-6 shadow-sm">
+                 <h4 className="font-bold text-brand-navy text-sm mb-4 uppercase tracking-wider">Related Guides</h4>
+                 <div className="space-y-3">
+                    {relatedArticles.map((related) => (
+                      <Link
+                        key={related.slug}
+                        to={`/education/article/${related.slug}`}
+                        className="block text-sm font-semibold text-brand-navy hover:text-brand-green transition-colors leading-snug"
+                      >
+                        {related.title}
+                      </Link>
+                    ))}
+                 </div>
+              </div>
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
   );

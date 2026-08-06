@@ -22,6 +22,12 @@ interface Visitor {
   full_name?: string;
   email?: string;
   phone?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  gclid?: string;
+  session_duration?: number;
+  wizard_dropoff_step?: number;
 }
 
 type TimeScale = 'today' | 'wtd' | 'mtd' | 'ytd' | 'all';
@@ -107,6 +113,7 @@ const StatsDashboard: React.FC = () => {
     let activeNow = 0; // Seen in last 5 minutes
 
     const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
+    const dropoffCounts = [0, 0, 0, 0, 0];
 
     nonAdminVisitors.forEach((visitor) => {
       // Leads
@@ -123,7 +130,22 @@ const StatsDashboard: React.FC = () => {
           pageViewCounts[path] = (pageViewCounts[path] || 0) + count;
         });
       }
+
+      // Dropoff Funnel
+      if (visitor.wizard_dropoff_step) {
+        for (let i = 0; i < visitor.wizard_dropoff_step; i++) {
+          if (i < dropoffCounts.length) dropoffCounts[i]++;
+        }
+      }
     });
+
+    const funnelData = [
+      { name: 'Step 1 (Property)', users: dropoffCounts[0] },
+      { name: 'Step 2 (Location)', users: dropoffCounts[1] },
+      { name: 'Step 3 (Energy)', users: dropoffCounts[2] },
+      { name: 'Step 4 (Roof)', users: dropoffCounts[3] },
+      { name: 'Step 5 (Results/Lead)', users: dropoffCounts[4] },
+    ];
 
     // Top Pages for Bar Chart
     const topPages = Object.entries(pageViewCounts)
@@ -144,7 +166,8 @@ const StatsDashboard: React.FC = () => {
       leadsCount,
       activeNow,
       topPages,
-      conversionData
+      conversionData,
+      funnelData
     };
   }, [visitors, timeScale]);
 
@@ -273,19 +296,38 @@ const StatsDashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* Top Pages Chart */}
-          <div className="lg:col-span-2 bg-white p-6 md:p-8 rounded-3xl border border-brand-accent shadow-sm">
+          <div className="bg-white p-6 md:p-8 rounded-3xl border border-brand-accent shadow-sm">
             <h2 className="text-xl font-serif font-bold text-brand-navy mb-6">Top Pages</h2>
-            <div className="h-[400px]">
+            <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={stats.topPages} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
                   <XAxis type="number" />
-                  <YAxis dataKey="path" type="category" width={150} tick={{ fontSize: 12 }} />
+                  <YAxis dataKey="path" type="category" width={120} tick={{ fontSize: 10 }} />
                   <Tooltip 
                     cursor={{fill: 'transparent'}}
                     contentStyle={{ borderRadius: '1rem', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                   />
                   <Bar dataKey="views" fill="#1e293b" radius={[0, 4, 4, 0]} barSize={24} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Wizard Funnel */}
+          <div className="bg-white p-6 md:p-8 rounded-3xl border border-brand-accent shadow-sm">
+            <h2 className="text-xl font-serif font-bold text-brand-navy mb-6">Wizard Drop-off</h2>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={stats.funnelData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                  <XAxis dataKey="name" tick={{ fontSize: 10 }} interval={0} angle={-25} textAnchor="end" height={60} />
+                  <YAxis tick={{ fontSize: 10 }} />
+                  <Tooltip 
+                    cursor={{fill: 'transparent'}}
+                    contentStyle={{ borderRadius: '1rem', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                  />
+                  <Bar dataKey="users" fill="#eab308" radius={[4, 4, 0, 0]} barSize={32} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -427,13 +469,39 @@ const StatsDashboard: React.FC = () => {
               {/* Contact Info if lead */}
               {(selectedVisitor.email || selectedVisitor.phone) && (
                 <div className="mb-6 p-5 bg-brand-green/10 rounded-2xl border border-brand-green/20">
-                  <h3 className="text-sm font-bold text-brand-green uppercase tracking-wider mb-3">Lead Details</h3>
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="text-sm font-bold text-brand-green uppercase tracking-wider">Lead Details</h3>
+                    <span className="bg-brand-green text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                      Hot Lead
+                    </span>
+                  </div>
                   <div className="space-y-2">
                     {selectedVisitor.email && (
                       <p className="text-brand-navy"><strong className="text-brand-muted font-normal mr-2">Email:</strong> {selectedVisitor.email}</p>
                     )}
                     {selectedVisitor.phone && (
                       <p className="text-brand-navy"><strong className="text-brand-muted font-normal mr-2">Phone:</strong> {selectedVisitor.phone}</p>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              {/* UTM Data if exists */}
+              {(selectedVisitor.utm_source || selectedVisitor.gclid) && (
+                <div className="mb-6 p-5 bg-brand-accent/20 rounded-2xl border border-brand-accent">
+                  <h3 className="text-sm font-bold text-brand-navy uppercase tracking-wider mb-3">Acquisition Source</h3>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    {selectedVisitor.utm_source && (
+                      <div><strong className="text-brand-muted font-normal block text-xs uppercase">Source</strong> <span className="font-semibold text-brand-navy">{selectedVisitor.utm_source}</span></div>
+                    )}
+                    {selectedVisitor.utm_medium && (
+                      <div><strong className="text-brand-muted font-normal block text-xs uppercase">Medium</strong> <span className="font-semibold text-brand-navy">{selectedVisitor.utm_medium}</span></div>
+                    )}
+                    {selectedVisitor.utm_campaign && (
+                      <div><strong className="text-brand-muted font-normal block text-xs uppercase">Campaign</strong> <span className="font-semibold text-brand-navy">{selectedVisitor.utm_campaign}</span></div>
+                    )}
+                    {selectedVisitor.gclid && (
+                      <div className="col-span-2"><strong className="text-brand-muted font-normal block text-xs uppercase">Google Click ID</strong> <span className="font-mono text-xs text-brand-navy break-all">{selectedVisitor.gclid}</span></div>
                     )}
                   </div>
                 </div>

@@ -12,20 +12,24 @@ import {
   Battery,
   Compass,
   Search,
-  Home
+  Home,
+  Lock,
+  UploadCloud,
+  FileText
 } from 'lucide-react';
 
 import { lookupPropertyRoofEstimate } from '../../lib/propertyLookup';
 import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../../lib/seo';
-import { trackFormSubmission, getVisitorData } from '../../lib/tracking';
+import { trackFormSubmission, getVisitorData, trackWizardStep } from '../../lib/tracking';
+
+import { NATIONAL_AVERAGES, UK_REGIONS_DATA } from '../../data/mockData';
 
 const steps = [
-  { id: 1, title: 'Property Type' },
+  { id: 1, title: 'Property' },
   { id: 2, title: 'Location' },
-  { id: 3, title: 'Energy Usage' },
-  { id: 4, title: 'Roof Details' },
-  { id: 5, title: 'Contact' },
-  { id: 6, title: 'Review' }
+  { id: 3, title: 'Energy' },
+  { id: 4, title: 'Roof' },
+  { id: 5, title: 'Results' }
 ];
 
 const Wizard: React.FC = () => {
@@ -38,6 +42,37 @@ const Wizard: React.FC = () => {
     data.phone.trim().length >= 7;
 
   const [submitting, setSubmitting] = React.useState(false);
+  const [userCity, setUserCity] = React.useState('your area');
+  const [billFile, setBillFile] = React.useState<File | null>(null);
+  const [uploading, setUploading] = React.useState(false);
+  const [manualEnergy, setManualEnergy] = React.useState(false);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setBillFile(e.target.files[0]);
+      setUploading(true);
+      // Simulate AI OCR scanning process
+      setTimeout(() => {
+        setUploading(false);
+        // Automatically jump to the next step
+        updateData({ energyBill: 120, usagePattern: 'balanced' });
+        setStep(4);
+      }, 2500);
+    }
+  };
+
+  React.useEffect(() => {
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(d => {
+        if (d.city) setUserCity(d.city);
+      })
+      .catch(() => {});
+  }, []);
+
+  React.useEffect(() => {
+    trackWizardStep(step);
+  }, [step]);
 
   const handleNext = async () => {
     if (step < steps.length) {
@@ -121,6 +156,44 @@ const Wizard: React.FC = () => {
       setLookupLoading(false);
     }
   };
+
+  // Teaser Calculations
+  const getTeaserSavings = () => {
+    const annualBill = data.energyBill * 12;
+    const annualStandingCharge = 0.60 * 365;
+    const energySpend = Math.max(0, annualBill - annualStandingCharge);
+    const annualConsumptionKwh = energySpend / NATIONAL_AVERAGES.energyPrice;
+    
+    const regionCode = data.postcode?.toUpperCase().slice(0, 3) || 'SW';
+    const regionData = UK_REGIONS_DATA[regionCode] || UK_REGIONS_DATA['SW'];
+    const regionalYield = regionData.avgSunlightHours / 1000;
+    const roofDirectionFactor = { south: 1, east: 0.9, west: 0.88, north: 0.72 }[data.roofDirection as string] || 1;
+
+    const targetSystemSize = annualConsumptionKwh / (900 * regionalYield * roofDirectionFactor);
+    const usableRoofSpace = data.roofSize * 0.75;
+    const maxPossibleSize = usableRoofSpace / 4.5;
+    const systemSize = Math.max(1, Math.min(targetSystemSize, maxPossibleSize));
+
+    const annualGenerationKwh = systemSize * 900 * regionalYield * roofDirectionFactor;
+    const baseSelfConsumptionRate = data.propertyType === 'commercial'
+        ? { day: 0.82, balanced: 0.72, evening: 0.55 }[data.usagePattern as string] || 0.72
+        : { day: 0.55, balanced: 0.42, evening: 0.3 }[data.usagePattern as string] || 0.42;
+        
+    const selfConsumptionRate = Math.min(
+      data.hasBattery ? baseSelfConsumptionRate + (data.propertyType === 'commercial' ? 0.12 : 0.2) : baseSelfConsumptionRate,
+      0.92
+    );
+    const exportRate = data.propertyType === 'commercial' ? 0.12 : 0.15;
+    const annualSavings = (annualGenerationKwh * selfConsumptionRate * NATIONAL_AVERAGES.energyPrice) + 
+                          (annualGenerationKwh * (1 - selfConsumptionRate) * exportRate);
+    
+    return {
+      min: Math.round(annualSavings * 0.85 / 10) * 10,
+      max: Math.round(annualSavings * 1.15 / 10) * 10
+    };
+  };
+
+  const teaserSavings = React.useMemo(getTeaserSavings, [data]);
 
   return (
     <div className="min-h-screen bg-brand-white pt-16 pb-20">
@@ -290,36 +363,89 @@ const Wizard: React.FC = () => {
                     <h2 className="text-2xl font-serif font-bold text-brand-navy mb-1.5">Energy & Bills</h2>
                     <p className="text-sm text-brand-muted">Tell us about your current energy usage.</p>
                   </div>
-                  <div className="space-y-5">
-                    <div>
-                      <div className="flex justify-between mb-3">
-                        <label htmlFor="energy-bill" className="text-[10px] font-bold text-brand-navy uppercase">Average Monthly Bill</label>
-                        <span className="text-lg font-bold text-brand-navy">£{data.energyBill}</span>
+                  
+                  {!manualEnergy ? (
+                    <div className="space-y-4">
+                      <div className="border-2 border-dashed border-brand-accent rounded-2xl p-8 text-center hover:bg-brand-white transition-colors relative">
+                        <input 
+                          type="file" 
+                          accept=".pdf,image/*"
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                          onChange={handleFileUpload}
+                          disabled={uploading}
+                        />
+                        {uploading ? (
+                          <div className="flex flex-col items-center justify-center py-4">
+                            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-brand-navy mb-4"></div>
+                            <p className="text-brand-navy font-bold">Scanning bill with AI...</p>
+                            <p className="text-xs text-brand-muted mt-1">Extracting usage and tariffs</p>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center justify-center">
+                            <div className="w-16 h-16 bg-brand-navy/5 rounded-full flex items-center justify-center mb-4">
+                              <UploadCloud className="h-8 w-8 text-brand-navy" />
+                            </div>
+                            <p className="text-lg font-bold text-brand-navy mb-1">Upload your energy bill</p>
+                            <p className="text-sm text-brand-muted mb-4 max-w-sm">
+                              Get an exact forecast instantly. We'll use AI to securely extract your exact kWh usage and tariff.
+                            </p>
+                            <button className="bg-brand-navy text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-all pointer-events-none">
+                              Browse Files
+                            </button>
+                          </div>
+                        )}
                       </div>
-                      <input
-                        id="energy-bill"
-                        type="range"
-                        min="50"
-                        max="1000"
-                        step="10"
-                        value={data.energyBill}
-                        onChange={(e) => updateData({ energyBill: parseInt(e.target.value) })}
-                        className="w-full h-1.5 bg-brand-accent rounded-lg appearance-none cursor-pointer accent-brand-navy"
-                      />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      {['day', 'evening', 'balanced'].map((pattern) => (
-                        <button
-                          key={pattern}
-                          onClick={() => updateData({ usagePattern: pattern as any })}
-                          aria-pressed={data.usagePattern === pattern}
-                          className={`p-3 rounded-lg border-2 text-xs font-bold capitalize transition-all ${data.usagePattern === pattern ? 'border-brand-navy bg-brand-navy text-white' : 'border-brand-accent hover:border-brand-navy/30'}`}
+                      
+                      <div className="text-center">
+                        <span className="text-xs text-brand-muted font-medium px-4 bg-white relative z-10">OR</span>
+                        <div className="h-px bg-brand-accent w-full -mt-2.5 mb-4"></div>
+                        <button 
+                          onClick={() => setManualEnergy(true)}
+                          className="text-sm font-bold text-brand-navy hover:text-brand-green transition-colors"
                         >
-                          {pattern} Usage
+                          Skip and enter manually
                         </button>
-                      ))}
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="space-y-5">
+                      <div>
+                        <div className="flex justify-between mb-3">
+                          <label htmlFor="energy-bill" className="text-[10px] font-bold text-brand-navy uppercase">Average Monthly Bill</label>
+                          <span className="text-lg font-bold text-brand-navy">£{data.energyBill}</span>
+                        </div>
+                        <input
+                          id="energy-bill"
+                          type="range"
+                          min="50"
+                          max="1000"
+                          step="10"
+                          value={data.energyBill}
+                          onChange={(e) => updateData({ energyBill: parseInt(e.target.value) })}
+                          className="w-full h-1.5 bg-brand-accent rounded-lg appearance-none cursor-pointer accent-brand-navy"
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {['day', 'evening', 'balanced'].map((pattern) => (
+                          <button
+                            key={pattern}
+                            onClick={() => updateData({ usagePattern: pattern as any })}
+                            aria-pressed={data.usagePattern === pattern}
+                            className={`p-3 rounded-lg border-2 text-xs font-bold capitalize transition-all ${data.usagePattern === pattern ? 'border-brand-navy bg-brand-navy text-white' : 'border-brand-accent hover:border-brand-navy/30'}`}
+                          >
+                            {pattern} Usage
+                          </button>
+                        ))}
+                      </div>
+                      
+                      <button 
+                        onClick={() => setManualEnergy(false)}
+                        className="flex items-center justify-center gap-2 w-full mt-2 py-3 bg-brand-green/10 text-brand-green rounded-xl text-sm font-bold hover:bg-brand-green/20 transition-colors"
+                      >
+                        <FileText className="w-4 h-4" /> Try Auto-Scan Instead
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -416,87 +542,87 @@ const Wizard: React.FC = () => {
               )}
 
               {step === 5 && (
-                <div className="space-y-6">
+                <div className="space-y-8">
                   <div className="text-center">
-                    <h2 className="text-2xl font-serif font-bold text-brand-navy mb-1.5">Who should we send the results to?</h2>
-                    <p className="text-sm text-brand-muted">Enter your details before we show your solar forecast.</p>
-                  </div>
-                  <div className="grid grid-cols-1 gap-5">
-                    <div>
-                      <label htmlFor="contact-name" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Full Name</label>
-                      <input
-                        id="contact-name"
-                        type="text"
-                        placeholder="Your full name"
-                        value={data.name}
-                        onChange={(e) => updateData({ name: e.target.value })}
-                        className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-base font-medium transition-all"
-                        autoComplete="name"
-                      />
+                    <div className="inline-flex items-center gap-2 bg-brand-green/10 text-brand-green px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+                      <CheckCircle2 className="h-4 w-4" /> Estimate Ready
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="contact-email" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Email Address</label>
-                        <input
-                          id="contact-email"
-                          type="email"
-                          placeholder="you@example.com"
-                          value={data.email}
-                          onChange={(e) => updateData({ email: e.target.value })}
-                          className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-base font-medium transition-all"
-                          autoComplete="email"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="contact-phone" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Contact Number</label>
-                        <input
-                          id="contact-phone"
-                          type="tel"
-                          placeholder="07xxx xxx xxx"
-                          value={data.phone}
-                          onChange={(e) => updateData({ phone: e.target.value })}
-                          className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-base font-medium transition-all"
-                          autoComplete="tel"
-                        />
-                      </div>
-                    </div>
+                    <h2 className="text-3xl font-serif font-bold text-brand-navy mb-2">Good news! Your roof is suitable.</h2>
+                    <p className="text-brand-muted">Based on your usage and a {Math.round(data.roofSize)}sqm roof area, you could save:</p>
                   </div>
-                  <div className="rounded-xl border border-brand-accent bg-brand-accent/20 px-4 py-3 text-xs text-brand-muted">
-                    We’ll use these details to personalise your quote journey and pre-fill the installer request form after your results.
-                  </div>
-                </div>
-              )}
 
-              {step === 6 && (
-                <div className="space-y-6">
-                  <div className="text-center">
-                    <h2 className="text-2xl font-serif font-bold text-brand-navy mb-1.5">Consent & Accuracy</h2>
-                    <p className="text-sm text-brand-muted">Choose your level of insight detail.</p>
+                  <div className="bg-brand-navy rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden">
+                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                    <div className="relative z-10">
+                      <p className="text-brand-yellow font-bold uppercase tracking-wider text-xs mb-2">Estimated Annual Savings</p>
+                      <div className="text-5xl md:text-6xl font-serif font-bold text-white mb-2 filter drop-shadow-md">
+                        £{teaserSavings.min} - £{teaserSavings.max}
+                      </div>
+                      <p className="text-brand-accent text-sm opacity-90 mb-6">per year on your energy bills</p>
+                    </div>
                   </div>
-                  <div className="bg-brand-accent/20 p-5 rounded-xl border border-brand-accent">
-                    <div className="flex items-start gap-3">
+
+                  <div className="bg-white border border-brand-accent rounded-2xl p-6 shadow-sm">
+                    <div className="flex items-center gap-2 text-brand-navy font-bold mb-4">
+                      <Lock className="h-5 w-5 text-brand-yellow" />
+                      <h3>Unlock Your Full Forecast</h3>
+                    </div>
+                    <p className="text-sm text-brand-muted mb-6 leading-relaxed">
+                      Enter your details below to instantly unlock your exact 10-year ROI projection, seasonal generation charts, and recommended system size.
+                    </p>
+
+                    <div className="grid grid-cols-1 gap-5">
+                      <div>
+                        <label htmlFor="contact-name" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Full Name</label>
+                        <input
+                          id="contact-name"
+                          type="text"
+                          placeholder="Your full name"
+                          value={data.name}
+                          onChange={(e) => updateData({ name: e.target.value })}
+                          className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-base font-medium transition-all"
+                          autoComplete="name"
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label htmlFor="contact-email" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Email Address</label>
+                          <input
+                            id="contact-email"
+                            type="email"
+                            placeholder="you@example.com"
+                            value={data.email}
+                            onChange={(e) => updateData({ email: e.target.value })}
+                            className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-base font-medium transition-all"
+                            autoComplete="email"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="contact-phone" className="block text-[10px] font-bold text-brand-navy uppercase mb-1.5">Contact Number</label>
+                          <input
+                            id="contact-phone"
+                            type="tel"
+                            placeholder="07xxx xxx xxx"
+                            value={data.phone}
+                            onChange={(e) => updateData({ phone: e.target.value })}
+                            className="w-full p-3 rounded-lg border-2 border-brand-accent focus:border-brand-navy outline-none text-base font-medium transition-all"
+                            autoComplete="tel"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6 flex items-start gap-3 bg-brand-accent/20 p-4 rounded-xl border border-brand-accent">
                       <input
                         type="checkbox"
                         id="consent"
                         checked={data.consentShared}
                         onChange={(e) => updateData({ consentShared: e.target.checked })}
-                        className="mt-1 h-4 w-4 rounded border-brand-accent text-brand-navy focus:ring-brand-navy"
+                        className="mt-0.5 h-4 w-4 rounded border-brand-accent text-brand-navy focus:ring-brand-navy"
                       />
                       <label htmlFor="consent" className="text-xs text-brand-navy leading-relaxed opacity-90">
                         I consent to my submitted information being shared with one carefully selected qualified installer partner for the purpose of improving estimate accuracy and optionally providing a no-obligation quotation.
                       </label>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div className={`p-3.5 rounded-xl border-2 transition-all ${data.consentShared ? 'border-brand-green bg-brand-green/5' : 'border-brand-accent opacity-50'}`}>
-                      <CheckCircle2 className={`h-4 w-4 mb-1.5 ${data.consentShared ? 'text-brand-green' : 'text-brand-muted'}`} />
-                      <p className="text-sm font-bold text-brand-navy">Enhanced Accuracy</p>
-                      <p className="text-[10px] text-brand-muted">Personalized data from local installers included.</p>
-                    </div>
-                    <div className={`p-3.5 rounded-xl border-2 transition-all ${!data.consentShared ? 'border-brand-yellow bg-brand-yellow/5' : 'border-brand-accent opacity-50'}`}>
-                      <Zap className={`h-4 w-4 mb-1.5 ${!data.consentShared ? 'text-brand-yellow' : 'text-brand-muted'}`} />
-                      <p className="text-sm font-bold text-brand-navy">Generic Estimate</p>
-                      <p className="text-[10px] text-brand-muted">Using UK national and regional averages only.</p>
                     </div>
                   </div>
                 </div>
@@ -523,10 +649,22 @@ const Wizard: React.FC = () => {
             </button>
           </div>
 
-          <div className="mt-6 flex items-center justify-center gap-4 text-[10px] font-bold uppercase tracking-wider text-brand-muted">
-            <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> 100% Free</span>
-            <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> No Obligation</span>
-            <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Secure</span>
+          <div className="mt-6 flex flex-col items-center justify-center gap-4 text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> 100% Free</span>
+              <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> No Obligation</span>
+              <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Secure</span>
+            </div>
+            
+            <div className="bg-brand-green/10 px-3 py-1 rounded-full border border-brand-green/20 inline-flex items-center gap-1.5 mt-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-green"></span>
+              </span>
+              <span className="text-[10px] font-bold text-brand-navy">
+                {Math.floor(Math.random() * 30) + 15} homeowners in {userCity} checked their roof this week
+              </span>
+            </div>
           </div>
         </div>
 

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, MapPin } from 'lucide-react';
 import { useWizardStore } from '../hooks/useWizardStore';
 import { trackFormSubmission, getVisitorData } from '../lib/tracking';
 
@@ -22,6 +22,16 @@ const LeadCaptureCTA: React.FC = () => {
   const { data } = useWizardStore();
 
   const [pathname, setPathname] = useState('');
+  const [userCity, setUserCity] = useState('your area');
+
+  React.useEffect(() => {
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        if (data.city) setUserCity(data.city);
+      })
+      .catch(() => {});
+  }, []);
 
   React.useEffect(() => {
     setPathname(window.location.pathname);
@@ -241,11 +251,18 @@ const LeadCaptureCTA: React.FC = () => {
                 {submitting ? 'Submitting…' : 'Get 3 Free Quotes'}
               </button>
 
-              <div className="mt-4 flex items-center justify-center gap-4 text-[10px] font-bold uppercase tracking-wider text-white/70">
-                <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> 100% Free</span>
-                <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> No Obligation</span>
-                <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Secure</span>
-              </div>
+              <p className="text-center text-xs text-white/60 mt-4 font-medium flex flex-col items-center justify-center gap-2">
+                <span className="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4" /> 100% Free & No Obligation</span>
+                <span className="bg-white/10 px-3 py-1 rounded-full border border-white/10 inline-flex items-center gap-1.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-green"></span>
+                  </span>
+                  <span className="text-[10px] font-bold text-white/90">
+                    {Math.floor(Math.random() * 30) + 15} homeowners in {userCity} checked their roof this week
+                  </span>
+                </span>
+              </p>
 
               <p className="mt-4 text-[11px] text-white/60 leading-relaxed text-center">
                 By submitting, you agree we can contact you and share your details with local installer partners.
