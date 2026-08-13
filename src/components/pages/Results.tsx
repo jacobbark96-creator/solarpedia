@@ -32,10 +32,13 @@ const Results: React.FC = () => {
   const { data } = useWizardStore();
 
   // Advanced calculation logic based on energy usage and property constraints
-  const annualBill = data.energyBill * 12;
-  const annualStandingCharge = 0.60 * 365; // ~60p/day average UK standing charge
-  const energySpend = Math.max(0, annualBill - annualStandingCharge);
-  const annualConsumptionKwh = energySpend / NATIONAL_AVERAGES.energyPrice;
+  let annualConsumptionKwh = data.annualUsageKwh || 0;
+  if (!annualConsumptionKwh || !data.knowsUsage) {
+    const annualBill = data.energyBill * 12;
+    const annualStandingCharge = 0.60 * 365;
+    const energySpend = Math.max(0, annualBill - annualStandingCharge);
+    annualConsumptionKwh = energySpend / NATIONAL_AVERAGES.energyPrice;
+  }
   
   // Get regional data or fallback to national average
   const regionCode = data.postcode?.toUpperCase().slice(0, 3) || 'SW';
@@ -47,7 +50,8 @@ const Results: React.FC = () => {
       east: 0.9,
       west: 0.88,
       north: 0.72,
-    }[data.roofDirection] || 1;
+      not_sure: 0.85,
+    }[data.roofDirection] || 0.85;
 
   // Estimate required system size (kWp) to cover usage
   // We aim to offset ~100% of annual consumption, capped by roof space.
@@ -60,21 +64,22 @@ const Results: React.FC = () => {
   const systemSize = Math.max(1, Math.min(targetSystemSize, maxPossibleSize)); // Minimum 1kWp system
 
   // Dynamic cost per kWp (Smaller systems are more expensive per unit)
-  let costPerKwp = data.propertyType === 'residential' ? 1800 : 1300;
+  let costPerKwp = data.propertyType === 'commercial' ? 1800 : 1300;
   if (systemSize > 4) costPerKwp -= 200;
   if (systemSize > 8) costPerKwp -= 100;
   if (systemSize > 20) costPerKwp -= 200;
 
-  const estimatedCost = systemSize * costPerKwp + (data.hasBattery ? 5000 : 0);
+  const hasBatteryBool = data.batteryInterest === 'yes' || data.hasBattery;
+  const estimatedCost = systemSize * costPerKwp + (hasBatteryBool ? 5000 : 0);
   
   // Savings calculation
   const annualGenerationKwh = systemSize * 900 * regionalYield * roofDirectionFactor;
   const baseSelfConsumptionRate =
     data.propertyType === 'commercial'
-      ? { day: 0.82, balanced: 0.72, evening: 0.55 }[data.usagePattern]
-      : { day: 0.55, balanced: 0.42, evening: 0.3 }[data.usagePattern];
+      ? { day: 0.82, balanced: 0.72, evening: 0.55 }[data.usagePattern] || 0.72
+      : { day: 0.55, balanced: 0.42, evening: 0.3 }[data.usagePattern] || 0.42;
   const selfConsumptionRate = Math.min(
-    data.hasBattery
+    hasBatteryBool
       ? baseSelfConsumptionRate + (data.propertyType === 'commercial' ? 0.12 : 0.2)
       : baseSelfConsumptionRate,
     0.92

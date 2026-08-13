@@ -10,15 +10,18 @@ export interface PostcodeData {
 }
 
 export interface WizardState {
-  propertyType: 'residential' | 'commercial';
+  propertyType: 'residential' | 'commercial' | 'farm' | 'other';
+  ownership: 'yes' | 'no' | 'not_sure';
   name: string;
   email: string;
   phone: string;
   postcode: string;
   houseNumber: string;
   energyBill: number;
+  knowsUsage: boolean;
+  annualUsageKwh?: number;
   usagePattern: 'day' | 'evening' | 'balanced';
-  roofDirection: 'south' | 'east' | 'west' | 'north';
+  roofDirection: 'south' | 'east' | 'west' | 'north' | 'not_sure';
   roofSize: number;
   roofSizeSource: 'default' | 'manual' | 'estimated';
   roofSizeConfidence?: 'low' | 'medium' | 'high';
@@ -27,7 +30,12 @@ export interface WizardState {
   propertyLon?: number;
   footprintArea?: number;
   roofEstimateMethod?: string;
-  hasBattery: boolean;
+  hasBattery: boolean; // Keeping for backward compatibility or simple toggles
+  batteryInterest: 'yes' | 'no' | 'not_sure';
+  timeframe: 'researching' | '12_months' | '6_months' | '3_months' | 'ready';
+  intent: 'installer' | 'advice' | 'researching' | '';
+  leadScore: number;
+  billUploaded: boolean;
   consentShared: boolean;
 }
 

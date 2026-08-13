@@ -114,7 +114,7 @@ const StatsDashboard: React.FC = () => {
     let activeNow = 0; // Seen in last 5 minutes
 
     const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
-    const dropoffCounts = [0, 0, 0, 0, 0];
+    const dropoffCounts = Array(12).fill(0);
 
     nonAdminVisitors.forEach((visitor) => {
       // Leads
@@ -141,11 +141,18 @@ const StatsDashboard: React.FC = () => {
     });
 
     const funnelData = [
-      { name: 'Step 1 (Property)', users: dropoffCounts[0] },
-      { name: 'Step 2 (Location)', users: dropoffCounts[1] },
-      { name: 'Step 3 (Energy)', users: dropoffCounts[2] },
-      { name: 'Step 4 (Roof)', users: dropoffCounts[3] },
-      { name: 'Step 5 (Results/Lead)', users: dropoffCounts[4] },
+      { name: 'S1 (Location)', users: dropoffCounts[0] },
+      { name: 'S2 (Property)', users: dropoffCounts[1] },
+      { name: 'S3 (Ownership)', users: dropoffCounts[2] },
+      { name: 'S4 (Costs)', users: dropoffCounts[3] },
+      { name: 'S5 (Usage)', users: dropoffCounts[4] },
+      { name: 'S6 (Roof)', users: dropoffCounts[5] },
+      { name: 'S7 (Battery)', users: dropoffCounts[6] },
+      { name: 'S8 (Timeframe)', users: dropoffCounts[7] },
+      { name: 'S9 (Result)', users: dropoffCounts[8] },
+      { name: 'S10 (Upload)', users: dropoffCounts[9] },
+      { name: 'S11 (Contact)', users: dropoffCounts[10] },
+      { name: 'S12 (Intent)', users: dropoffCounts[11] },
     ];
 
     // Top Pages for Bar Chart

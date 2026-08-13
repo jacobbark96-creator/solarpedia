@@ -3,19 +3,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Wizard from '../components/pages/Wizard';
 import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../lib/seo';
 
-const title = 'Solar Savings Wizard | Solarpedia';
-const description = 'Calculate your potential solar savings with our impartial UK-wide data-driven tool.';
-const keywords = 'solar savings calculator UK, solar cost calculator UK, solar ROI calculator UK, commercial solar calculator';
+const title = 'Personalised Solar Assessment | Solarpedia';
+const description = 'Get a personalised estimate of your solar potential, potential savings and payback period.';
+const keywords = 'solar savings calculator UK, solar assessment UK, solar cost calculator UK, solar ROI calculator UK, commercial solar calculator';
 
 const schema = [
   createSoftwareApplicationSchema({
-    name: 'Solarpedia Solar Savings Wizard',
-    description: 'Calculate solar savings, payback, and likely system size for UK homes and businesses.',
+    name: 'Solarpedia Personalised Solar Assessment',
+    description: 'Get a personalised estimate of your solar potential, potential savings and payback period.',
     path: '/wizard',
   }),
   createBreadcrumbSchema([
     { name: 'Home', path: '/' },
-    { name: 'Solar Savings Wizard', path: '/wizard' },
+    { name: 'Personalised Solar Assessment', path: '/wizard' },
   ]),
 ];
 ---
