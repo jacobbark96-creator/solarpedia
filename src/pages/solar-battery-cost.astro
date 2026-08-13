@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { createBreadcrumbSchema, createArticleSchema } from '../lib/seo';
+
+const title = 'Solar Battery Storage Cost UK (2024 Guide) | Solarpedia';
+const description = 'How much does a solar battery cost in the UK? Discover average prices, ROI, and whether battery storage is worth the investment.';
+const keywords = 'solar battery cost UK, solar battery storage cost, how much is a solar battery, solar battery prices, is a solar battery worth it';
+const path = '/solar-battery-cost';
+
+const schema = [
+  createArticleSchema({
+    title,
+    description,
+    path,
+    authorName: 'Solarpedia Research',
+    publishedDate: new Date().toISOString(),
+  }),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Solar Battery Cost', path: path },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${path}`}
+>
+  <div class="bg-brand-white pt-24 pb-20">
+    <article class="max-w-4xl mx-auto px-4">
+      <header class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-6">
+          Solar Battery Storage Cost in the UK (2024 Guide)
+        </h1>
+        <p class="text-xl text-brand-muted leading-relaxed max-w-2xl mx-auto">
+          Adding a battery to your solar panels allows you to use free electricity at night. But how much do they cost, and are they actually worth the money?
+        </p>
+      </header>
+
+      <div class="bg-brand-navy rounded-3xl p-8 text-center shadow-xl mb-16">
+        <h2 class="text-2xl font-serif font-bold text-white mb-4">Should you add a battery?</h2>
+        <p class="text-white/80 mb-6 max-w-xl mx-auto">
+          Battery viability depends entirely on your daytime energy usage. Use our independent calculator to see if a battery improves your ROI.
+        </p>
+        <a href="/solar-payback-calculator" class="inline-block bg-brand-accent text-brand-navy px-8 py-4 rounded-xl font-bold text-lg hover:bg-white transition-colors">
+          Calculate My ROI With a Battery
+        </a>
+      </div>
+
+      <div class="prose prose-lg text-brand-navy/80 max-w-none">
+        <h2>Average UK Solar Battery Prices</h2>
+        <p>
+          In 2024, a standard lithium-ion solar battery in the UK costs between <strong>£2,500 and £6,000</strong> fully installed, depending largely on its storage capacity (measured in kWh).
+        </p>
+        <p>
+          Here is a breakdown of estimated costs for popular battery sizes:
+        </p>
+
+        <div class="overflow-x-auto my-8">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b-2 border-brand-accent">
+                <th class="py-4 px-4 font-bold text-brand-navy">Battery Capacity</th>
+                <th class="py-4 px-4 font-bold text-brand-navy">Best For</th>
+                <th class="py-4 px-4 font-bold text-brand-navy">Estimated Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-200">
+                <td class="py-4 px-4">3 kWh - 5 kWh</td>
+                <td class="py-4 px-4">Low usage / Small homes</td>
+                <td class="py-4 px-4 font-bold">£2,500 - £3,500</td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                <td class="py-4 px-4">6 kWh - 8 kWh</td>
+                <td class="py-4 px-4">Medium homes (Average UK)</td>
+                <td class="py-4 px-4 font-bold">£3,500 - £4,500</td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                <td class="py-4 px-4">9 kWh - 13.5 kWh</td>
+                <td class="py-4 px-4">Large homes / High usage (e.g. Tesla Powerwall)</td>
+                <td class="py-4 px-4 font-bold">£4,500 - £6,000+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Is a solar battery worth it?</h2>
+        <p>
+          The simple answer is: <strong>It depends on when you use electricity.</strong>
+        </p>
+        <ul>
+          <li><strong>If you are out all day:</strong> A battery is almost certainly worth it. Your panels will generate power during the day when nobody is home to use it. The battery stores this power so you can use it in the evening to cook dinner and watch TV.</li>
+          <li><strong>If you work from home:</strong> You might be able to run your appliances directly off the solar panels as the energy is generated. In this case, a battery might take a very long time to pay for itself, as you're already self-consuming most of your energy.</li>
+        </ul>
+
+        <h2>Can you charge a battery from the grid?</h2>
+        <p>
+          Yes! Modern hybrid inverters allow you to charge your battery using cheap overnight electricity tariffs (like Octopus Go or Agile). You can then discharge the battery during the expensive peak evening hours. During winter months when solar generation is low, this feature alone can save you hundreds of pounds a year.
+        </p>
+
+        <div class="bg-brand-accent/20 p-6 rounded-2xl my-10 border border-brand-accent">
+          <h3 class="text-xl font-serif font-bold text-brand-navy mt-0">Find out if a battery makes financial sense for you</h3>
+          <p class="mb-4">Our advanced calculator compares your estimated savings with and without a battery to give you a clear, unbiased ROI.</p>
+          <a href="/wizard" class="text-brand-navy font-bold hover:underline flex items-center gap-2">
+            Start your free assessment →
+          </a>
+        </div>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

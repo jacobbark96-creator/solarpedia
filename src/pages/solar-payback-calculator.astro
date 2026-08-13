@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Wizard from '../components/pages/Wizard';
+import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../lib/seo';
+
+const title = 'Solar Payback Calculator UK: Find Your ROI | Solarpedia';
+const description = 'Calculate the exact payback period for solar panels in the UK. Free, independent assessment based on your local sunlight and energy usage.';
+const keywords = 'solar payback calculator, solar ROI calculator, solar panel payback period UK, solar return on investment';
+const path = '/solar-payback-calculator';
+
+const schema = [
+  createSoftwareApplicationSchema({
+    name: 'Solarpedia Solar Payback Calculator',
+    description: 'Calculate the payback period and ROI for solar panels in the UK.',
+    path: path,
+  }),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Solar Payback Calculator', path: path },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${path}`}
+>
+  <div class="bg-brand-white">
+    <Wizard client:only="react" />
+    
+    <section class="py-20 bg-brand-white border-t border-brand-accent">
+      <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-serif font-bold text-brand-navy mb-6">Understanding Solar Payback Periods in the UK</h2>
+        <div class="prose prose-lg text-brand-navy/80">
+          <p>
+            The solar payback period is the time it takes for your solar panels to pay for themselves through energy savings and export tariffs. For most UK homes in 2024, the average payback period sits between <strong>7 to 11 years</strong>.
+          </p>
+          
+          <h3 class="text-2xl font-serif font-bold text-brand-navy mt-10 mb-4">What affects your solar ROI?</h3>
+          <ul class="list-disc pl-6 mb-6">
+            <li><strong>Installation Costs:</strong> Larger systems cost less per kWp, often improving your overall ROI if you can use the energy.</li>
+            <li><strong>Self-Consumption:</strong> The more solar energy you use directly (instead of buying from the grid at ~28p/kWh), the faster your system pays for itself.</li>
+            <li><strong>Export Tariffs (SEG):</strong> Selling excess energy back to the grid (typically 4p - 15p/kWh) provides an additional revenue stream.</li>
+            <li><strong>Battery Storage:</strong> While batteries increase the upfront cost, they can drastically improve self-consumption, which may shorten or lengthen the payback period depending on your usage habits.</li>
+          </ul>
+          
+          <p>
+            Use our independent solar payback calculator above to get a tailored estimate for your specific property, roof direction, and energy bill.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

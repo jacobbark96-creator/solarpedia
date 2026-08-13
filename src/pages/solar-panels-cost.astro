@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { createBreadcrumbSchema, createArticleSchema } from '../lib/seo';
+
+const title = 'Solar Panels Cost UK (2024 Guide & Prices) | Solarpedia';
+const description = 'How much do solar panels cost in the UK? Discover the average prices for 4kW to 10kW systems, installation costs, and expected savings.';
+const keywords = 'solar panels cost UK, how much are solar panels, solar panel prices, cost of solar panels, 4kw solar system cost';
+const path = '/solar-panels-cost';
+
+const schema = [
+  createArticleSchema({
+    title,
+    description,
+    path,
+    authorName: 'Solarpedia Research',
+    publishedDate: new Date().toISOString(),
+  }),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Solar Panels Cost', path: path },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${path}`}
+>
+  <div class="bg-brand-white pt-24 pb-20">
+    <article class="max-w-4xl mx-auto px-4">
+      <header class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-navy mb-6">
+          How Much Do Solar Panels Cost in the UK? (2024 Guide)
+        </h1>
+        <p class="text-xl text-brand-muted leading-relaxed max-w-2xl mx-auto">
+          A complete breakdown of average solar installation costs, battery prices, and what you can expect to pay for a typical UK home system.
+        </p>
+      </header>
+
+      <div class="bg-brand-navy rounded-3xl p-8 text-center shadow-xl mb-16">
+        <h2 class="text-2xl font-serif font-bold text-white mb-4">Want to skip the averages?</h2>
+        <p class="text-white/80 mb-6 max-w-xl mx-auto">
+          Every roof is different. Use our independent calculator to see exact costs, system sizes, and payback periods tailored to your postcode and energy bill.
+        </p>
+        <a href="/solar-calculator" class="inline-block bg-brand-accent text-brand-navy px-8 py-4 rounded-xl font-bold text-lg hover:bg-white transition-colors">
+          Check My Solar Potential
+        </a>
+      </div>
+
+      <div class="prose prose-lg text-brand-navy/80 max-w-none">
+        <h2>Average UK Solar Panel Costs</h2>
+        <p>
+          In 2024, a typical residential solar panel system in the UK costs between <strong>£5,000 and £9,000</strong>, depending on the system size (kWp) and the quality of the components. 
+        </p>
+        <p>
+          Here is a breakdown of estimated costs for standard roof-mounted systems (excluding battery storage):
+        </p>
+
+        <div class="overflow-x-auto my-8">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b-2 border-brand-accent">
+                <th class="py-4 px-4 font-bold text-brand-navy">System Size</th>
+                <th class="py-4 px-4 font-bold text-brand-navy">Suitable For</th>
+                <th class="py-4 px-4 font-bold text-brand-navy">Estimated Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-200">
+                <td class="py-4 px-4">3 kWp</td>
+                <td class="py-4 px-4">1-2 Bed Home</td>
+                <td class="py-4 px-4 font-bold">£4,500 - £5,500</td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                <td class="py-4 px-4">4 kWp</td>
+                <td class="py-4 px-4">3 Bed Home</td>
+                <td class="py-4 px-4 font-bold">£5,500 - £6,500</td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                <td class="py-4 px-4">5 kWp</td>
+                <td class="py-4 px-4">4 Bed Home</td>
+                <td class="py-4 px-4 font-bold">£6,500 - £7,500</td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                <td class="py-4 px-4">6 kWp+</td>
+                <td class="py-4 px-4">Large Property / EV Owners</td>
+                <td class="py-4 px-4 font-bold">£7,500 - £9,500+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>What affects the cost of a solar installation?</h2>
+        <p>While the averages above give a good baseline, your actual quote will depend on several factors:</p>
+        <ul>
+          <li><strong>Scaffolding:</strong> Included in most quotes, but complex roofs (e.g., conservatories underneath, multi-story) may require specialized scaffolding which increases costs.</li>
+          <li><strong>Panel Quality & Efficiency:</strong> Premium panels (like SunPower or REC) cost more upfront but degrade slower and generate more power per square meter. Standard panels (like Jinko or Trina) offer an excellent middle ground.</li>
+          <li><strong>Inverter Type:</strong> A standard string inverter is cheaper. Micro-inverters or DC optimizers (like Enphase or SolarEdge) are more expensive but essential if your roof suffers from shading.</li>
+          <li><strong>Battery Storage:</strong> Adding a battery will increase your upfront cost significantly (usually by £2,500 to £5,000 depending on capacity).</li>
+        </ul>
+
+        <h2>Are solar panels VAT free?</h2>
+        <p>
+          Yes! The UK government introduced a 0% VAT rate on energy-saving materials, including solar panels and batteries (when installed together). This zero-rate policy runs until March 2027, making this an excellent time to invest in solar.
+        </p>
+
+        <div class="bg-brand-accent/20 p-6 rounded-2xl my-10 border border-brand-accent">
+          <h3 class="text-xl font-serif font-bold text-brand-navy mt-0">Ready to get accurate pricing?</h3>
+          <p class="mb-4">Don't rely on averages. Use our independent tool to calculate exactly what size system you need and how much it should cost.</p>
+          <a href="/wizard" class="text-brand-navy font-bold hover:underline flex items-center gap-2">
+            Calculate your costs now →
+          </a>
+        </div>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

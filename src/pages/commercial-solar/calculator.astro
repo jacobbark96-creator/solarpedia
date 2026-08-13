@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Wizard from '../../components/pages/Wizard';
+import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../../lib/seo';
+
+const title = 'Commercial Solar Calculator: Business ROI Assessment | Solarpedia';
+const description = 'Calculate your commercial solar ROI, payback period, and generation potential. Free independent assessment for UK businesses, factories and farms.';
+const keywords = 'commercial solar calculator, business solar calculator, commercial solar ROI, solar payback for business';
+const path = '/commercial-solar/calculator';
+
+const schema = [
+  createSoftwareApplicationSchema({
+    name: 'Solarpedia Commercial Solar Calculator',
+    description: 'Calculate commercial solar ROI, payback period, and generation potential for UK businesses.',
+    path: path,
+  }),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Commercial Solar', path: '/commercial-solar' },
+    { name: 'Commercial Solar Calculator', path: path },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${path}`}
+>
+  <div class="bg-brand-white">
+    <Wizard client:only="react" />
+    
+    <section class="py-20 bg-brand-white border-t border-brand-accent">
+      <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-serif font-bold text-brand-navy mb-6">Commercial Solar ROI: Why Businesses are Switching</h2>
+        <div class="prose prose-lg text-brand-navy/80">
+          <p>
+            With volatile energy markets, UK businesses are increasingly turning to commercial solar PV to lock in their electricity costs, reduce operational overheads, and meet ESG (Environmental, Social, and Governance) targets.
+          </p>
+          <p>
+            Our commercial solar calculator provides a preliminary estimate of your potential system size, generation capacity, and financial return on investment based on your business's electricity spend and roof space.
+          </p>
+          
+          <h3 class="text-2xl font-serif font-bold text-brand-navy mt-10 mb-4">The Financial Case for Business Solar</h3>
+          <ul class="list-disc pl-6 mb-6">
+            <li><strong>Economies of Scale:</strong> Commercial installations (50kWp - 1MWp+) benefit from significant economies of scale, driving down the cost per installed watt compared to residential systems.</li>
+            <li><strong>Daytime Consumption:</strong> Most businesses operate during the day, perfectly aligning with peak solar generation. This results in incredibly high self-consumption rates (often 80-100%), maximizing financial savings.</li>
+            <li><strong>Tax Benefits:</strong> UK businesses can often take advantage of capital allowances (like the Annual Investment Allowance) to offset the cost of the solar installation against taxable profits.</li>
+            <li><strong>Rapid Payback:</strong> High self-consumption and lower per-kWp costs mean commercial solar payback periods regularly fall between <strong>3 to 6 years</strong>.</li>
+          </ul>
+          
+          <p>
+            Complete the assessment above to check the viability of solar for your warehouse, factory, office, or agricultural property.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

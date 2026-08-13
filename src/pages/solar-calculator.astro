@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Wizard from '../components/pages/Wizard';
+import { createBreadcrumbSchema, createSoftwareApplicationSchema } from '../lib/seo';
+
+const title = 'Solar Panel Calculator UK: Savings & ROI Estimator | Solarpedia';
+const description = 'Calculate your solar savings, payback period, and installation costs with our independent UK solar panel calculator.';
+const keywords = 'solar panel calculator, solar calculator UK, solar savings calculator, solar payback calculator';
+const path = '/solar-calculator';
+
+const schema = [
+  createSoftwareApplicationSchema({
+    name: 'Solarpedia Solar Panel Calculator',
+    description: 'Calculate your solar savings, payback period, and installation costs.',
+    path: path,
+  }),
+  createBreadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Solar Calculator', path: path },
+  ]),
+];
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  keywords={keywords}
+  schema={schema}
+  canonical={`https://solarpedia.co.uk${path}`}
+>
+  <div class="bg-brand-white">
+    <Wizard client:only="react" />
+    
+    <section class="py-20 bg-brand-white border-t border-brand-accent">
+      <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-serif font-bold text-brand-navy mb-6">How Our Solar Panel Calculator Works</h2>
+        <div class="prose prose-lg text-brand-navy/80">
+          <p>
+            The Solarpedia solar calculator uses real UK energy data, regional sunlight hours, and average installation costs to provide an independent estimate of your solar potential. 
+          </p>
+          <p>
+            Unlike many generic calculators, we don't just give you a best-case scenario. We take into account:
+          </p>
+          <ul class="list-disc pl-6 mb-6">
+            <li><strong>Your Region:</strong> Solar panels in Cornwall generate more electricity than those in Scotland. We adjust your generation estimate based on your postcode.</li>
+            <li><strong>Your Usage Pattern:</strong> If you're home during the day, you'll use more of the free solar energy. If you're out, you might need a battery to see the best ROI.</li>
+            <li><strong>Current Energy Prices:</strong> We use up-to-date national average energy prices to ensure your financial savings are realistic.</li>
+          </ul>
+          
+          <h3 class="text-2xl font-serif font-bold text-brand-navy mt-10 mb-4">Why is calculating solar ROI important?</h3>
+          <p>
+            Solar panels are a significant investment. While the environmental benefits are clear, the financial return on investment (ROI) depends heavily on your specific property and energy habits. Our calculator helps you understand your likely payback period before you commit to speaking with installers.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
