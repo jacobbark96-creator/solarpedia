@@ -84,21 +84,60 @@ const Wizard: React.FC = () => {
 
   const calculateLeadScore = () => {
     let score = 10; // Completed wizard
-    if (data.knowsUsage && data.annualUsageKwh) score += 10;
-    if (data.energyBill > (data.propertyType === 'commercial' ? 500 : 200)) score += 10;
-    if (data.billUploaded) score += 30;
-    
-    if (data.timeframe === 'ready') score += 30;
-    else if (data.timeframe === '3_months') score += 20;
-    else if (data.timeframe === '6_months') score += 10;
-    else if (data.timeframe === '12_months') score += 5;
+    const signals: string[] = ['assessment_completed'];
 
-    if (data.name && data.email && data.phone) score += 10;
+    if (data.knowsUsage && data.annualUsageKwh) {
+      score += 10;
+      signals.push('provided_annual_kwh');
+    }
     
-    if (data.intent === 'installer') score += 25;
-    else if (data.intent === 'advice') score += 10;
+    if (data.energyBill > (data.propertyType === 'commercial' ? 500 : 200)) {
+      score += 10;
+      signals.push('high_electricity_spend');
+    }
     
-    return score;
+    if (data.billUploaded) {
+      score += 30;
+      signals.push('bill_uploaded');
+    }
+    
+    if (data.timeframe === 'ready') {
+      score += 30;
+      signals.push('timeframe_ready_now');
+    }
+    else if (data.timeframe === '3_months') {
+      score += 20;
+      signals.push('timeframe_3_months');
+    }
+    else if (data.timeframe === '6_months') {
+      score += 10;
+      signals.push('timeframe_6_months');
+    }
+    else if (data.timeframe === '12_months') {
+      score += 5;
+      signals.push('timeframe_12_months');
+    }
+
+    if (data.name && data.email && data.phone) {
+      score += 10;
+      signals.push('full_contact_provided');
+    }
+    
+    if (data.intent === 'installer') {
+      score += 25;
+      signals.push('requested_installer_contact');
+    }
+    else if (data.intent === 'advice') {
+      score += 10;
+      signals.push('requested_advice');
+    }
+    
+    let intent_category = 'LOW';
+    if (score >= 80) intent_category = 'VERY HIGH';
+    else if (score >= 50) intent_category = 'HIGH';
+    else if (score >= 30) intent_category = 'MEDIUM';
+    
+    return { score, signals, intent_category };
   };
 
   const handleSubmitLead = async (intentValue: string) => {
@@ -107,14 +146,43 @@ const Wizard: React.FC = () => {
     
     try {
       const visitorData = await getVisitorData();
-      const finalScore = calculateLeadScore();
+      const { score: finalScore, signals, intent_category } = calculateLeadScore();
+      
+      const energyData = {
+        knowsUsage: data.knowsUsage,
+        usagePattern: data.usagePattern,
+        annualUsageKwh: data.annualUsageKwh
+      };
+      
+      const solarData = {
+        roofSize: data.roofSize,
+        roofDirection: data.roofDirection,
+        roofSizeSource: data.roofSizeSource,
+        matchedAddress: data.matchedAddress,
+        estimate: estimate // from useMemo
+      };
 
-      await trackFormSubmission({
+      const lead = await trackFormSubmission({
         full_name: data.name,
         email: data.email,
         phone: data.phone,
+        postcode: data.postcode,
+        property_type: data.propertyType,
+        monthly_spend: data.energyBill.toString(),
+        ownership: data.ownership,
+        house_number: data.houseNumber,
+        battery_interest: data.batteryInterest,
+        timeframe: data.timeframe,
+        requested_action: intentValue,
+        lead_score: finalScore,
+        scoring_signals: signals,
+        intent_category: intent_category,
+        energy_data: energyData,
+        solar_data: solarData,
+        bill_url: data.billUploaded ? 'uploaded_securely' : null
       });
 
+      // Keep FormSubmit email as fallback/notification
       await fetch('https://formsubmit.co/ajax/support@openlead.co.uk', {
         method: 'POST',
         headers: {

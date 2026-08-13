@@ -81,30 +81,62 @@ export async function trackPageView() {
   }
 }
 
-export async function trackFormSubmission(formData: {
-  full_name?: string;
-  email?: string;
-  phone?: string;
+export async function trackFormSubmission(data: {
+  full_name: string;
+  email: string;
+  phone: string;
+  postcode?: string;
+  property_type?: string;
+  monthly_spend?: string;
+  bill_url?: string;
+  ownership?: string;
+  house_number?: string;
+  energy_data?: any;
+  solar_data?: any;
+  battery_interest?: string;
+  timeframe?: string;
+  requested_action?: string;
+  lead_score?: number;
+  scoring_signals?: string[];
+  intent_category?: string;
 }) {
-  if (typeof window === 'undefined') return;
-
   try {
     const visitor_id = getVisitorId();
-    if (!visitor_id) return;
+    
+    const { data: insertedLead, error } = await supabase
+      .from('leads')
+      .insert([
+        { 
+          ...data,
+          visitor_id,
+          status: 'New',
+          lead_source: 'Savings Wizard'
+        }
+      ])
+      .select('id')
+      .single();
 
-    const { error } = await supabase
-      .from('visitor_tracking')
-      .update({
-        ...formData,
-        last_seen: new Date().toISOString()
-      })
-      .eq('visitor_id', visitor_id);
+    if (error) throw error;
 
-    if (error) {
-      console.error('Form Tracking Error:', error);
+    // Log the initial activity
+    if (insertedLead) {
+      await logLeadActivity(insertedLead.id, 'Assessment completed', 'User completed the Savings Wizard and submitted contact details.');
     }
-  } catch (err) {
-    console.error('Form Tracking Error (catch):', err);
+
+    return insertedLead;
+  } catch (error) {
+    console.error('Error tracking form submission:', error);
+    return null;
+  }
+}
+
+export async function logLeadActivity(lead_id: string, action: string, description?: string, metadata: any = {}) {
+  try {
+    await supabase
+      .from('lead_activity_logs')
+      .insert([{ lead_id, action, description, metadata }]);
+  } catch (error) {
+    console.error('Error logging lead activity:', error);
   }
 }
 
