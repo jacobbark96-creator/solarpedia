@@ -15,6 +15,7 @@ import {
 import { Lock, Users, MousePointerClick, UserPlus, Activity, Clock, X, Eye } from 'lucide-react';
 
 interface Visitor {
+  visitor_id: string;
   ip_address: string;
   page_views: Record<string, number>;
   last_seen: string;
@@ -77,7 +78,7 @@ const StatsDashboard: React.FC = () => {
         if (payload.eventType === 'INSERT') {
           setVisitors((prev) => [payload.new as Visitor, ...prev]);
         } else if (payload.eventType === 'UPDATE') {
-          setVisitors((prev) => prev.map((v) => v.ip_address === payload.new.ip_address ? (payload.new as Visitor) : v));
+          setVisitors((prev) => prev.map((v) => v.visitor_id === payload.new.visitor_id ? (payload.new as Visitor) : v));
         }
       })
       .subscribe();
@@ -403,14 +404,14 @@ const StatsDashboard: React.FC = () => {
                     const isAdmin = visitor.page_views && visitor.page_views['/stats'];
                     
                     return (
-                      <tr key={visitor.ip_address} className="hover:bg-brand-white/50 transition-colors">
+                      <tr key={visitor.visitor_id} className="hover:bg-brand-white/50 transition-colors">
                         <td className="px-6 py-4">
                           <button 
                             onClick={() => setSelectedVisitor(visitor)}
                             className="font-bold text-brand-navy hover:text-brand-green transition-colors text-left flex items-center gap-2 group"
                             title="View movements profile"
                           >
-                            {visitor.full_name ? visitor.full_name : <span className="font-mono text-sm">{isAdmin ? 'ADMIN' : visitor.ip_address}</span>}
+                            {visitor.full_name ? visitor.full_name : <span className="font-mono text-sm">{isAdmin ? 'ADMIN' : visitor.visitor_id.substring(0, 8)}</span>}
                             <Eye className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </button>
                         </td>
@@ -456,7 +457,7 @@ const StatsDashboard: React.FC = () => {
                 <h2 className="text-2xl font-serif font-bold text-brand-navy">
                   {selectedVisitor.full_name || (selectedVisitor.page_views?.['/stats'] ? 'Admin User' : 'Anonymous Visitor')}
                 </h2>
-                <p className="text-sm font-mono text-brand-muted mt-1">{selectedVisitor.ip_address}</p>
+                <p className="text-sm font-mono text-brand-muted mt-1" title={selectedVisitor.visitor_id}>ID: {selectedVisitor.visitor_id.substring(0, 8)}... | IP: {selectedVisitor.ip_address || 'Unknown'}</p>
               </div>
               <button 
                 onClick={() => setSelectedVisitor(null)} 
