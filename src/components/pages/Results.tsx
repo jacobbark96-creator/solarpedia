@@ -84,9 +84,14 @@ const Results: React.FC = () => {
       : baseSelfConsumptionRate,
     0.92
   );
-  const exportRate = data.propertyType === 'commercial' ? 0.12 : 0.15;
-  const annualSavings = (annualGenerationKwh * selfConsumptionRate * NATIONAL_AVERAGES.energyPrice) + 
-                        (annualGenerationKwh * (1 - selfConsumptionRate) * exportRate);
+  
+  // You cannot self-consume more solar energy than your total annual consumption
+  const theoreticalConsumed = annualGenerationKwh * selfConsumptionRate;
+  const actualConsumed = Math.min(theoreticalConsumed, annualConsumptionKwh);
+  const actualExported = annualGenerationKwh - actualConsumed;
+  
+  const exportRate = data.propertyType === 'commercial' ? 0.05 : 0.055;
+  const annualSavings = (actualConsumed * NATIONAL_AVERAGES.energyPrice) + (actualExported * exportRate);
 
   const paybackPeriod = estimatedCost / annualSavings;
   const tenYearSavings = (annualSavings * 10) - estimatedCost;

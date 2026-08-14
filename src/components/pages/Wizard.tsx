@@ -289,9 +289,14 @@ const Wizard: React.FC = () => {
       hasBatteryBool ? baseSelfConsumptionRate + (data.propertyType === 'commercial' ? 0.12 : 0.2) : baseSelfConsumptionRate,
       0.92
     );
-    const exportRate = data.propertyType === 'commercial' ? 0.12 : 0.15;
-    const annualSavings = (annualGenerationKwh * selfConsumptionRate * NATIONAL_AVERAGES.energyPrice) + 
-                          (annualGenerationKwh * (1 - selfConsumptionRate) * exportRate);
+    
+    // You cannot self-consume more solar energy than your total annual consumption
+    const theoreticalConsumed = annualGenerationKwh * selfConsumptionRate;
+    const actualConsumed = Math.min(theoreticalConsumed, annualConsumptionKwh);
+    const actualExported = annualGenerationKwh - actualConsumed;
+    
+    const exportRate = data.propertyType === 'commercial' ? 0.05 : 0.055;
+    const annualSavings = (actualConsumed * NATIONAL_AVERAGES.energyPrice) + (actualExported * exportRate);
     
     const systemCost = (systemSize * 1100) + (hasBatteryBool ? 3500 : 0);
     const payback = systemCost / annualSavings;
