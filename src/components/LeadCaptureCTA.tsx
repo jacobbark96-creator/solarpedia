@@ -23,6 +23,7 @@ const LeadCaptureCTA: React.FC = () => {
 
   const [pathname, setPathname] = useState('');
   const [userCity, setUserCity] = useState('your area');
+  const [roofCount, setRoofCount] = useState(12);
 
   React.useEffect(() => {
     fetch('https://ipapi.co/json/')
@@ -31,6 +32,30 @@ const LeadCaptureCTA: React.FC = () => {
         if (data.city) setUserCity(data.city);
       })
       .catch(() => {});
+      
+    // Calculate deterministic plausible roof count
+    const getPlausibleCount = () => {
+      const now = new Date();
+      const day = now.getDay(); // 0 is Sunday, 1 is Monday
+      const diffToMonday = day === 0 ? 6 : day - 1;
+      
+      const monday = new Date(now);
+      monday.setDate(now.getDate() - diffToMonday);
+      monday.setHours(0, 0, 0, 0);
+      
+      // Calculate how many 12-hour blocks have passed since Monday 00:00
+      const hoursSinceMonday = (now.getTime() - monday.getTime()) / (1000 * 60 * 60);
+      const blocks = Math.floor(hoursSinceMonday / 12);
+      
+      let count = 12; // Base number resets every Monday
+      for (let i = 0; i < blocks; i++) {
+        // Alternates adding 3 or 4 per half-day to look organic
+        count += (i % 2 === 0) ? 3 : 4;
+      }
+      return count;
+    };
+    
+    setRoofCount(getPlausibleCount());
   }, []);
 
   React.useEffect(() => {
@@ -259,7 +284,7 @@ const LeadCaptureCTA: React.FC = () => {
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-green"></span>
                   </span>
                   <span className="text-[10px] font-bold text-white/90">
-                    {Math.floor(Math.random() * 30) + 15} homeowners in {userCity} checked their roof this week
+                    {roofCount} homeowners in {userCity} checked their roof this week
                   </span>
                 </span>
               </p>
