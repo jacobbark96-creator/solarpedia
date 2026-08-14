@@ -290,7 +290,7 @@ const LeadCaptureCTA: React.FC = () => {
               </p>
 
               <p className="mt-4 text-[11px] text-white/60 leading-relaxed text-center">
-                By submitting, you agree we can contact you and share your details with local installer partners.
+                By submitting your request, you accept our Terms & Conditions and Privacy Policy.
               </p>
             </form>
           </div>

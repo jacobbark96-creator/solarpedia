@@ -763,7 +763,7 @@ const Wizard: React.FC = () => {
                   </div>
 
                   <div className="mt-4 text-[10px] text-brand-muted leading-relaxed text-center px-4">
-                    By submitting, you agree to our privacy policy. If you request to speak to a professional, we will share your details with a carefully selected qualified installer partner.
+                    By submitting your assessment, you accept our Terms & Conditions and Privacy Policy.
                   </div>
                 </div>
               )}
